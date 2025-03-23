@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../theme/ThemeContext';
 
 interface EmptyStateProps {
   title?: string;
@@ -15,33 +16,32 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   icon = 'heart-outline',
   testID = 'empty-state',
 }) => {
+  const { theme } = useTheme();
+
   return (
-    <View style={styles.container} testID={testID}>
-      <Ionicons name={icon} size={64} color="#FF9999" />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.message}>{message}</Text>
+    <View style={[styles.container, { padding: theme.spacing.xl }]} testID={testID}>
+      <Ionicons name={icon} size={64} color={theme.colors.primary} />
+      <Text style={[styles.title, { color: theme.colors.text }]}>{title}</Text>
+      <Text style={[styles.message, { color: theme.colors.textSecondary }]}>{message}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
-    padding: 32,
+  },
+  message: {
+    fontSize: 16,
+    textAlign: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333333',
-    marginTop: 16,
     marginBottom: 8,
-  },
-  message: {
-    fontSize: 16,
-    color: '#666666',
-    textAlign: 'center',
+    marginTop: 16,
   },
 });
 

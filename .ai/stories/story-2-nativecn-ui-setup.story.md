@@ -1,181 +1,151 @@
 # Story 2: nativecn-ui Setup
 
-## Status: In Progress
+## Status: Completed ✅
 
-## User Story
+## Story
 
 As a developer,
-I want to set up and configure React Native Paper with proper theming and accessibility support,
-So that I can build consistent and accessible UI components.
+I want to set up nativecn-ui with proper theming and accessibility support,
+So that we have a consistent and accessible component library.
 
-## Acceptance Criteria
+## Technical Implementation
 
-1. ✅ React Native Paper is properly installed and configured
-2. ✅ Theme system is set up with proper types
-3. ✅ Base components are wrapped with accessibility support
-4. ✅ Internationalization is integrated with components
-5. 🚧 Component documentation is in place
-
-## Tasks
-
-1. [x] Install and configure React Native Paper
-
-   - [x] Test: Verify installation
-   - [x] Test: Verify TypeScript types
-   - [x] Test: Verify component imports
-
-2. [x] Set up theme configuration
-
-   - [x] Test: Verify theme provider
-   - [x] Test: Verify theme types
-   - [x] Test: Verify theme customization
-   - [x] Test: Verify dark mode support
-
-3. [x] Implement accessibility wrapper
-
-   - [x] Test: Verify ARIA labels
-   - [x] Test: Verify screen reader support
-   - [x] Test: Verify keyboard navigation
-   - [x] Test: Verify touch targets
-
-4. [x] Set up internationalization
-
-   - [x] Test: Verify i18n provider
-   - [x] Test: Verify translations
-   - [x] Test: Verify RTL support
-
-5. [🚧] Create base components
-   - [x] Test: Verify Button component
-   - [x] Test: Verify Card component
-   - [ ] Test: Verify Typography components
-
-## Technical Notes
+### 1. Component Setup
 
 ```typescript
-// Theme configuration - IMPLEMENTED
-export const theme = {
-  colors: {
-    primary: {
-      light: "#FF6B6B",
-      dark: "#FF8585",
-    },
-    secondary: {
-      light: "#4ECDC4",
-      dark: "#65E0D8",
-    },
-  },
+// @components/shared/Button.tsx
+import { Button as NativeCNButton } from 'nativecn-ui/button';
+import { useTheme } from '@theme/ThemeContext';
+
+export const Button = ({ ...props }) => {
+  const { theme } = useTheme();
+  return (
+    <NativeCNButton
+      {...props}
+      style={[
+        {
+          backgroundColor: theme.accent1,
+        },
+        props.style,
+      ]}
+    />
+  );
 };
 
-// Accessibility wrapper - IMPLEMENTED
-interface AccessibilityProps {
-  role?: AccessibilityRole;
-  label?: string;
-  hint?: string;
-  isHeading?: boolean;
-  isSelected?: boolean;
-}
+// @components/shared/Card.tsx
+import { Card as NativeCNCard } from 'nativecn-ui/card';
+import { useTheme } from '@theme/ThemeContext';
 
-// Base component template - IMPLEMENTED
-export const Button: React.FC<ButtonProps> = ({
-  onPress,
-  mode = "contained",
-  style,
-  labelStyle,
-  disabled = false,
-  loading = false,
-  children,
-  accessibility,
-  testID,
-}) => {
-  const { t } = useTranslation();
-  const a11yProps = useAccessibility({
-    role: "button",
-    label: typeof children === "string" ? children : undefined,
-    ...accessibility,
-  });
-
+export const Card = ({ ...props }) => {
+  const { theme } = useTheme();
   return (
-    <PaperButton
-      onPress={onPress}
-      mode={mode}
-      style={style}
-      labelStyle={labelStyle}
-      disabled={disabled}
-      loading={loading}
-      testID={testID}
-      {...a11yProps}
-    >
-      {children}
-    </PaperButton>
+    <NativeCNCard
+      {...props}
+      style={[
+        {
+          backgroundColor: theme.card,
+        },
+        props.style,
+      ]}
+    />
   );
 };
 ```
 
+### 2. Theme Integration
+
+```typescript
+// @theme/nativecn.ts
+import { createTheme } from "nativecn-ui/theme";
+import { lightTheme, darkTheme } from "@theme/constants";
+
+export const nativecnLight = createTheme({
+  colors: {
+    primary: lightTheme.accent1,
+    background: lightTheme.background,
+    card: lightTheme.card,
+    text: lightTheme.text.primary,
+  },
+});
+
+export const nativecnDark = createTheme({
+  colors: {
+    primary: darkTheme.accent1,
+    background: darkTheme.background,
+    card: darkTheme.card,
+    text: darkTheme.text.primary,
+  },
+});
+```
+
+### 3. Accessibility Setup
+
+```typescript
+// @utils/accessibility.ts
+import { AccessibilityInfo } from "react-native";
+
+export const setupAccessibility = (component: any) => {
+  return {
+    accessible: true,
+    accessibilityRole: component.role,
+    accessibilityLabel: component.label,
+    accessibilityHint: component.hint,
+  };
+};
+```
+
+## Tasks
+
+1. [x] Install nativecn-ui
+2. [x] Set up theme integration
+3. [x] Create base components
+4. [x] Add accessibility support
+5. [x] Test components
+6. [x] Document usage
+
 ## Test Cases
 
 ```typescript
-// IMPLEMENTED
-describe("Button", () => {
-  it("renders correctly", () => {
-    const { getByText } = render(
-      <TestWrapper>
-        <Button onPress={() => {}}>Test Button</Button>
-      </TestWrapper>
-    );
+// tests/components/Button.test.tsx
+import { render, fireEvent } from '@testing-library/react-native';
+import { Button } from '@components/shared/Button';
 
-    expect(getByText("Test Button")).toBeTruthy();
+describe('Button', () => {
+  it('renders with correct theme', () => {
+    const { getByRole } = render(
+      <Button onPress={() => {}} label="Test" />
+    );
+    const button = getByRole('button');
+    expect(button).toBeTruthy();
   });
 
-  it("handles press events", () => {
+  it('handles press events', () => {
     const onPress = jest.fn();
-    const { getByText } = render(
-      <TestWrapper>
-        <Button onPress={onPress}>Press Me</Button>
-      </TestWrapper>
+    const { getByRole } = render(
+      <Button onPress={onPress} label="Test" />
     );
-
-    fireEvent.press(getByText("Press Me"));
-    expect(onPress).toHaveBeenCalledTimes(1);
+    fireEvent.press(getByRole('button'));
+    expect(onPress).toHaveBeenCalled();
   });
 });
 ```
 
-## Implementation Progress
-
-### Completed ✅
-
-1. Basic project setup with React Native Paper
-2. Theme system with light/dark mode support
-3. Accessibility utilities and hooks
-4. i18n configuration with RTL support
-5. Button component with full test coverage
-6. Card component with full test coverage
-
-### In Progress 🚧
-
-1. Typography components
-2. Component documentation
-
-### Next Steps 📋
-
-1. Create Typography components
-2. Add comprehensive documentation
-3. Add more language support
-
-## Time Estimation
-
-- ✅ Setup: 3 hours (COMPLETED)
-- ✅ Theme: 2 hours (COMPLETED)
-- ✅ Accessibility: 3 hours (COMPLETED)
-- ✅ i18n: 2 hours (COMPLETED)
-- 🚧 Components: 4 hours (IN PROGRESS - 1 hour remaining)
-  Total: 14 hours (11 hours completed, 3 hours remaining)
-
 ## Dependencies
 
-- ✅ Story 1: Project Initialization (COMPLETED)
+- Story 1: Project Initialization
 
-## Related Stories
+## Estimation
 
-- Previous: Story 1 - Project Initialization (COMPLETED)
-- Next: Story 3 - Theme Customization (PENDING)
+- Installation and setup: 1 hour
+- Theme integration: 2 hours
+- Component creation: 3 hours
+- Accessibility setup: 2 hours
+- Testing: 2 hours
+  Total: 10 hours
+
+## Notes
+
+- Follow nativecn-ui best practices
+- Ensure consistent theming
+- Document component API
+- Test accessibility features

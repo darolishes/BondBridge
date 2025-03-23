@@ -16,13 +16,14 @@ export interface CardSetProgress {
   seenByCategory: Record<Category, number>;
 }
 
-export interface CardSetTileProps {
+export type CardSetTileProps = {
   cardSet: CardSetData;
   progress: CardSetProgress;
-  onPress: (setId: string) => void;
+  /** Callback when the card set is pressed */
+  onPress: (_: string) => void;
   testID?: string;
   isLoading?: boolean;
-}
+};
 
 export interface CardSetSkeletonProps {
   numberOfItems?: number;

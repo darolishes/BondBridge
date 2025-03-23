@@ -57,43 +57,43 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 16,
     elevation: 2,
+    marginBottom: 16,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  image: {
-    width: '100%',
-    height: 120,
-    resizeMode: 'cover',
-  },
   content: {
     padding: 12,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: 4,
-  },
   description: {
-    fontSize: 14,
     color: '#666666',
-    marginBottom: 8,
+    fontSize: 14,
     lineHeight: 20,
+    marginBottom: 8,
+  },
+  image: {
+    height: 120,
+    resizeMode: 'cover',
+    width: '100%',
   },
   progressContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   progressText: {
-    fontSize: 14,
     color: '#666666',
+    fontSize: 14,
     marginLeft: 8,
+  },
+  title: {
+    color: '#333333',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
   },
 });
 

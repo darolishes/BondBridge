@@ -1,34 +1,35 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { Text } from 'react-native';
 import RootNavigator from '../RootNavigator';
 
 // Mock the screens
 jest.mock('../../screens/HomeScreen', () => {
   return {
     __esModule: true,
-    default: () => <div>Home Screen</div>,
+    default: () => <Text>Home Screen</Text>,
   };
 });
 
 jest.mock('../../screens/CardViewScreen', () => {
   return {
     __esModule: true,
-    default: () => <div>Card View Screen</div>,
+    default: () => <Text>Card View Screen</Text>,
   };
 });
 
 jest.mock('../../screens/SettingsScreen', () => {
   return {
     __esModule: true,
-    default: () => <div>Settings Screen</div>,
+    default: () => <Text>Settings Screen</Text>,
   };
 });
 
 jest.mock('../../screens/ImportModal', () => {
   return {
     __esModule: true,
-    default: () => <div>Import Modal</div>,
+    default: () => <Text>Import Modal</Text>,
   };
 });
 

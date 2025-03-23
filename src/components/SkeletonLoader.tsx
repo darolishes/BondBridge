@@ -47,40 +47,40 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 16,
     elevation: 2,
+    marginBottom: 16,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  image: {
-    width: '100%',
-    height: 120,
-    backgroundColor: '#F0F0F0',
-  },
   content: {
     padding: 12,
   },
-  title: {
-    height: 20,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 4,
-    marginBottom: 8,
-    width: '80%',
-  },
   description: {
-    height: 32,
     backgroundColor: '#F0F0F0',
     borderRadius: 4,
+    height: 32,
     marginBottom: 12,
   },
+  image: {
+    backgroundColor: '#F0F0F0',
+    height: 120,
+    width: '100%',
+  },
   progressBar: {
-    height: 4,
     backgroundColor: '#F0F0F0',
     borderRadius: 2,
+    height: 4,
     width: '100%',
+  },
+  title: {
+    backgroundColor: '#F0F0F0',
+    borderRadius: 4,
+    height: 20,
+    marginBottom: 8,
+    width: '80%',
   },
 });
 

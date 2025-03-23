@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button as PaperButton } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
 import { useAccessibility, AccessibilityProps } from '../utils/accessibility';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -27,7 +26,6 @@ export const Button: React.FC<ButtonProps> = ({
   accessibility,
   testID,
 }) => {
-  const { t } = useTranslation();
   const a11yProps = useAccessibility({
     role: 'button',
     label: typeof children === 'string' ? children : undefined,

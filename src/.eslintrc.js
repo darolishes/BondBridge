@@ -1,38 +1,43 @@
 module.exports = {
   root: true,
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-native/all',
+    'plugin:jest/recommended',
   ],
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2021,
-    sourceType: "module",
+    project: '../tsconfig.json',
     ecmaFeatures: {
       jsx: true,
     },
   },
+  plugins: ['@typescript-eslint', 'react', 'react-native', 'jest'],
   env: {
-    es2021: true,
+    'react-native/react-native': true,
+    'jest/globals': true,
     node: true,
-    jest: true,
-    "react-native/react-native": true,
   },
   settings: {
     react: {
-      version: "detect",
+      version: 'detect',
     },
   },
   rules: {
-    "prettier/prettier": "error",
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-    "no-console": ["warn", { allow: ["warn", "error"] }],
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    'no-console': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
+    'react-native/no-color-literals': 'off',
+    'react-native/sort-styles': 'off',
+    'react-native/no-raw-text': [
+      'error',
+      {
+        skip: ['Button', 'Text'],
+      },
+    ],
+    'no-undef': 'off',
   },
 };

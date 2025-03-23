@@ -36,26 +36,57 @@ BondBridge is built using React Native with Expo, leveraging nativecn-ui for UI 
 ## Project Structure
 
 ```
-src/
-├── components/          # Reusable UI components
-│   ├── Card/           # Card component
-│   ├── Navigation/     # Navigation components
-│   └── shared/         # Shared UI components
-├── screens/            # App screens
-│   ├── Home/          # Home screen
-│   ├── CardView/      # Card viewing screen
-│   └── Settings/      # Settings screen
-├── hooks/             # Custom React hooks
-├── utils/             # Utility functions
-├── services/          # Business logic
-│   ├── storage/       # Storage services
-│   ├── cardsets/      # Card set management
-│   ├── i18n/         # Internationalization
-│   └── accessibility/ # Accessibility services
-├── types/             # TypeScript types
-├── theme/             # Theme configuration
-├── locales/          # Translation files
-└── assets/            # Static assets
+bondbridge/
+├── src/                  # Source code
+│   ├── components/       # Reusable UI components
+│   ├── screens/         # App screens
+│   ├── navigation/      # Navigation setup
+│   ├── hooks/          # Custom React hooks
+│   ├── utils/          # Utility functions
+│   ├── services/       # Business logic
+│   ├── types/          # TypeScript types
+│   ├── theme/          # Theme configuration
+│   └── i18n/           # Internationalization
+├── tests/              # Test files
+│   ├── components/     # Component tests
+│   ├── navigation/     # Navigation tests
+│   └── theme/         # Theme tests
+├── assets/            # Static assets
+└── config/            # Configuration files
+```
+
+### Path Aliases
+
+The project uses TypeScript path aliases for cleaner imports:
+
+```typescript
+{
+  "@/*": ["src/*"],
+  "@components/*": ["src/components/*"],
+  "@screens/*": ["src/screens/*"],
+  "@navigation/*": ["src/navigation/*"],
+  "@theme/*": ["src/theme/*"],
+  "@utils/*": ["src/utils/*"],
+  "@hooks/*": ["src/hooks/*"],
+  "@types/*": ["src/types/*"],
+  "@i18n/*": ["src/i18n/*"],
+  "@assets/*": ["assets/*"]
+}
+```
+
+### Testing Organization
+
+Tests are now organized in a dedicated `tests` directory at the root level, following the same structure as the source code. This separation provides better organization and clarity:
+
+```
+tests/
+├── components/          # Component test files
+│   ├── Card.test.tsx
+│   └── Navigation.test.tsx
+├── navigation/         # Navigation test files
+│   └── Navigation.test.tsx
+└── theme/             # Theme test files
+    └── ThemeContext.test.tsx
 ```
 
 ## Component Architecture

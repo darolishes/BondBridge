@@ -16,11 +16,11 @@ export const Button = ({ title, onPress }: ButtonProps) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#007AFF',
-    padding: 12,
-    borderRadius: 8,
     alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
     justifyContent: 'center',
+    padding: 12,
   },
   text: {
     color: '#FFFFFF',

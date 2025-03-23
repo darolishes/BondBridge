@@ -23,11 +23,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress, testID }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 4,
     backgroundColor: '#F0F0F0',
     borderRadius: 2,
-    overflow: 'hidden',
     flex: 1,
+    height: 4,
+    overflow: 'hidden',
   },
   progress: {
     height: '100%',
