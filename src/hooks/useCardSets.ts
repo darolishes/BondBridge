@@ -1,125 +1,108 @@
 import { useState, useCallback, useEffect } from 'react';
-import { CardSetData, CardSetProgress, Category } from '@types';
-import { getCardSets, getUserProgress, storeCardSets, storeUserProgress } from '@utils/storage';
+import { CardSetData } from '@types';
+import { DEFAULT_CARD_SET_IMAGE } from '@constants';
 
-// Default progress for new card sets
-const defaultProgress: Record<Category, number> = {
-  Icebreakers: 0,
-  Confessions: 0,
-  Personality: 0,
-  'Deep Thoughts': 0,
-  Intimacy: 0,
-  Growth: 0,
-};
-
-// Initial mock data for development
+// Mock-Daten für die Entwicklung
 const mockCardSets: CardSetData[] = [
   {
     id: 'set-1',
-    name: 'Romantic Evening',
-    description: 'Light-hearted questions for date night',
+    name: 'Erste Schritte',
+    description: 'Perfekt für den Beziehungsstart',
     totalCards: 20,
-    categories: ['Icebreakers', 'Intimacy'],
+    categories: ['Icebreakers', 'Personality'],
+    image: DEFAULT_CARD_SET_IMAGE,
   },
   {
     id: 'set-2',
-    name: 'Deep Connection',
-    description: 'Thought-provoking questions for deeper bonds',
+    name: 'Tiefere Verbindung',
+    description: 'Für bedeutungsvolle Gespräche',
     totalCards: 30,
     categories: ['Deep Thoughts', 'Growth'],
+    image: DEFAULT_CARD_SET_IMAGE,
+  },
+  {
+    id: 'set-3',
+    name: 'Romantischer Abend',
+    description: 'Für besondere Momente zu zweit',
+    totalCards: 25,
+    categories: ['Intimacy', 'Confessions'],
+    image: DEFAULT_CARD_SET_IMAGE,
+  },
+  {
+    id: 'set-4',
+    name: 'Wachstum & Entwicklung',
+    description: 'Gemeinsam wachsen und lernen',
+    totalCards: 35,
+    categories: ['Growth', 'Deep Thoughts'],
+    image: DEFAULT_CARD_SET_IMAGE,
   },
 ];
 
-const useCardSets = () => {
-  const [cardSets, setCardSets] = useState<CardSetData[]>([]);
-  const [progress, setProgress] = useState<Record<string, CardSetProgress>>({});
-  const [isLoading, setIsLoading] = useState(true);
+interface UseCardSetsReturn {
+  cardSets: CardSetData[];
+  isLoading: boolean;
+  refreshing: boolean;
+  error: string | null;
+  handleRefresh: () => Promise<void>;
+  handleImport: () => void;
+  seenByCategory: Record<string, number>;
+}
+
+const defaultSeenByCategory = {
+  Icebreakers: 5,
+  Confessions: 3,
+  Personality: 7,
+  'Deep Thoughts': 4,
+  Intimacy: 2,
+  Growth: 6,
+};
+
+export const useCardSets = (): UseCardSetsReturn => {
+  const [cardSets, setCardSets] = useState<CardSetData[]>(mockCardSets);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [seenByCategory, setSeenByCategory] =
+    useState<Record<string, number>>(defaultSeenByCategory);
 
-  // Load initial data
-  useEffect(() => {
-    loadCardSets();
-  }, []);
-
-  const loadCardSets = async () => {
-    setIsLoading(true);
-    setError(null);
+  // Initiale Datenladelogik
+  const loadCardSets = useCallback(async () => {
     try {
-      const [storedCardSets, storedProgress] = await Promise.all([
-        getCardSets(),
-        getUserProgress(),
-      ]);
-
-      // If no stored card sets, use mock data for development
-      if (storedCardSets.length === 0) {
-        await storeCardSets(mockCardSets);
-        setCardSets(mockCardSets);
-      } else {
-        setCardSets(storedCardSets);
-      }
-
-      // Initialize progress for card sets
-      const initialProgress: Record<string, CardSetProgress> = {};
-      (storedCardSets.length ? storedCardSets : mockCardSets).forEach(set => {
-        initialProgress[set.id] = {
-          totalSeen: storedProgress[set.id] || 0,
-          totalCards: set.totalCards,
-          seenByCategory: { ...defaultProgress },
-        };
-      });
-
-      setProgress(initialProgress);
-      await storeUserProgress(storedProgress);
+      setIsLoading(true);
+      // Simuliere API-Aufruf
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setCardSets(mockCardSets);
+      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load card sets');
-      console.error('Error loading card sets:', err);
+      setError(err instanceof Error ? err.message : 'Fehler beim Laden der Kartensets');
+      console.error('Fehler beim Laden der Kartensets:', err);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const refreshCardSets = useCallback(async () => {
-    await loadCardSets();
   }, []);
 
-  const updateProgress = useCallback(
-    async (cardSetId: string, newProgress: CardSetProgress) => {
-      setProgress(prev => ({
-        ...prev,
-        [cardSetId]: newProgress,
-      }));
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await loadCardSets();
+    } finally {
+      setRefreshing(false);
+    }
+  }, [loadCardSets]);
 
-      try {
-        await storeUserProgress({
-          ...Object.keys(progress).reduce(
-            (acc, id) => ({
-              ...acc,
-              [id]: progress[id].totalSeen,
-            }),
-            {}
-          ),
-          [cardSetId]: newProgress.totalSeen,
-        });
-      } catch (err) {
-        console.error('Error updating progress:', err);
-        // Revert on error
-        setProgress(prev => ({
-          ...prev,
-          [cardSetId]: progress[cardSetId],
-        }));
-        throw err;
-      }
-    },
-    [progress]
-  );
+  const handleImport = useCallback(() => {
+    // TODO: Implementiere Import-Logik
+    console.log('Import-Funktionalität wird implementiert...');
+  }, []);
 
   return {
     cardSets,
-    progress,
     isLoading,
+    refreshing,
     error,
-    refreshCardSets,
-    updateProgress,
+    handleRefresh,
+    handleImport,
+    seenByCategory,
   };
 };
 

@@ -1,94 +1,43 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, Text } from 'react-native';
-import { useCardSets } from '../contexts/CardSetsContext';
-import { ImportButton } from './ImportButton';
-import { Toast } from './Toast';
-import CardSetTile from './CardSetTile';
-import { useCardSetImage } from '../hooks/useCardSetImage';
-import type { ImportedCardSet } from '../types/cardSet';
+import { View, StyleSheet } from 'react-native';
+import { useTheme } from '@theme/ThemeContext';
+import { CardSetTile } from '@components/card';
+import { EmptyState } from '@components/common';
+import { CardSetData, CardSetProgress } from '@types';
 
-export const ImportedCardSets: React.FC = () => {
-  const { importedSets, isLoading, error, importSet, refreshSets } = useCardSets();
-  const [toastConfig, setToastConfig] = React.useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'success',
-  });
+interface ImportedCardSetsProps {
+  cardSets: CardSetData[];
+  progress: Record<string, CardSetProgress>;
+  onCardSetPress: (id: string) => void;
+}
 
-  const handleImportComplete = (result: {
-    success: boolean;
-    data?: ImportedCardSet;
-    error?: { message: string };
-  }) => {
-    if (result.success && result.data) {
-      setToastConfig({
-        visible: true,
-        message: `Successfully imported ${result.data.packageName}`,
-        type: 'success',
-      });
-    } else {
-      setToastConfig({
-        visible: true,
-        message: result.error?.message || 'Failed to import card set',
-        type: 'error',
-      });
-    }
-  };
+const ImportedCardSets: React.FC<ImportedCardSetsProps> = ({
+  cardSets,
+  progress,
+  onCardSetPress,
+}) => {
+  const { theme } = useTheme();
 
-  const renderItem = ({ item }: { item: ImportedCardSet }) => {
-    const image = useCardSetImage(item.image);
+  if (cardSets.length === 0) {
     return (
-      <CardSetTile
-        cardSet={{
-          id: item.packageName,
-          name: item.packageName,
-          description: item.description,
-          image: image,
-          totalCards: item.cards.length,
-          categories: [...new Set(item.cards.map(card => card.category))],
-        }}
-        progress={{
-          totalSeen: 0,
-          totalCards: item.cards.length,
-          seenByCategory: {},
-        }}
-        onPress={() => {}}
+      <EmptyState
+        title="No Card Sets"
+        message="Import your first card set to get started"
+        icon="folder-open-outline"
       />
     );
-  };
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Imported Card Sets</Text>
-        <ImportButton onImportComplete={handleImportComplete}>
-          <Text style={styles.buttonText}>Import New Set</Text>
-        </ImportButton>
-      </View>
-
-      {error ? (
-        <Text style={styles.error}>{error}</Text>
-      ) : (
-        <FlatList
-          data={importedSets}
-          renderItem={renderItem}
-          keyExtractor={item => item.packageName}
-          contentContainerStyle={styles.list}
-          onRefresh={refreshSets}
-          refreshing={isLoading}
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {cardSets.map(cardSet => (
+        <CardSetTile
+          key={cardSet.id}
+          item={cardSet}
+          progress={progress[cardSet.id]}
+          onPress={onCardSetPress}
         />
-      )}
-
-      <Toast
-        visible={toastConfig.visible}
-        message={toastConfig.message}
-        type={toastConfig.type}
-        onHide={() => setToastConfig(prev => ({ ...prev, visible: false }))}
-      />
+      ))}
     </View>
   );
 };
@@ -96,30 +45,10 @@ export const ImportedCardSets: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  list: {
-    padding: 16,
-  },
-  error: {
-    color: '#F44336',
-    padding: 16,
-    textAlign: 'center',
+    flexWrap: 'wrap',
+    padding: 8,
   },
 });
+
+export default ImportedCardSets;

@@ -5,25 +5,23 @@ export interface AccessibilityProps {
   label?: string;
   hint?: string;
   isHeading?: boolean;
+  isButton?: boolean;
   isSelected?: boolean;
+  liveRegion?: 'none' | 'polite' | 'assertive';
 }
 
-export const useAccessibility = ({
-  role,
-  label,
-  hint,
-  isHeading = false,
-  isSelected = false,
-}: AccessibilityProps = {}) => {
+export const useAccessibility = (props: AccessibilityProps = {}) => {
+  const { role, label, hint, isHeading, isButton, isSelected, liveRegion } = props;
+
   return {
     accessible: true,
     accessibilityRole: role,
     accessibilityLabel: label,
     accessibilityHint: hint,
-    accessibilityHeading: isHeading,
-    accessibilityState: {
-      selected: isSelected,
-    },
+    accessibilityLiveRegion: liveRegion,
+    ...(isHeading && { accessibilityRole: 'header' as AccessibilityRole }),
+    ...(isButton && { accessibilityRole: 'button' as AccessibilityRole }),
+    ...(isSelected && { accessibilityState: { selected: true } }),
   };
 };
 

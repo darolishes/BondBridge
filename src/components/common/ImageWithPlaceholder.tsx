@@ -8,20 +8,23 @@ import {
   ViewStyle,
   Animated,
   Platform,
+  ImageProps,
+  NativeSyntheticEvent,
+  ImageErrorEventData,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface ImageWithPlaceholderProps {
+interface ImageWithPlaceholderProps extends Omit<ImageProps, 'source'> {
   source: ImageSourcePropType;
   style?: ImageStyle;
   containerStyle?: ViewStyle;
   resizeMode?: 'cover' | 'contain' | 'stretch' | 'center';
   onLoadStart?: () => void;
   onLoadEnd?: () => void;
-  onError?: (error: Error) => void;
+  onError?: (error: NativeSyntheticEvent<ImageErrorEventData>) => void;
 }
 
-export const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
+const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
   source,
   style,
   containerStyle,
@@ -29,6 +32,7 @@ export const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
   onLoadStart,
   onLoadEnd,
   onError,
+  ...props
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -50,10 +54,10 @@ export const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
     onLoadEnd?.();
   };
 
-  const handleError = (error: Error) => {
+  const handleError = (event: NativeSyntheticEvent<ImageErrorEventData>) => {
     setIsLoading(false);
     setHasError(true);
-    onError?.(error);
+    onError?.(event);
   };
 
   return (
@@ -80,8 +84,9 @@ export const ImageWithPlaceholder: React.FC<ImageWithPlaceholderProps> = ({
           resizeMode={resizeMode}
           onLoadStart={handleLoadStart}
           onLoadEnd={handleLoadEnd}
-          onError={({ nativeEvent: { error } }) => handleError(new Error(error))}
+          onError={handleError}
           testID="image"
+          {...props}
         />
       )}
     </View>
@@ -108,4 +113,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: '#ff5252',
   },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
 });
+
+export default ImageWithPlaceholder;

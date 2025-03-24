@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react-native';
-import { Card } from '../Card';
+import { Card } from '../card';
 import { Text } from 'react-native';
 import * as Haptics from 'expo-haptics';
 

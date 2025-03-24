@@ -1,12 +1,24 @@
 import React, { memo } from 'react';
 import { Card as PaperCard } from 'react-native-paper';
-import { StyleProp, ViewStyle, AccessibilityRole, View, Animated } from 'react-native';
+import {
+  StyleProp,
+  ViewStyle,
+  AccessibilityRole,
+  View,
+  Animated,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useAccessibility, AccessibilityProps } from '@utils/accessibility';
-import { useCardFlip } from '../hooks/useCardFlip';
-import { useCardSwipe } from '../hooks/useCardSwipe';
-import { useHapticFeedback } from '../hooks/useHapticFeedback';
-import ErrorBoundary from './ErrorBoundary';
+import { useCardFlip } from '@hooks/useCardFlip';
+import { useCardSwipe } from '@hooks/useCardSwipe';
+import { useHapticFeedback } from '@hooks/useHapticFeedback';
+import ErrorBoundary from '../common/ErrorBoundary';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const CARD_WIDTH = SCREEN_WIDTH - 32; // Full width minus margins
+const CARD_MARGIN = 8;
 
 interface BaseCardProps {
   style?: StyleProp<ViewStyle>;
@@ -62,6 +74,8 @@ const CardComponent: React.FC<CardProps> = ({
   flipDuration,
 }) => {
   const { t } = useTranslation();
+
+  // Move all hook calls to the top level
   const a11yProps = useAccessibility({
     role: 'none' as AccessibilityRole,
     label: title || accessibility?.label,
@@ -69,39 +83,49 @@ const CardComponent: React.FC<CardProps> = ({
     ...accessibility,
   });
 
+  // Title-specific accessibility props
+  const titleA11yProps = useAccessibility({
+    role: 'header' as AccessibilityRole,
+    isHeading: true,
+    label: t('accessibility.cardTitle', { title: title || '' }),
+  });
+
   // Initialize animation hooks
   const { isFlipped, flipCard, frontStyle, backStyle } = useCardFlip({
     duration: flipDuration,
   });
 
-  const { panResponder, cardStyle, swipeDirection, resetPosition } = useCardSwipe({
+  const { panResponder, cardStyle } = useCardSwipe({
     swipeThreshold,
     rotationFactor,
-    onSwipeLeft,
-    onSwipeRight,
+    onSwipeLeft: enableSwipe ? onSwipeLeft : undefined,
+    onSwipeRight: enableSwipe ? onSwipeRight : undefined,
   });
 
-  const { trigger: triggerHaptic } = useHapticFeedback({
-    enabled: enableHaptics,
-  });
+  const { trigger: triggerHaptic } = useHapticFeedback();
 
-  // Handle card press with haptic feedback
   const handlePress = () => {
-    if (enableHaptics) {
-      triggerHaptic('medium');
+    if (onPress) {
+      onPress();
     }
+
     if (enableFlip) {
       flipCard();
     }
-    onPress?.();
+
+    if (enableHaptics) {
+      triggerHaptic('medium');
+    }
   };
 
   if (isLoading) {
     return (
-      <PaperCard style={[style, { opacity: 0.7 }]} mode={mode} testID={`${testID}-loading`}>
-        <PaperCard.Content style={contentStyle}>
-          <View style={{ height: 100, backgroundColor: '#f0f0f0' }} />
-        </PaperCard.Content>
+      <PaperCard
+        mode={mode}
+        style={[styles.container, style]}
+        testID={testID ? `${testID}-loading` : 'card-loading'}
+      >
+        <View style={styles.loadingPlaceholder} />
       </PaperCard>
     );
   }
@@ -111,23 +135,19 @@ const CardComponent: React.FC<CardProps> = ({
     return null;
   }
 
-  const cardContent = (isFlipped && backContent) ? backContent : (
-    <>
-      {title && (
-        <PaperCard.Title
-          title={title}
-          {...useAccessibility({
-            role: 'header' as AccessibilityRole,
-            isHeading: true,
-            label: t('accessibility.cardTitle', { title }),
-          })}
-        />
-      )}
-      {children && <PaperCard.Content style={contentStyle}>{children}</PaperCard.Content>}
-    </>
-  );
+  const cardContent =
+    isFlipped && backContent ? (
+      backContent
+    ) : (
+      <>
+        {title && <PaperCard.Title title={title} {...titleA11yProps} />}
+        {children && (
+          <PaperCard.Content style={[styles.content, contentStyle]}>{children}</PaperCard.Content>
+        )}
+      </>
+    );
 
-  const baseStyle = [style];
+  const baseStyle = [styles.container, style];
   if (enableSwipe) {
     Object.assign(baseStyle, cardStyle);
   }
@@ -145,12 +165,30 @@ const CardComponent: React.FC<CardProps> = ({
 
   return (
     <Animated.View style={baseStyle}>
-      <PaperCard {...cardProps}>
-        {cardContent}
-      </PaperCard>
+      <PaperCard {...cardProps}>{cardContent}</PaperCard>
     </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: CARD_WIDTH,
+    margin: CARD_MARGIN,
+    borderRadius: 16,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  content: {
+    padding: 20,
+  },
+  loadingPlaceholder: {
+    height: 100,
+    backgroundColor: '#f0f0f0',
+  },
+});
 
 export const Card = memo((props: CardProps) => (
   <ErrorBoundary testID={props.testID}>
@@ -159,4 +197,3 @@ export const Card = memo((props: CardProps) => (
 ));
 
 export default Card;
-

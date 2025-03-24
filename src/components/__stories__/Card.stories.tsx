@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Animated } from 'react-native';
-import { Card } from '../Card';
+import { Card } from '../card';
 
 const styles = StyleSheet.create({
   memoryCard: {

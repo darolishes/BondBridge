@@ -1,50 +1,40 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { importCardSet } from '../services/importService';
-import type { ImportResult } from '../types/cardSet';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { useTheme } from '@theme/ThemeContext';
+import type { ImportResult } from '@types';
 
 interface ImportButtonProps {
-  onImportStart?: () => void;
-  onImportComplete?: (result: ImportResult) => void;
-  children: React.ReactNode;
-  style?: object;
+  onPress: () => Promise<ImportResult>;
 }
 
-export const ImportButton: React.FC<ImportButtonProps> = ({
-  onImportStart,
-  onImportComplete,
-  children,
-  style,
-}) => {
-  const [isImporting, setIsImporting] = React.useState(false);
+const ImportButton: React.FC<ImportButtonProps> = ({ onPress }) => {
+  const { theme } = useTheme();
 
-  const handleImport = async () => {
-    try {
-      setIsImporting(true);
-      onImportStart?.();
-
-      const result = await importCardSet();
-      onImportComplete?.(result);
-    } finally {
-      setIsImporting(false);
-    }
+  const handlePress = async () => {
+    await onPress();
   };
 
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={handleImport} disabled={isImporting}>
-      {isImporting ? <ActivityIndicator size="small" color="#ffffff" /> : children}
+    <TouchableOpacity
+      style={[styles.button, { backgroundColor: theme.colors.primary }]}
+      onPress={handlePress}
+    >
+      <Text style={[styles.text, { color: theme.colors.surface }]}>Import Card Set</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 44,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
+
+export default ImportButton;

@@ -8,9 +8,16 @@ export type RootStackParamList = {
     initialCategory?: Category;
   };
   Settings: undefined;
+  Profile: undefined;
 
   // Modal Stack
   ImportModal: undefined;
+};
+
+export type RootTabParamList = {
+  Home: undefined;
+  Settings: undefined;
+  Profile: undefined;
 };
 
 export type Category =

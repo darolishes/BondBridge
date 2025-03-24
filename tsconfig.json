@@ -6,11 +6,11 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@screens/*": ["src/screens/*"],
-      "@utils/*": ["src/utils/*"],
       "@hooks/*": ["src/hooks/*"],
       "@theme/*": ["src/theme/*"],
-      "@types/*": ["src/types/*"],
-      "@assets/*": ["assets/*"]
+      "@types": ["src/types"],
+      "@constants/*": ["src/constants/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

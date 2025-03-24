@@ -1,40 +1,65 @@
 import { Theme } from '@types';
 
-// Base spacing and border radius values
+/**
+ * Base spacing values for consistent layout
+ */
 const baseSpacing = {
   xs: 4,
   sm: 8,
   md: 16,
   lg: 24,
   xl: 32,
+  xxl: 48,
 };
 
+/**
+ * Base border radius values for consistent UI elements
+ */
 const baseBorderRadius = {
   sm: 4,
   md: 8,
   lg: 16,
+  pill: 9999,
+  circle: 9999,
 };
 
-// Light theme
+/**
+ * Base animation durations in milliseconds
+ */
+const baseAnimation = {
+  fast: 150,
+  normal: 300,
+  slow: 500,
+};
+
+/**
+ * Light theme configuration
+ */
 export const lightTheme: Theme = {
   colors: {
     // Background colors
     background: '#FFF5E1',
     surface: '#FFFFFF',
     surfaceHighlight: '#F5F5F5',
+    surfaceElevated: '#F0F0F0',
 
     // Text colors
     text: '#333333',
     textSecondary: '#666666',
     textTertiary: '#999999',
+    textOnPrimary: '#FFFFFF',
 
     // UI element colors
     primary: '#4A90E2',
     primaryLight: '#E3F2FD',
+    secondary: '#FF9800',
+    secondaryLight: '#FFF3E0',
     error: '#FF6B6B',
     errorLight: '#FFE5E5',
     success: '#4CAF50',
     successLight: '#E8F5E9',
+    warning: '#FFC107',
+    warningLight: '#FFF8E1',
 
     // Card colors
     cardBackground: '#FFFFFF',
@@ -46,28 +71,37 @@ export const lightTheme: Theme = {
   },
   spacing: baseSpacing,
   borderRadius: baseBorderRadius,
+  animation: baseAnimation,
 };
 
-// Dark theme
+/**
+ * Dark theme configuration
+ */
 export const darkTheme: Theme = {
   colors: {
     // Background colors
     background: '#121212',
     surface: '#1E1E1E',
     surfaceHighlight: '#2C2C2C',
+    surfaceElevated: '#383838',
 
     // Text colors
     text: '#FFFFFF',
     textSecondary: '#B3B3B3',
     textTertiary: '#808080',
+    textOnPrimary: '#FFFFFF',
 
     // UI element colors
     primary: '#64B5F6',
     primaryLight: '#1A2733',
+    secondary: '#FFB74D',
+    secondaryLight: '#332B1A',
     error: '#FF8A80',
     errorLight: '#331A1A',
     success: '#81C784',
     successLight: '#1A331C',
+    warning: '#FFD54F',
+    warningLight: '#332C1A',
 
     // Card colors
     cardBackground: '#2C2C2C',
@@ -79,4 +113,5 @@ export const darkTheme: Theme = {
   },
   spacing: baseSpacing,
   borderRadius: baseBorderRadius,
+  animation: baseAnimation,
 };

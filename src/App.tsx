@@ -5,6 +5,7 @@ import { ThemeProvider, useTheme } from '@theme/ThemeContext';
 import HomeScreen from '@screens/HomeScreen';
 import CardViewScreen from '@screens/CardViewScreen';
 import { RootStackParamList } from './types';
+import Layout from '@/components/layout/Layout';
 import './i18n/i18n';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -13,41 +14,35 @@ const NavigationContent: React.FC = () => {
   const { theme } = useTheme();
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-        },
-        headerShadowVisible: false,
-        headerTintColor: theme.colors.text,
-        headerLargeStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        headerLargeTitleStyle: {
-          color: theme.colors.text,
-        },
-        contentStyle: {
-          backgroundColor: theme.colors.background,
-        },
-      }}
-    >
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          title: 'BondBridge',
-          headerLargeTitle: true,
+    <Layout>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: theme.colors.background,
+          },
         }}
-      />
-      <Stack.Screen
-        name="CardView"
-        component={CardViewScreen}
-        options={{
-          title: 'Card Set',
-          presentation: 'modal',
-        }}
-      />
-    </Stack.Navigator>
+      >
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: 'BondBridge',
+          }}
+        />
+        <Stack.Screen
+          name="CardView"
+          component={CardViewScreen}
+          options={{
+            title: 'Card Set',
+            presentation: 'modal',
+          }}
+        />
+      </Stack.Navigator>
+    </Layout>
   );
 };
 

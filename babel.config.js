@@ -6,7 +6,7 @@ module.exports = function (api) {
       [
         'module-resolver',
         {
-          root: ['.'],
+          root: ['./'],
           extensions: [
             '.ios.ts',
             '.android.ts',
@@ -26,6 +26,7 @@ module.exports = function (api) {
             '@theme': './src/theme',
             '@types': './src/types',
             '@assets': './assets',
+            '@constants': './src/constants',
           },
         },
       ],

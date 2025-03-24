@@ -1,6 +1,7 @@
 {
   "name": "bondbridge",
   "version": "1.0.0",
+  "type": "module",
   "license": "UNLICENSED",
   "main": "expo-router/entry",
   "scripts": {
@@ -15,13 +16,22 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@eslint/js": "^9.23.0",
     "@react-native/babel-preset": "^0.78.1",
     "@storybook/addon-react-native-web": "^0.0.29",
     "@storybook/react-native": "^8.6.2",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/react-native": "^13.2.0",
     "@types/react": "~18.2.45",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
     "babel-plugin-module-resolver": "^5.0.0",
+    "eslint": "^9.23.0",
+    "eslint-plugin-jest": "^28.11.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-native": "^5.0.0",
+    "globals": "^16.0.0",
     "sharp": "^0.33.5",
     "typescript": "^5.1.3"
   },

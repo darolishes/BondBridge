@@ -62,31 +62,16 @@ Story 12: Image System Enhancement
 
 ## Current Story
 
-[Progress Tracking System](../stories/story-9-progress-tracking-system.story.md)
+[Image System Enhancement](../stories/story-12-image-system-enhancement.story.md)
 
 ## Previous Story
 
-[Card Set Import System](../stories/story-8-card-set-import-system.story.md)
+[Expo Router Migration](../stories/story-11-expo-router-migration.story.md)
 
-## Next Actions
+## Next Story
 
-1. Story 9 initial tasks:
-   - Create progress tracking service
-   - Implement progress repository
-   - Design data model
-   - Create UI components
-2. Integration planning:
-   - Data persistence layer
-   - Analytics system
-   - Achievement system
-
-## Notes
-
-- Progress UI components started
-- Basic tracking logic defined
-- Analytics integration planned
-- Need to consider achievements
+Story 13: User Experience Enhancements (to be created)
 
 ## Last Updated
 
-[Timestamp: 2024-03-24 05:41]
+[Timestamp: 2024-03-24 05:49]

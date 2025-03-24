@@ -1,45 +1,42 @@
 import { Stack } from 'expo-router';
-import { PaperProvider } from 'react-native-paper';
-import { useEffect } from 'react';
-import { LogBox } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
-
-// Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+import { ThemeProvider } from '@theme/ThemeContext';
+import { StatusBar } from 'expo-status-bar';
+import Header from '@components/layout/Header';
 
 export default function Layout() {
-  useEffect(() => {
-    // Hide splash screen once the app is ready
-    SplashScreen.hideAsync();
-    // Ignore specific warnings that might appear during development
-    LogBox.ignoreLogs(['Warning: ...']); // Add specific warnings to ignore
-  }, []);
-
   return (
-    <PaperProvider>
+    <ThemeProvider>
+      <StatusBar style="auto" />
       <Stack
         screenOptions={{
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-          headerTintColor: '#000',
+          header: props => (
+            <Header
+              title={props.route.name === 'index' ? 'BondBridge' : props.route.name}
+              showBack={props.route.name !== 'index'}
+              showMenu={props.route.name === 'index'}
+            />
+          ),
         }}
       >
         <Stack.Screen
           name="index"
           options={{
-            headerShown: false,
+            title: 'BondBridge',
           }}
         />
         <Stack.Screen
-          name="home"
+          name="cardview/[id]"
           options={{
-            title: 'BondBridge',
-            headerShown: true,
+            title: 'Kartenset',
+          }}
+        />
+        <Stack.Screen
+          name="settings"
+          options={{
+            title: 'Einstellungen',
           }}
         />
       </Stack>
-    </PaperProvider>
+    </ThemeProvider>
   );
 }
