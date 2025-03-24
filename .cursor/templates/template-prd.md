@@ -1,150 +1,76 @@
-# PRD Template Standards
+# Project Requirements Document
 
-<version>1.0.0</version>
-
-## Requirements
-
-- Follow standardized PRD structure
-- Include all required sections
-- Maintain proper documentation hierarchy
-- Use consistent formatting
-
-## PRD Structure
-
-### Required Sections
-
-#### 1. Header
-
-- Title: "Product Requirements Document (PRD) for {project-name}"
-
-#### 2. Status
-
-- Draft
-- Approved
-
-#### 3. Introduction
-
-- Clear description of {project-name}
-- Overview of the project scope
-- Business context and drivers
-- Target users/stakeholders
-
-#### 4. Goals
-
-- Clear project objectives
-- Measurable outcomes
-- Success criteria
-- Key performance indicators (KPIs)
-
-#### 5. Features and Requirements
-
-- Functional requirements
-- Non-functional requirements
-- User experience requirements
-- Integration requirements
-- Compliance requirements
-
-#### 6. Epic Structure
-
-- At least one Epic must be defined
-- Format: Epic-{N}: {Title} ({Status})
-  - Status can be: Current, Future, Complete
-- Only one Epic can be "Current" at a time
-- Each Epic represents a major feature or functionality
-- Epics must be implemented sequentially
-
-#### 7. Story List
-
-- Stories are organized under Epics
-- Format: Story-{N}: {Description of story/task}
-  <note>The details of the story will be drafted later in story files</note>
-
-#### 8. Tech Stack
-
-- languages
-- frameworks
-- note: this will be further defined in more detail in the arch document>
-
-#### 9. Future Enhancements
-
-- Potential Epics for future consideration
-- Ideas collected during Epic progression
-- Prioritization guidelines
-- Impact assessment
-
-## Examples
-
-<example type="valid">
-# Product Requirements Document (PRD) for Imperial Defense Platform v2
-
-## Status: Draft
+status: draft
 
 ## Introduction
 
-The Imperial Defense Platform v2 (IDP2) is a state-of-the-art battle station designed to maintain peace and order throughout the galaxy. This project encompasses the development of a fully operational space station with unprecedented defensive capabilities. The platform will serve as both a military installation and a symbol of Imperial might.
+[Project overview and context]
 
 ## Goals
 
-- Achieve 200% increase in planetary defense coverage compared to v1
-- Reduce response time to rebel incursions by 75%
-- Implement automated defense systems with 99.99% accuracy
-- Establish capacity for housing 1.2 million Imperial personnel
-- Achieve energy self-sufficiency through advanced reactor technology
+1. [Primary goal]
+2. [Secondary goal]
+3. [Additional goals]
 
-## Features and Requirements
+## Features
 
-### Functional Requirements
+### Core Features
 
-- Automated defense grid with predictive targeting
-- Quantum-encrypted communication systems
-- Advanced life support systems for 1.2M personnel
-- Modular construction system for rapid repairs
-- AI-powered threat detection and response
+1. [Feature 1]
 
-### Non-functional Requirements
+   - Description
+   - Success criteria
+   - Priority
 
-- 99.999% system uptime
-- Sub-millisecond weapon response time
-- Zero-latency internal communications
-- Radiation shielding for all habitable areas
-- Energy efficiency rating of 95%
+2. [Feature 2]
+   - Description
+   - Success criteria
+   - Priority
+
+### Future Features
+
+1. [Future feature 1]
+2. [Future feature 2]
 
 ## Epic Structure
 
-Epic-1: Core Infrastructure Development (Complete)
-Epic-2: Defense Systems Integration (Current)
-Epic-3: Life Support and Personnel Systems (Future)
-Epic-4: Command and Control Implementation (Future)
+### Epic 1: [Name]
+
+- Description
+- Goals
+- Success criteria
+- Dependencies
+
+### Epic 2: [Name]
+
+- Description
+- Goals
+- Success criteria
+- Dependencies
 
 ## Story List
 
-### Epic-2: Defense Systems Integration
+1. [Story 1 title]
 
-Story-1: Implement primary weapon targeting system
-Story-2: Develop shield generator network
-Story-3: Create automated defense grid control interface
-Story-4: Integration of threat detection AI
-Story-5: Deploy backup power distribution for weapons
+   - As a [user type]
+   - I want [feature/capability]
+   - So that [benefit/value]
+   - Priority: [High/Medium/Low]
 
-## Tech Stack
+2. [Story 2 title]
+   - As a [user type]
+   - I want [feature/capability]
+   - So that [benefit/value]
+   - Priority: [High/Medium/Low]
 
-- Languages: Galactic Basic C++23, QuantumScript
-- Frameworks: ImperialCore, DefenseGrid Pro
-- Infrastructure: HyperScale Cloud, QuantumNet
-- Security: Imperial Grade Encryption (IGE) v4
+## Approval
 
-## Future Enhancements
+- [ ] Requirements reviewed
+- [ ] Priorities aligned
+- [ ] Estimates validated
+- [ ] Dependencies identified
+- [ ] Success criteria defined
 
-- Planet-scale tractor beam capability
-- Advanced cloaking technology integration
-- Expanded hangar facilities for TIE defender squadrons
-- Redundant shield generator systems
-- Deep space hyperspace tracking system
-  </example>
+## Change Log
 
-<example type="invalid">
-Chess Game
-- Add basic game
-- Maybe add AI later
-- Other features we might need
-</example>
+- YYYY-MM-DD: Initial draft
