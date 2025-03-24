@@ -1,8 +1,8 @@
-import { Base } from './base';
-import type { Props } from './types';
+import CardContainer from './container';
+import type { CardProps, CardWithChildrenProps, CardWithTitleProps } from './types';
 
-export type { Props as CardProps };
-export const Card = Base;
+export { CardProps, CardWithChildrenProps, CardWithTitleProps };
 
-export { default as CardSetTile } from './CardSetTile';
-export { default as CardSetImageGrid } from './CardSetImageGrid';
+// Re-export the container as the main Card component
+export const Card = CardContainer;
+export default Card;

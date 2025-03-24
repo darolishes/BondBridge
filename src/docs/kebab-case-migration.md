@@ -1,118 +1,45 @@
-# Kebab-Case Migration Plan
+# Kebab-Case Migrationsleitfaden
 
-## Übersicht
+## Aktualisierte Namenskonventionen (v2.1)
 
-Dieses Dokument beschreibt den Plan zur Migration der Dateibenennung auf kebab-case im BondBridge-Projekt.
+### Komponentendateien
 
-## Umzubenennende Dateien
+```diff
+- src/components/common/ProgressBar.tsx
++ src/components/common/progress-bar.tsx
 
-### Utils
-
-- `animationUtils.ts` → `animation-utils.ts`
-- `styleUtils.ts` → `style-utils.ts`
-- `accessibility.ts` (bereits kebab-case)
-- `storage.ts` (bereits kebab-case)
-
-### Services
-
-- `imageService.ts` → `image-service.ts`
-- `importService.ts` → `import-service.ts`
-- `validation.ts` (bereits kebab-case)
-
-### Hooks
-
-- `useCardFlip.ts` → `use-card-flip.ts`
-- `useCardSets.ts` → `use-card-sets.ts`
-- `useCardSwipe.ts` → `use-card-swipe.ts`
-- `useHapticFeedback.ts` → `use-haptic-feedback.ts`
-
-### Components
-
-#### Card Components
-
-- `Card.tsx` → `card.tsx`
-- `CardSetImageGrid.tsx` → `card-set-image-grid.tsx`
-- `CardSetTile.tsx` → `card-set-tile.tsx`
-
-#### Common Components
-
-- `Button.tsx` → `button.tsx`
-- `EmptyState.tsx` → `empty-state.tsx`
-- `ErrorBoundary.tsx` → `error-boundary.tsx`
-- `ImageWithPlaceholder.tsx` → `image-with-placeholder.tsx`
-- `ProgressBar.tsx` → `progress-bar.tsx`
-- `SkeletonLoader.tsx` → `skeleton-loader.tsx`
-- `ThemeToggle.tsx` → `theme-toggle.tsx`
-- `Toast.tsx` → `toast.tsx`
-
-### Screens
-
-- `CardViewScreen.tsx` → `card-view-screen.tsx`
-- `ImportModal.tsx` → `import-modal.tsx`
-- `SettingsScreen.tsx` → `settings-screen.tsx`
-
-## Migrationsschritte
-
-1. Utils und Services (Basis-Layer)
-
-   - Dateien umbenennen
-   - Import-Statements aktualisieren
-   - Tests anpassen
-
-2. Hooks (abhängig von Utils/Services)
-
-   - Dateien umbenennen
-   - Import-Statements aktualisieren
-   - Tests anpassen
-
-3. Komponenten (abhängig von Hooks)
-
-   - Mit Base-Komponenten beginnen
-   - Dann Card-Komponenten
-   - Zuletzt Layout und Settings
-   - Story- und Test-Dateien parallel aktualisieren
-
-4. Screens (Top-Layer)
-   - Screen-Dateien umbenennen
-   - Import-Pfade aktualisieren
-   - Tests anpassen
-
-## Import-Statement Updates
-
-Beispiel für Import-Updates:
-
-```typescript
-// Alt
-import { useFadeAnimation } from '@utils/animationUtils';
-
-// Neu
-import { useFadeAnimation } from '@utils/animation-utils';
+- src/components/card/Card.tsx
++ src/components/card/card/
+   ├── card-container.tsx
+   ├── card-presentation.tsx
+   └── index.ts
 ```
 
-## Qualitätssicherung
+### Hook-Dateien
 
-1. Jest-Tests nach jeder Änderung ausführen
-2. Storybook-Stories überprüfen
-3. Manuelle Tests der Hauptfunktionalitäten
-4. TypeScript-Kompilierung verifizieren
+```diff
+- src/hooks/useCardFlip.ts
++ src/hooks/use-card-flip.ts
+```
 
-## Rollback-Plan
+### Testdateien
 
-1. Git-Branch für die Migration erstellen
-2. Commits pro Komponenten-Gruppe
-3. Backup der kritischen Dateien
-4. Dokumentation aller Änderungen
+```diff
+- src/components/__tests__/Card.test.tsx
++ src/components/__tests__/card.test.tsx
+```
 
-## Timeline
+## Migrationsstatus
 
-1. Tag 1: Utils und Services
-2. Tag 2: Hooks und Tests
-3. Tag 3-4: Komponenten und Stories
-4. Tag 5: Screens und finale Tests
+| Komponente  | Status  | Letzte Aktualisierung |
+| ----------- | ------- | --------------------- |
+| ProgressBar | ✅ Done | 24.03.2025            |
+| Card        | 🚧 WIP  | 24.03.2025            |
+| ThemeToggle | ⏳ Next | -                     |
 
-## Nächste Schritte
+## Automatisierung
 
-1. In den Code-Modus wechseln
-2. Mit Utils-Migration beginnen
-3. Continuous Integration sicherstellen
-4. Regelmäßige Test-Durchläufe
+```bash
+# Rename script (Beispiel)
+find src -name '*[A-Z]*.tsx' -exec sh -c 'echo "${0%.tsx}${0##*[A-Z]}"' {} \;
+```

@@ -1,138 +1,363 @@
-# BondBridge Configuration System
+# Konfigurationsarchitektur
 
-## Overview
+## Aktuelle Struktur
 
-BondBridge uses a centralized configuration system to provide a single source of truth for application settings. This document outlines the structure and usage of this system.
+Die Konfiguration ist derzeit über mehrere Dateien verteilt:
 
-## Structure
-
-The configuration system is organized in the `/config` directory with the following files:
-
+```tree
+/
+├── config/                      # Zentraler Konfigurationsordner
+│   ├── constants.ts            # App-Konstanten
+│   ├── paths.ts               # Pfad-Aliase
+│   ├── theme.ts               # Theme-Konfiguration
+│   ├── index.ts               # Hauptexport
+│   ├── eslint/               # ESLint-Konfiguration
+│   │   └── eslint-config.ts
+│   ├── babel/                # Babel-Konfiguration
+│   │   └── babel-config.ts
+│   ├── metro/               # Metro-Konfiguration
+│   │   └── metro-config.ts
+│   ├── webpack/             # Webpack-Konfiguration
+│   │   └── webpack-config.ts
+│   └── env/                 # Umgebungsvariablen
+│       └── env-config.ts
+├── .env                     # Temporäre Umgebungsvariablen
+├── eslint.config.js         # Root ESLint (wird migriert)
+├── babel.config.js          # Root Babel (wird migriert)
+├── metro.config.js          # Root Metro (wird migriert)
+└── webpack.config.js        # Root Webpack (wird migriert)
 ```
-/config
-├── constants.ts      # App-wide constants (animations, spacing, etc.)
-├── paths.ts          # Path aliases for imports
-├── theme.ts          # Theme configuration for light/dark modes
-└── index.ts          # Unified export of all config
+
+## Migrationsplan
+
+### 1. Konfigurationsdateien Konsolidierung
+
+- [x] Basiskonfigurationsstruktur in /config etabliert
+- [ ] Root-Konfigurationsdateien in den config-Ordner migrieren
+  - [ ] ESLint-Konfiguration
+  - [ ] Babel-Konfiguration
+  - [ ] Metro-Konfiguration
+  - [ ] Webpack-Konfiguration
+  - [ ] App.json
+  - [ ] .env
+
+### 2. ConfigContext Verbesserungen
+
+Der ConfigContext (src/contexts/ConfigContext) wurde mit folgenden Features implementiert:
+
+- [x] Grundlegende Konfigurationsstruktur
+- [x] Theme-Integration
+- [x] Komponenten-spezifische Konfiguration
+- [x] Runtime-Konfigurationsupdates
+
+### 3. Best Practices
+
+- Zentrale Konfigurationsverwaltung in /config
+- Strikte Typisierung für alle Konfigurationsobjekte
+- Validierung von Konfigurationswerten
+- Dokumentierte Konfigurationsschnittstelle
+- Versionskontrolle für Konfigurationsänderungen
+
+## Import-Schema
+
+```typescript
+// Empfohlene Import-Struktur
+import { config } from '@config';
+import { useConfig } from '@contexts/ConfigContext';
 ```
 
-## Usage
+## Konfigurationszugriff
 
-### Accessing Configuration
+```typescript
+// Komponenten-Beispiel
+const MyComponent = () => {
+  const { config, updateConfig } = useConfig();
 
-The recommended way to access configuration is through the `ConfigProvider` and `useConfig` hook:
+  return <div style={config.theme.colors}>{config.app.NAME}</div>;
+};
+```
 
-```tsx
-import { useConfig } from '../contexts/ConfigContext';
+## ConfigContext Implementierung
 
-function MyComponent() {
-  const config = useConfig();
+Der ConfigContext ist als React Context implementiert und bietet folgende Kernfunktionalitäten:
 
-  // Access any configuration value
-  const appVersion = config.app.VERSION;
-  const spacing = config.spacing.MD;
+### Provider
 
-  return (
-    <View style={{ padding: spacing }}>
-      <Text>Version: {appVersion}</Text>
-    </View>
-  );
+```typescript
+const ConfigProvider: React.FC<{
+  config: Partial<Config>;
+  children: React.ReactNode;
+}>;
+```
+
+Der Provider initialisiert die Konfiguration mit Standardwerten und ermöglicht das Überschreiben durch props:
+
+- Basis-App-Konfiguration (NAME, SLUG, VERSION, SCHEME)
+- Komponenten-spezifische Einstellungen
+- Theme und Styling
+
+### Hook
+
+```typescript
+const useConfig = () => ConfigContextType;
+```
+
+Der `useConfig` Hook stellt zwei Hauptfunktionen bereit:
+
+- `config`: Aktueller Konfigurationszustand
+- `updateConfig`: Methode zum Aktualisieren der Konfiguration
+
+## Typdefinitionen
+
+Die Konfiguration verwendet strikte TypeScript-Definitionen:
+
+```typescript
+interface Config {
+  app: {
+    NAME: string;
+    SLUG: string;
+    VERSION: string;
+    SCHEME: string;
+  };
+  components: {
+    card: {
+      dimensions: {
+        width: string;
+        margin: number;
+      };
+      animation: {
+        flipDuration: number;
+        swipeThreshold: number;
+        rotationFactor: number;
+      };
+      style: {...};
+    };
+  };
 }
 ```
 
-### Configuration Categories
+## Konfigurationsvalidierung
 
-1. **App Metadata**
+Implementiere diese Validierungsfunktionen in `src/services/validation/config.ts`:
 
-   ```ts
-   const { app } = useConfig();
-   console.log(app.NAME); // 'BondBridge'
-   ```
+```typescript
+export const validateConfig = (config: Partial<Config>): ValidationResult => {
+  return {
+    app: validateAppConfig(config.app),
+    components: validateComponentsConfig(config.components),
+  };
+};
 
-2. **Storage Keys**
-
-   ```ts
-   const { storage } = useConfig();
-   AsyncStorage.getItem(storage.THEME_MODE);
-   ```
-
-3. **Animation Durations**
-
-   ```ts
-   const { animation } = useConfig();
-   Animated.timing(opacity, {
-     duration: animation.NORMAL, // 300ms
-   });
-   ```
-
-4. **Spacing and Layout**
-
-   ```ts
-   const { spacing } = useConfig();
-   <View style={{ margin: spacing.MD }} />;
-   ```
-
-5. **Border Radius**
-
-   ```ts
-   const { borderRadius } = useConfig();
-   <View style={{ borderRadius: borderRadius.MD }} />;
-   ```
-
-6. **Image Constants**
-
-   ```ts
-   const { images, utils } = useConfig();
-   <Image source={utils.getImageSource(images.DEFAULT_CARD_SET_IMAGE)} />;
-   ```
-
-7. **Theme**
-   ```ts
-   const { theme } = useConfig();
-   const styles = StyleSheet.create({
-     container: {
-       backgroundColor: theme.light.colors.background,
-     },
-   });
-   ```
-
-## Path Aliases
-
-The `paths.ts` file defines all path aliases used in the application. These are configured in both `tsconfig.json` and `babel.config.js` to enable imports like:
-
-```tsx
-import MyComponent from '@components/MyComponent';
+export const validateAppConfig = (app?: Partial<Config['app']>): ValidationResult => {
+  if (!app?.NAME || typeof app.NAME !== 'string') {
+    throw new Error('App NAME ist erforderlich und muss ein String sein');
+  }
+  // Weitere Validierungen...
+};
 ```
 
-## Utilities
+## Detaillierte Migrationsschritte
 
-Several utilities have been created to leverage the configuration system:
+### ESLint-Konfiguration
 
-1. **Style Utilities** (`src/utils/styleUtils.ts`)
+1. Erstelle `config/eslint/eslint-config.ts`:
 
-   - `useThemedStyles`: Create styles based on theme
-   - `createContainerStyles`: Common container styles
-   - `createTypographyStyles`: Typography styles
-   - `createButtonStyles`: Button styles
+```typescript
+export const eslintConfig = {
+  // Migrierte Konfiguration aus eslint.config.js
+};
+```
 
-2. **Animation Utilities** (`src/utils/animationUtils.ts`)
-   - `useFadeAnimation`: Fade in/out animations
-   - `useScaleAnimation`: Scale animations
-   - `useSharedElementTransition`: Shared element transitions
+2. Aktualisiere `eslint.config.js`:
 
-## Best Practices
+```javascript
+import { eslintConfig } from './config/eslint/eslint-config.js';
+export default eslintConfig;
+```
 
-1. **Always use the config system** for values that might change or be reused.
-2. **Avoid hardcoding values** that are available in the config.
-3. **Use the utilities** to ensure consistent styling and animations.
-4. **Extend the config** when adding new global constants rather than creating isolated constants.
-5. **Use path aliases** for clean imports.
+### Babel-Konfiguration
 
-## Migration Guide
+1. Erstelle `config/babel/babel-config.ts`:
 
-If you're working with older code that doesn't use the config system:
+```typescript
+export const babelConfig = {
+  // Migrierte Konfiguration aus babel.config.js
+};
+```
 
-1. Replace hardcoded values with config values
-2. Use the utility functions for common patterns
-3. Update imports to use path aliases
-4. Ensure your component uses the ConfigProvider
+2. Aktualisiere `babel.config.js`:
+
+```javascript
+import { babelConfig } from './config/babel/babel-config.js';
+export default babelConfig;
+```
+
+### Metro-Konfiguration
+
+1. Erstelle `config/metro/metro-config.ts`:
+
+```typescript
+export const metroConfig = {
+  // Migrierte Konfiguration aus metro.config.js
+};
+```
+
+2. Aktualisiere `metro.config.js`:
+
+```javascript
+import { metroConfig } from './config/metro/metro-config.js';
+export default metroConfig;
+```
+
+### Webpack-Konfiguration
+
+1. Erstelle `config/webpack/webpack-config.ts`:
+
+```typescript
+export const webpackConfig = {
+  // Migrierte Konfiguration aus webpack.config.js
+};
+```
+
+2. Aktualisiere `webpack.config.js`:
+
+```javascript
+import { webpackConfig } from './config/webpack/webpack-config.js';
+export default webpackConfig;
+```
+
+### Umgebungsvariablen
+
+1. Erstelle `config/env/env-config.ts`:
+
+```typescript
+import dotenv from 'dotenv';
+
+// Typisierte Umgebungsvariablen
+export interface EnvConfig {
+  NODE_ENV: 'development' | 'production' | 'test';
+  API_URL: string;
+  DEBUG_MODE?: boolean;
+}
+
+// Validierung der Umgebungsvariablen
+export const validateEnvConfig = (env: any): env is EnvConfig => {
+  if (!env.NODE_ENV || !['development', 'production', 'test'].includes(env.NODE_ENV)) {
+    throw new Error('Ungültige NODE_ENV');
+  }
+  if (!env.API_URL || typeof env.API_URL !== 'string') {
+    throw new Error('API_URL ist erforderlich');
+  }
+  return true;
+};
+
+export const loadEnvConfig = () => {
+  const result = dotenv.config();
+  if (result.error) {
+    throw result.error;
+  }
+  const env = result.parsed;
+  if (!env || !validateEnvConfig(env)) {
+    throw new Error('Ungültige Umgebungsvariablen');
+  }
+  return env;
+};
+```
+
+2. Aktualisiere `.env`:
+
+```env
+NODE_ENV=development
+API_URL=http://localhost:3000
+DEBUG_MODE=true
+```
+
+## Beispiele für Konfigurationsaktualisierungen
+
+### Theme-Aktualisierung
+
+```typescript
+const ThemeToggle = () => {
+  const { config, updateConfig } = useConfig();
+
+  const toggleTheme = () => {
+    updateConfig({
+      components: {
+        card: {
+          style: {
+            loading: {
+              backgroundColor: isDarkMode ? '#2a2a2a' : '#f0f0f0',
+            },
+          },
+        },
+      },
+    });
+  };
+};
+```
+
+### Komponenten-Konfiguration
+
+```typescript
+const CardConfig = () => {
+  const { config, updateConfig } = useConfig();
+
+  const updateCardDimensions = (width: string) => {
+    updateConfig({
+      components: {
+        card: {
+          dimensions: {
+            width,
+          },
+        },
+      },
+    });
+  };
+};
+```
+
+## Migration Checkliste
+
+Für jede zu migrierende Konfigurationsdatei:
+
+1. [ ] Typescript-Interface erstellen
+2. [ ] Validierungsfunktionen implementieren
+3. [ ] Konfiguration in /config migrieren
+4. [ ] Tests für Validierung schreiben
+5. [ ] Dokumentation aktualisieren
+6. [ ] Root-Datei auf neue Konfiguration umstellen
+
+## Fehlerbehebung
+
+Häufige Probleme und Lösungen:
+
+1. **Konfiguration nicht verfügbar**
+
+   ```typescript
+   // Stelle sicher, dass der Provider im Tree verfügbar ist
+   const App = () => (
+     <ConfigProvider config={initialConfig}>
+       <YourApp />
+     </ConfigProvider>
+   );
+   ```
+
+2. **Typ-Fehler bei Updates**
+
+   ```typescript
+   // Verwende Partial für partielle Updates
+   updateConfig({
+     app: { NAME: 'NewName' }, // OK
+   });
+   ```
+
+3. **Validierungsfehler**
+   ```typescript
+   // Implementiere try-catch für Validierung
+   try {
+     validateConfig(newConfig);
+     updateConfig(newConfig);
+   } catch (error) {
+     console.error('Ungültige Konfiguration:', error);
+   }
+   ```

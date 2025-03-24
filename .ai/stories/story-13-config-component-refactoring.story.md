@@ -10,12 +10,12 @@ So that the codebase is more maintainable, follows consistent patterns, and has 
 
 ## Acceptance Criteria
 
-- [ ] Root configuration files are consolidated into a single source of truth
-- [ ] Component structure is organized with clear patterns and naming conventions
+- [ ] Remaining root configuration files are consolidated into the existing `/config` directory
+- [ ] Component structure is further organized with clear patterns and naming conventions
 - [ ] Large components (>300 lines) are broken down using composition
 - [ ] Repeated code patterns are extracted into shared utilities
-- [ ] Component and file naming follows project standards
-- [ ] Config provider pattern is implemented for global configuration
+- [ ] Component and file naming consistently follows kebab-case pattern
+- [ ] Existing ConfigContext is enhanced with additional features
 - [ ] Container/presentational pattern is applied for large components
 - [ ] All tests pass with the new structure
 
@@ -23,49 +23,42 @@ So that the codebase is more maintainable, follows consistent patterns, and has 
 
 ### 1. Configuration Consolidation
 
-Current configuration files:
+Current progress:
+✅ Basic config structure established in `/config`
+✅ ConfigContext implementation exists
+
+Remaining configuration files to consolidate:
 
 - eslint.config.js
-- .eslintrc.js
-- tsconfig.json
 - babel.config.js
 - metro.config.js
 - webpack.config.js
 - app.json
 - .env
-- theme configuration in src/theme
 
-Proposed structure:
+Enhanced config structure:
 
 ```
 bondbridge/
-├── config/               # Centralized configuration
+├── config/               # Centralized configuration (existing)
 │   ├── constants.ts      # App-wide constants
 │   ├── paths.ts          # Path aliases configuration
 │   ├── theme.ts          # Theme configuration
+│   ├── build.ts          # Build-specific configuration
+│   ├── env.ts           # Environment variables
 │   └── index.ts          # Exports all config
-├── src/                  # Source code remains the same
-└── ... (other root files)
+├── src/                  # Source code
+└── ... (root config files to be migrated)
 ```
 
-#### A. Config Provider Pattern
+#### A. Enhanced Config Provider
 
-```typescript
-// src/contexts/ConfigContext.tsx
-import React, { createContext, useContext } from 'react';
-import { appConfig } from '@config';
+Existing implementation in `src/contexts/ConfigContext` will be enhanced with:
 
-const ConfigContext = createContext(appConfig);
-
-export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-  config = appConfig,
-}) => {
-  return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
-};
-
-export const useConfig = () => useContext(ConfigContext);
-```
+- Environment-specific configuration
+- Build configuration
+- Runtime configuration updates
+- Configuration validation
 
 ### 2. Component Structure Refactoring
 
@@ -75,34 +68,36 @@ Current issues:
 - Duplicate styling patterns across components
 - Inconsistent naming conventions
 
-Proposed structure:
+Proposed structure (following kebab-case):
 
 ```
 src/
 ├── components/
 │   ├── card/             # Card components
-│   │   ├── Card.tsx      # Main component (refactored)
-│   │   ├── CardContent.tsx  # Extracted component
-│   │   ├── CardActions.tsx  # Extracted component
-│   │   └── index.ts      # Re-exports
+│   │   ├── card.tsx           # Main component (refactored)
+│   │   ├── card-content.tsx   # Extracted component
+│   │   ├── card-actions.tsx   # Extracted component
+│   │   ├── card-container.tsx # Container component
+│   │   ├── card-presentation.tsx # Presentational component
+│   │   └── index.ts           # Re-exports
 │   ├── common/           # Common components
-│   │   ├── Button/       # Button component
-│   │   │   ├── Button.tsx
-│   │   │   ├── ButtonStyles.ts
+│   │   ├── button/      # Button component
+│   │   │   ├── button.tsx
+│   │   │   ├── button-styles.ts
 │   │   │   └── index.ts
 │   │   └── ... (other common components)
 │   └── ... (other component dirs)
 ```
 
-#### A. Container/Presentational Pattern
+#### A. Container/Presentational Pattern with Kebab Case
 
 For large components:
 
 ```typescript
-// src/components/card/CardContainer.tsx
+// src/components/card/card-container.tsx
 import React from 'react';
-import { CardPresentation } from './CardPresentation';
-import { useCardLogic } from '@hooks/useCardLogic';
+import { CardPresentation } from './card-presentation';
+import { useCardLogic } from '@hooks/use-card-logic';
 
 const CardContainer = props => {
   // Logic, state, and handlers
@@ -127,10 +122,10 @@ export default CardContainer;
 
 ### 3. Shared Utilities Extraction
 
-Extract common functionality into shared utilities:
+Extract common functionality into shared utilities (using kebab-case):
 
 ```typescript
-// src/utils/styles.ts
+// src/utils/style-utils.ts
 import { Theme } from '@types';
 
 export const createThemedStyles = (theme: Theme, isDark: boolean) => ({
@@ -142,7 +137,7 @@ export const createThemedStyles = (theme: Theme, isDark: boolean) => ({
   // ... other common styles
 });
 
-// src/utils/animations.ts
+// src/utils/animation-utils.ts
 import { useRef } from 'react';
 import { Animated } from 'react-native';
 
@@ -167,16 +162,17 @@ export const createFadeAnimation = (
 
 ## Tasks
 
-1. [ ] Analyze and inventory all configuration files
-2. [ ] Create centralized config structure in /config directory
-3. [ ] Implement ConfigProvider pattern
-4. [ ] Refactor large components (Card, ThemeToggle, ThemeContext)
-5. [ ] Extract common styles and animations into utilities
-6. [ ] Apply container/presentational pattern to large components
-7. [ ] Update imports and references across codebase
-8. [ ] Document new patterns and conventions
-9. [ ] Run tests and fix any issues
-10. [ ] Update documentation
+1. [ ] Review existing kebab-case migration progress (src/docs/kebab-case-migration.md)
+2. [ ] Analyze and inventory all configuration files
+3. [ ] Create centralized config structure in /config directory
+4. [ ] Implement ConfigProvider pattern
+5. [ ] Update component file names to kebab-case (e.g., card.tsx, theme-toggle.tsx)
+6. [ ] Refactor large components using container/presentational pattern
+7. [ ] Extract common styles and animations into kebab-case utility files
+8. [ ] Update imports and references to match new naming convention
+9. [ ] Update documentation with kebab-case standards
+10. [ ] Run tests and fix any issues
+11. [ ] Add linting rules for enforcing kebab-case
 
 ## Dependencies
 
@@ -188,15 +184,20 @@ export const createFadeAnimation = (
 
 - Configuration analysis: 2 hours
 - Config consolidation: 4 hours
+- Kebab-case migration: 4 hours
 - Component refactoring: 8 hours
 - Shared utilities extraction: 3 hours
-- Testing and fixes: 4 hours
-- Documentation: 2 hours
-  Total: 23 hours
+- Testing and fixes: 6 hours
+- Documentation: 3 hours
+  Total: 30 hours
 
 ## Notes
 
 - Maintain backward compatibility during transition
 - Consider impact on build pipeline
 - Add clear documentation for the new patterns
-- Consider implementing a linting rule to enforce component size limits
+- Follow existing kebab-case migration guide in src/docs/kebab-case-migration.md
+- Add ESLint rule to enforce kebab-case for file names
+- Consider component size limits and enforcing container/presentational pattern
+- Update IDE settings to default to kebab-case when creating new files
+- Create scripts to automate file renaming where possible

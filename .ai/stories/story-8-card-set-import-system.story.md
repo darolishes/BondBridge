@@ -192,51 +192,19 @@ const handleImageImport = async (imageUrl: string) => {
 
 ### Card Set Validation
 
-- Created `card-set-schema.ts` with Zod schemas for cards and card sets
-- Implemented `card-set-validator.ts` class with:
+- Created `cardSetSchema.ts` with Zod schemas for cards and card sets
+- Implemented `CardSetValidator` class with:
   - Schema validation
   - Duplicate detection
   - Data sanitization
   - Error formatting
-- Added comprehensive test suite in `card-set-validator.test.ts`
+- Added comprehensive test suite in `CardSetValidator.test.ts`
 - Validation covers:
   - Required fields
   - Data types
   - Value constraints
   - Duplicate package names
   - Card structure
-
-### Import System
-
-- Created `card-set-importer.ts` for handling imports
-- Implemented `card-set-repository.ts` for storage
-- Added test coverage in `card-set-importer.test.ts`
-- Features:
-  - JSON parsing
-  - Schema validation
-  - Duplicate detection
-  - Error handling
-  - Data sanitization
-
-### File Structure
-
-```
-src/
-├── services/
-│   ├── import/
-│   │   ├── card-set-importer.ts
-│   │   └── __tests__/
-│   │       └── card-set-importer.test.ts
-│   ├── repository/
-│   │   └── card-set-repository.ts
-│   └── validation/
-│       ├── card-set-validator.ts
-│       └── __tests__/
-│           └── card-set-validator.test.ts
-└── utils/
-    └── validation/
-        └── card-set-schema.ts
-```
 
 ### Next Steps
 
