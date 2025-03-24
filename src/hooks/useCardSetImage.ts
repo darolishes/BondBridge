@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from 'react-native';
 import { useEffect, useState } from 'react';
-import { imageService } from '../services/imageService';
+import { imageService } from '@services/image-service';
 
 // Default images for card sets
 const defaultImages: Record<string, ImageSourcePropType> = {

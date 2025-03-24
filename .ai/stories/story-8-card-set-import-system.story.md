@@ -137,6 +137,45 @@ const handleImageImport = async (imageUrl: string) => {
 };
 ```
 
+## Updates (March 24, 2024)
+
+### ImportButton Stories Enhancement
+
+- Added loading state indicator during import operations
+- Improved error handling visualization with consistent styling
+- Extracted common message rendering logic to reduce duplication
+- Added comprehensive error state coverage for all possible scenarios
+
+### Technical Details
+
+#### MessageRenderer Component
+
+- Handles both loading and message states
+- Provides consistent styling for success/error messages
+- Improves code maintainability and reduces duplication
+- Follows atomic design principles
+
+#### Error States Coverage
+
+- Network errors (FILE_ERROR)
+- Invalid JSON format (INVALID_JSON)
+- Duplicate card sets (DUPLICATE)
+- Schema validation errors (INVALID_SCHEMA)
+
+#### Loading State Management
+
+- Visual feedback during async operations
+- Consistent loading indicator placement
+- Clear state transitions
+- Improved user experience
+
+### Next Steps
+
+- Add unit tests for ImportButton component
+- Implement E2E tests for import flows
+- Document error handling patterns
+- Consider adding retry mechanism for failed imports
+
 ## Tasks
 
 1. [x] Create JSON schema for card sets

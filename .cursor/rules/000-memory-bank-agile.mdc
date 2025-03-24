@@ -28,13 +28,13 @@ alwaysApply: false
 ```
 .ai/
 ├── project/                # Core project documentation
-│   ├── 01-prd.md          # Project Requirements Document
-│   ├── 02-arch.md         # Architecture documentation
-│   ├── 03-structure.md    # Project structure documentation
-│   └── 04-deployment.md   # Deployment configuration
+│   ├── 01-project-requirements.md    # Project Requirements Document
+│   ├── 02-architecture.md            # Architecture documentation
+│   ├── 03-project-structure.md       # Project structure documentation
+│   └── 04-deployment-config.md       # Deployment configuration
 ├── stories/               # Central development focus
-│   ├── story-1-login.story.md
-│   ├── story-2-profile.story.md
+│   ├── story-001-login.story.md
+│   ├── story-002-profile.story.md
 │   └── current-story.md   # Symlink or reference to active story
 ├── status/                # Session management
 │   ├── YYYY-MM-DD.md      # Daily status updates
@@ -49,18 +49,18 @@ alwaysApply: false
 ## Templates
 The following standardized templates MUST be used:
 
-1. **Project Requirements Document** (.ai/project/01-prd.md)
-   - Use template: `.cursor/templates/template-prd.md`
+1. **Project Requirements Document** (.ai/project/01-project-requirements.md)
+   - Use template: `.cursor/templates/project-requirements.md`
    - Must include: Introduction, Goals, Features, Epic Structure, Story List
    - Requires "status: approved" before proceeding
 
-2. **Architecture** (.ai/project/02-arch.md)
-   - Use template: `.cursor/templates/template-arch.md`
+2. **Architecture** (.ai/project/02-architecture.md)
+   - Use template: `.cursor/templates/architecture.md`
    - Must include: Technical Summary, Technology Table, Diagrams, Project Structure
    - Requires "status: approved" before proceeding
 
-3. **Stories** (.ai/stories/story-N-short-description.story.md)
-   - Use template: `.cursor/templates/template-story.md`
+3. **Stories** (.ai/stories/story-NNN-description.story.md)
+   - Use template: `.cursor/templates/story.md`
    - Must include: User Story format, Status, Tasks, Estimation
    - Tasks must follow TDD approach (tests first)
    - Each story must be approved before implementation
@@ -81,7 +81,7 @@ The following standardized templates MUST be used:
 - Use kebab-case for all documentation files
 - Add numerical prefixes (01-, 02-) for files with sequential relationships
 - Use descriptive names that reflect content
-- Stories should follow the format: `story-N-short-description.story.md`
+- Stories should follow the format: `story-NNN-description.story.md`
 - Status updates should follow the format: `YYYY-MM-DD.md`
 
 ## Session Management
@@ -127,14 +127,14 @@ flowchart TD
 3. Address potential challenges
 
 ## Story References
-- Current Story: [Story Title](../stories/story-N-title.story.md)
-- Next Story: [Story Title](../stories/story-M-title.story.md)
+- Current Story: [Story Title](../stories/story-NNN-title.story.md)
+- Next Story: [Story Title](../stories/story-MMM-title.story.md)
 ```
 
 ## Examples
 <example>
 ✅ Starting a session with `start-session` to review latest status
-✅ Creating a new project with `.ai/project/01-prd.md` first, using template-prd.md
+✅ Creating a new project with `.ai/project/01-project-requirements.md` first
 ✅ Making stories the central focus of all development work
 ✅ Creating status updates at the end of each session
 ✅ Following TDD by writing tests before implementation
@@ -144,7 +144,7 @@ flowchart TD
 
 <example type="invalid">
 ❌ Starting a task without reviewing the current story and status
-❌ Starting development without completing 01-prd.md and getting approval
+❌ Starting development without completing 01-project-requirements.md and getting approval
 ❌ Creating inconsistent documentation structures
 ❌ Creating documentation without using the required templates
 ❌ Using inconsistent file naming (mixing camelCase and kebab-case)
@@ -157,13 +157,13 @@ flowchart TD
   - STORIES are the PRIMARY working documents and central focus of development
   - Start each session with `start-session` to review latest status and current story
   - End each session with `end-session` to document progress and next steps
-  - Always initialize project with complete 01-prd.md before starting development
-  - 01-prd.md and 02-arch.md must have "status: approved" before proceeding with stories
+  - Always initialize project with complete 01-project-requirements.md before starting development
+  - 01-project-requirements.md and 02-architecture.md must have "status: approved" before proceeding with stories
   - MUST use established templates (.cursor/templates/*) for all documentation
   - MUST follow file naming conventions (kebab-case with numerical prefixes where appropriate)
   - Update active-context.md at every session transition
   - Create daily status updates to track progress (replaces redundant progress tracking)
-  - Follow sequential workflow: prd → arch → stories → implementation
+  - Follow sequential workflow: requirements → architecture → stories → implementation
   - Follow TDD approach: write tests first, then implement, ensure tests pass
   - Create stories in proper format: "As a ___, I want ___, so that ___"
   - Never mark a story complete until all tests pass and documentation is updated

@@ -2,13 +2,16 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ThemeProvider, useTheme } from '@theme/ThemeContext';
-import HomeScreen from '@screens/HomeScreen';
-import CardViewScreen from '@screens/CardViewScreen';
+import CardViewScreen from './screens/CardViewScreen';
 import { RootStackParamList } from './types';
-import Layout from '@/components/layout/Layout';
+import Layout from './components/layout/Layout';
 import './i18n/i18n';
+import { ConfigProvider } from './contexts/ConfigContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// Assume HomeScreen exists
+const HomeScreen = () => <></>;
 
 const NavigationContent: React.FC = () => {
   const { theme } = useTheme();
@@ -48,11 +51,13 @@ const NavigationContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        <NavigationContent />
-      </NavigationContainer>
-    </ThemeProvider>
+    <ConfigProvider>
+      <ThemeProvider>
+        <NavigationContainer>
+          <NavigationContent />
+        </NavigationContainer>
+      </ThemeProvider>
+    </ConfigProvider>
   );
 };
 

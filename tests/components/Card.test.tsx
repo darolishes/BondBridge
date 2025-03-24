@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
-import { ThemeProvider } from '../../theme/ThemeProvider';
+import { ThemeProvider } from '@theme/ThemeProvider';
 import Card from '../Card';
 import '../../../i18n/i18n';
 

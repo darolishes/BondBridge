@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { ImportedCardSet, ImportResult } from '../types/cardSet';
-import { listImportedSets, importCardSet } from '../services/importService';
+import { listImportedSets, importCardSet } from '@services/import-service';
 
 interface CardSetsContextType {
   importedSets: ImportedCardSet[];

@@ -1,5 +1,5 @@
 import { validateCardSet } from '../validation';
-import type { CardSet } from '../../types/cardSet';
+import type { CardSet } from '@types';
 
 describe('Card Set Validation', () => {
   const validCardSet: CardSet = {

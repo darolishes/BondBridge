@@ -1,6 +1,6 @@
 import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
-import type { CardSet, ImportResult, ImportedCardSet } from '../types/cardSet';
+import type { CardSet, ImportResult, ImportedCardSet } from '@types';
 import { validateCardSet } from './validation';
 
 const CARD_SETS_DIR = `${RNFS.DocumentDirectoryPath}/card-sets`;

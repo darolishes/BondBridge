@@ -1,4 +1,4 @@
-import { ImageCategories, imageService } from '../imageService';
+import { ImageCategories, imageService } from '../image-service';
 import { Platform } from 'react-native';
 
 jest.mock('react-native/Libraries/Image/Image', () => ({

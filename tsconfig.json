@@ -10,7 +10,12 @@
       "@theme/*": ["src/theme/*"],
       "@types": ["src/types"],
       "@constants/*": ["src/constants/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@config": ["config"],
+      "@config/*": ["config/*"],
+      "@services": ["src/services"],
+      "@services/*": ["src/services/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

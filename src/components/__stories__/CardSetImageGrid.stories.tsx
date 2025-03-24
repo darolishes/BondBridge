@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { CardSetImageGrid } from '../CardSetImageGrid';
-import { imageLoadTracker } from '../../services/imageLoadTracker';
+import { imageLoadTracker } from '@services/image-load-tracker';
 
 const CardSetImageGridMeta = {
   title: 'Components/CardSetImageGrid',

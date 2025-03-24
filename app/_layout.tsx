@@ -1,7 +1,13 @@
 import { Stack } from 'expo-router';
-import { ThemeProvider } from '@theme/ThemeContext';
 import { StatusBar } from 'expo-status-bar';
-import Header from '@components/layout/Header';
+import { ThemeProvider } from '@theme/theme-context';
+import Header from '@components/layout/header';
+
+const screens = {
+  index: { title: 'BondBridge' },
+  'cardview/[id]': { title: 'Kartenset' },
+  settings: { title: 'Einstellungen' },
+} as const;
 
 export default function Layout() {
   return (
@@ -9,33 +15,22 @@ export default function Layout() {
       <StatusBar style="auto" />
       <Stack
         screenOptions={{
-          header: props => (
+          header: ({ route }) => (
             <Header
-              title={props.route.name === 'index' ? 'BondBridge' : props.route.name}
-              showBack={props.route.name !== 'index'}
-              showMenu={props.route.name === 'index'}
+              title={
+                route.name === 'index'
+                  ? 'BondBridge'
+                  : screens[route.name as keyof typeof screens].title
+              }
+              showBack={route.name !== 'index'}
+              showMenu={route.name === 'index'}
             />
           ),
         }}
       >
-        <Stack.Screen
-          name="index"
-          options={{
-            title: 'BondBridge',
-          }}
-        />
-        <Stack.Screen
-          name="cardview/[id]"
-          options={{
-            title: 'Kartenset',
-          }}
-        />
-        <Stack.Screen
-          name="settings"
-          options={{
-            title: 'Einstellungen',
-          }}
-        />
+        {Object.entries(screens).map(([name, options]) => (
+          <Stack.Screen key={name} name={name} options={options} />
+        ))}
       </Stack>
     </ThemeProvider>
   );

@@ -4,7 +4,7 @@ import { useTheme } from '@theme/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import { RootStackParamList } from '../../types';
+import { RootStackParamList } from '@types';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
