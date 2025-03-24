@@ -4,18 +4,31 @@ A React Native application built with Expo and TypeScript.
 
 ## Project Structure
 
+The project follows a feature-based organization:
+
 ```
 src/
-  ├── components/     # Reusable UI components
-  ├── screens/       # Screen components
-  ├── hooks/         # Custom React hooks
-  ├── utils/         # Utility functions
-  ├── services/      # API and service integrations
-  ├── types/         # TypeScript type definitions
-  ├── constants/     # Constants and configuration
-  ├── assets/        # Static assets
-  └── tests/         # Test files
+  features/           # Feature-based organization
+    cards/           # Card-related features
+    progress/        # Progress tracking features
+    import/          # Import functionality
+    layout/          # Layout components
+  theme/             # Theme configuration
+  i18n/              # Internationalization
+  utils/             # Shared utilities
+  types/             # Shared types
 ```
+
+### Naming Conventions
+
+- Files use kebab-case: `feature-name.tsx`
+- Component files: `component-name.tsx`
+- Type files: `component-name.types.ts`
+- Style files: `component-name.styles.ts`
+- Test files: `component-name.test.ts`
+- Story files: `component-name.stories.tsx`
+- Hook files: `use-feature-name.ts`
+- Service files: `feature-name.service.ts`
 
 ## Setup
 

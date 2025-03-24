@@ -3,7 +3,7 @@
  * Shared style helpers that use centralized configuration
  */
 
-import { useConfig } from '@contexts/ConfigContext';
+import { useConfig } from '@contexts/config-context';
 import { Theme } from '@types';
 import { StyleSheet } from 'react-native';
 

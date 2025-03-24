@@ -8,8 +8,24 @@ import React, {
 } from 'react';
 import { useColorScheme, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Theme, ThemeMode, ThemeState, ThemeAction, ThemeActionType } from '@types';
+import type { Theme, ThemeMode, ThemeState } from '@types';
 import { lightTheme, darkTheme } from '@theme/constants';
+
+// Define action types locally since they're only used here
+export enum ThemeActionType {
+  SET_THEME_MODE = 'SET_THEME_MODE',
+  TOGGLE_THEME = 'TOGGLE_THEME',
+  SET_SYSTEM_THEME = 'SET_SYSTEM_THEME',
+  START_TRANSITION = 'START_TRANSITION',
+  END_TRANSITION = 'END_TRANSITION',
+}
+
+type ThemeAction =
+  | { type: ThemeActionType.SET_THEME_MODE; payload: ThemeMode }
+  | { type: ThemeActionType.TOGGLE_THEME }
+  | { type: ThemeActionType.SET_SYSTEM_THEME; payload: 'light' | 'dark' }
+  | { type: ThemeActionType.START_TRANSITION }
+  | { type: ThemeActionType.END_TRANSITION };
 
 // Storage key for the theme preference
 const THEME_STORAGE_KEY = 'bondbridge:theme_mode';
@@ -210,3 +226,6 @@ export function useThemedValue<T>(lightValue: T, darkValue: T): T {
   const { isDark } = useTheme();
   return isDark ? darkValue : lightValue;
 }
+
+// Export theme types
+export type { Theme, ThemeMode, ThemeState } from '@types';

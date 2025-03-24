@@ -32,7 +32,9 @@ export interface ImportResult {
   };
 }
 
-export * from './navigation';
-export * from './cardSet';
-export * from './theme';
-export * from './progress';
+// Re-export specific types to avoid conflicts
+export type { ImportError } from './import';
+export type { Theme, ThemeMode, ThemeState } from './theme';
+export type { CardSet, CardSetTileProps } from './cardSet';
+export type { RootStackParamList, RootTabParamList } from './navigation';
+export type { Progress, ProgressSummary } from './progress';

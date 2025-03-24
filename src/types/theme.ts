@@ -29,14 +29,16 @@ export interface Theme {
     // UI element colors
     primary: string;
     primaryLight: string;
+    primaryDark: string;
     secondary: string;
     secondaryLight: string;
+    secondaryDark: string;
     error: string;
-    errorLight: string;
     success: string;
-    successLight: string;
     warning: string;
-    warningLight: string;
+    info: string;
+    border: string;
+    divider: string;
 
     // Card colors
     cardBackground: string;

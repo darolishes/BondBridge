@@ -4,18 +4,18 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@screens/*": ["src/screens/*"],
-      "@hooks/*": ["src/hooks/*"],
+      "@features/*": ["src/features/*"],
+      "@theme": ["src/theme"],
       "@theme/*": ["src/theme/*"],
-      "@types": ["src/types"],
-      "@constants/*": ["src/constants/*"],
+      "@utils": ["src/utils"],
       "@utils/*": ["src/utils/*"],
+      "@types": ["src/types"],
+      "@i18n": ["src/i18n"],
+      "@i18n/*": ["src/i18n/*"],
       "@contexts/*": ["src/contexts/*"],
-      "@config": ["config"],
-      "@config/*": ["config/*"],
-      "@services": ["src/services"],
-      "@services/*": ["src/services/*"]
+      "@app": ["src/app"],
+      "@components/*": ["src/components/*"],
+      "@navigation/*": ["src/features/navigation/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

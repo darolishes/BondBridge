@@ -5,7 +5,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
-import { useConfig } from '@contexts/ConfigContext';
+import { useConfig } from '@contexts/config-context';
 
 /**
  * Hook to create a reusable fade animation

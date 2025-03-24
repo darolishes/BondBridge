@@ -1,40 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useTheme } from '@theme/theme-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export interface EmptyStateProps {
   title: string;
-  description?: string;
+  message: string;
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
-  testID?: string;
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({ title, description, icon, testID }) => {
+export const EmptyState: React.FC<EmptyStateProps> = ({ title, message, icon }) => {
   const { theme } = useTheme();
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.colors.surface,
-        },
-      ]}
-      testID={testID}
-    >
+    <View style={styles.container}>
       <MaterialCommunityIcons
         name={icon}
-        size={48}
+        size={64}
         color={theme.colors.textSecondary}
         style={styles.icon}
       />
       <Text style={[styles.title, { color: theme.colors.text }]}>{title}</Text>
-      {description && (
-        <Text style={[styles.description, { color: theme.colors.textSecondary }]}>
-          {description}
-        </Text>
-      )}
+      <Text style={[styles.message, { color: theme.colors.textSecondary }]}>{message}</Text>
     </View>
   );
 };
@@ -50,13 +37,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
-    textAlign: 'center',
     marginBottom: 8,
   },
-  description: {
-    fontSize: 14,
+  message: {
+    fontSize: 16,
     textAlign: 'center',
   },
 });

@@ -6,7 +6,7 @@ import CardViewScreen from './screens/CardViewScreen';
 import { RootStackParamList } from './types';
 import Layout from './components/layout/Layout';
 import './i18n/i18n';
-import { ConfigProvider } from './contexts/ConfigContext';
+import { ConfigProvider } from '@contexts/config-context';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

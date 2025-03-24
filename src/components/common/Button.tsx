@@ -1,51 +1,79 @@
 import React from 'react';
-import { Button as PaperButton } from 'react-native-paper';
-import { useAccessibility, AccessibilityProps } from '@utils/accessibility';
-import { StyleProp, ViewStyle } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useTheme } from '@theme/theme-context';
 
-interface ButtonProps {
+export interface ButtonProps {
   onPress: () => void;
-  mode?: 'text' | 'outlined' | 'contained';
-  style?: StyleProp<ViewStyle>;
-  labelStyle?: StyleProp<ViewStyle>;
+  title: string;
+  variant?: 'primary' | 'secondary' | 'outline';
   disabled?: boolean;
   loading?: boolean;
-  children: React.ReactNode;
-  accessibility?: AccessibilityProps;
   testID?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   onPress,
-  mode = 'contained',
-  style,
-  labelStyle,
+  title,
+  variant = 'primary',
   disabled = false,
   loading = false,
-  children,
-  accessibility,
   testID,
 }) => {
-  const a11yProps = useAccessibility({
-    role: 'button',
-    label: typeof children === 'string' ? children : undefined,
-    ...accessibility,
-  });
+  const { theme } = useTheme();
+
+  const getBackgroundColor = () => {
+    if (disabled) return theme.colors.surfaceHighlight;
+    switch (variant) {
+      case 'primary':
+        return theme.colors.primary;
+      case 'secondary':
+        return theme.colors.secondary;
+      case 'outline':
+        return 'transparent';
+      default:
+        return theme.colors.primary;
+    }
+  };
+
+  const getTextColor = () => {
+    if (disabled) return theme.colors.textSecondary;
+    if (variant === 'outline') return theme.colors.text;
+    return theme.colors.textOnPrimary;
+  };
 
   return (
-    <PaperButton
+    <TouchableOpacity
       onPress={onPress}
-      mode={mode}
-      style={style}
-      labelStyle={labelStyle}
-      disabled={disabled}
-      loading={loading}
+      disabled={disabled || loading}
+      style={[
+        styles.button,
+        {
+          backgroundColor: getBackgroundColor(),
+          borderColor: variant === 'outline' ? theme.colors.border : 'transparent',
+        },
+      ]}
       testID={testID}
-      {...a11yProps}
     >
-      {children}
-    </PaperButton>
+      {loading ? (
+        <ActivityIndicator color={getTextColor()} />
+      ) : (
+        <Text style={[styles.text, { color: getTextColor() }]}>{title}</Text>
+      )}
+    </TouchableOpacity>
   );
 };
 
-export default Button;
+const styles = StyleSheet.create({
+  button: {
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});

@@ -2,31 +2,31 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Text } from 'react-native';
-import RootNavigator from '@navigation/RootNavigator';
+import { RootNavigator } from '@features/navigation/root-navigator';
 
 // Mock the screens
-jest.mock('../../screens/HomeScreen', () => {
+jest.mock('@features/card-sets/screens/home-screen', () => {
   return {
     __esModule: true,
     default: () => <Text>Home Screen</Text>,
   };
 });
 
-jest.mock('../../screens/CardViewScreen', () => {
+jest.mock('@screens/card-view-screen', () => {
   return {
     __esModule: true,
     default: () => <Text>Card View Screen</Text>,
   };
 });
 
-jest.mock('../../screens/SettingsScreen', () => {
+jest.mock('@screens/settings-screen', () => {
   return {
     __esModule: true,
     default: () => <Text>Settings Screen</Text>,
   };
 });
 
-jest.mock('../../screens/ImportModal', () => {
+jest.mock('@screens/import-modal', () => {
   return {
     __esModule: true,
     default: () => <Text>Import Modal</Text>,
@@ -81,5 +81,14 @@ describe('Navigation', () => {
 
     // This will be implemented in CardViewScreen
     expect(getByTestId('set-id')).toHaveTextContent('test-set-1');
+  });
+
+  it('renders correctly', () => {
+    const { getByText } = render(
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    );
+    // Add your test assertions here
   });
 });
