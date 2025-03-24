@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ThemeProvider, useTheme } from '@theme/ThemeContext';
 import HomeScreen from '@screens/HomeScreen';
 import CardViewScreen from '@screens/CardViewScreen';
-import { RootStackParamList } from '@types';
+import { RootStackParamList } from './types';
 import './i18n/i18n';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
