@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Text } from 'react-native';
-import RootNavigator from '../RootNavigator';
+import RootNavigator from '@navigation/RootNavigator';
 
 // Mock the screens
 jest.mock('../../screens/HomeScreen', () => {

@@ -1,20 +1,64 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ThemeProvider, useTheme } from '@theme/ThemeContext';
+import HomeScreen from '@screens/HomeScreen';
+import CardViewScreen from '@screens/CardViewScreen';
+import { RootStackParamList } from '@types';
+import './i18n/i18n';
 
-export default function App() {
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const NavigationContent: React.FC = () => {
+  const { theme } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.colors.surface,
+        },
+        headerShadowVisible: false,
+        headerTintColor: theme.colors.text,
+        headerLargeStyle: {
+          backgroundColor: theme.colors.background,
+        },
+        headerLargeTitleStyle: {
+          color: theme.colors.text,
+        },
+        contentStyle: {
+          backgroundColor: theme.colors.background,
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'BondBridge',
+          headerLargeTitle: true,
+        }}
+      />
+      <Stack.Screen
+        name="CardView"
+        component={CardViewScreen}
+        options={{
+          title: 'Card Set',
+          presentation: 'modal',
+        }}
+      />
+    </Stack.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'center',
-  },
-});
+const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <NavigationContainer>
+        <NavigationContent />
+      </NavigationContainer>
+    </ThemeProvider>
+  );
+};
+
+export default App;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card as PaperCard } from 'react-native-paper';
 import { StyleProp, ViewStyle, AccessibilityRole } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useAccessibility, AccessibilityProps } from '../utils/accessibility';
+import { useAccessibility, AccessibilityProps } from '@utils/accessibility';
 
 export interface CardProps {
   children: React.ReactNode;

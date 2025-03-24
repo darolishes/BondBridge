@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { CardSetData, CardSetProgress } from '../types/cardSet';
-import { Category } from '../types/navigation';
-import { getCardSets, getUserProgress, storeCardSets, storeUserProgress } from '../utils/storage';
+import { CardSetData, CardSetProgress, Category } from '@types';
+import { getCardSets, getUserProgress, storeCardSets, storeUserProgress } from '@utils/storage';
 
 // Default progress for new card sets
 const defaultProgress: Record<Category, number> = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as PaperButton } from 'react-native-paper';
-import { useAccessibility, AccessibilityProps } from '../utils/accessibility';
+import { useAccessibility, AccessibilityProps } from '@utils/accessibility';
 import { StyleProp, ViewStyle } from 'react-native';
 
 interface ButtonProps {

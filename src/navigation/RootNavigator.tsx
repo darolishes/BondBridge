@@ -1,13 +1,13 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
-import SettingsButton from '../components/SettingsButton';
+import { RootStackParamList } from '@/types/navigation';
+import SettingsButton from '@components/SettingsButton';
 
 // Import screens (to be created)
-import HomeScreen from '../screens/HomeScreen';
-import CardViewScreen from '../screens/CardViewScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import ImportModal from '../screens/ImportModal';
+import HomeScreen from '@screens/HomeScreen';
+import CardViewScreen from '@screens/CardViewScreen';
+import SettingsScreen from '@screens/SettingsScreen';
+import ImportModal from '@screens/ImportModal';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

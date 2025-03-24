@@ -1,4 +1,4 @@
-import { Theme } from './types';
+import { Theme } from '@types';
 
 // Base spacing and border radius values
 const baseSpacing = {

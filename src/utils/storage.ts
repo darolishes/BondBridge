@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CardSetData } from '../types/cardSet';
+import { CardSetData } from '@types';
 
 // Storage keys
 export const STORAGE_KEYS = {

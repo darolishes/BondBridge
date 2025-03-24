@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import CardSetTile from '../CardSetTile';
-import { CardSetData, CardSetProgress } from '../../types/cardSet';
+import CardSetTile from '@components/CardSetTile';
+import { CardSetData, CardSetProgress } from '@types';
 
 const mockCardSet: CardSetData = {
   id: 'test-set-1',

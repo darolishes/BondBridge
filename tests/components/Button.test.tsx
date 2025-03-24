@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { ThemeProvider } from '../../theme/ThemeProvider';
-import Button from '../Button';
+import { ThemeProvider } from '@theme/ThemeProvider';
+import Button from '@components/Button';
 import '../../../i18n/i18n';
 
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (

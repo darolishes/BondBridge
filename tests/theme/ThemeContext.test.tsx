@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme, ThemeProvider } from '../ThemeContext';
-import { lightTheme, darkTheme } from '../constants';
+import { useTheme, ThemeProvider } from '@theme/ThemeContext';
+import { lightTheme, darkTheme } from '@theme/constants';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({

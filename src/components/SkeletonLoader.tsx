@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
+import { useTheme } from '@theme/ThemeContext';
 
 interface SkeletonLoaderProps {
   width: number;
@@ -7,6 +8,7 @@ interface SkeletonLoaderProps {
 }
 
 const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ width, testID }) => {
+  const { theme, isDark } = useTheme();
   const animatedValue = new Animated.Value(0);
 
   useEffect(() => {
@@ -24,7 +26,7 @@ const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ width, testID }) => {
         }),
       ])
     ).start();
-  }, []);
+  }, [animatedValue]);
 
   const opacity = animatedValue.interpolate({
     inputRange: [0, 1],
@@ -32,12 +34,53 @@ const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ width, testID }) => {
   });
 
   return (
-    <View style={[styles.container, { width }]} testID={testID}>
-      <Animated.View style={[styles.image, { opacity }]} />
+    <View
+      style={[
+        styles.container,
+        {
+          width,
+          backgroundColor: isDark ? theme.colors.surface : theme.colors.background,
+        },
+      ]}
+      testID={testID}
+    >
+      <Animated.View
+        style={[
+          styles.image,
+          {
+            backgroundColor: theme.colors.surface,
+            opacity,
+          },
+        ]}
+      />
       <View style={styles.content}>
-        <Animated.View style={[styles.title, { opacity }]} />
-        <Animated.View style={[styles.description, { opacity }]} />
-        <Animated.View style={[styles.progressBar, { opacity }]} />
+        <Animated.View
+          style={[
+            styles.title,
+            {
+              backgroundColor: theme.colors.surface,
+              opacity,
+            },
+          ]}
+        />
+        <Animated.View
+          style={[
+            styles.description,
+            {
+              backgroundColor: theme.colors.surface,
+              opacity,
+            },
+          ]}
+        />
+        <Animated.View
+          style={[
+            styles.progress,
+            {
+              backgroundColor: theme.colors.surface,
+              opacity,
+            },
+          ]}
+        />
       </View>
     </View>
   );
@@ -45,7 +88,6 @@ const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ width, testID }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     elevation: 2,
     marginBottom: 16,
@@ -59,26 +101,22 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   description: {
-    backgroundColor: '#F0F0F0',
     borderRadius: 4,
-    height: 32,
-    marginBottom: 12,
+    height: 40,
+    marginBottom: 8,
   },
   image: {
-    backgroundColor: '#F0F0F0',
     height: 120,
     width: '100%',
   },
-  progressBar: {
-    backgroundColor: '#F0F0F0',
-    borderRadius: 2,
-    height: 4,
+  progress: {
+    borderRadius: 4,
+    height: 8,
     width: '100%',
   },
   title: {
-    backgroundColor: '#F0F0F0',
     borderRadius: 4,
-    height: 20,
+    height: 24,
     marginBottom: 8,
     width: '80%',
   },

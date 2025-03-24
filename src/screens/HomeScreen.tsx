@@ -11,12 +11,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
-import CardSetTile from '../components/CardSetTile';
-import EmptyState from '../components/EmptyState';
-import useCardSets from '../hooks/useCardSets';
-import { CardSetData } from '../types/cardSet';
-import { useTheme } from '../theme/ThemeContext';
+import { RootStackParamList, CardSetData } from '@types';
+import CardSetTile from '@components/CardSetTile';
+import EmptyState from '@components/EmptyState';
+import useCardSets from '@hooks/useCardSets';
+import { useTheme } from '@theme/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 

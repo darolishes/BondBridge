@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
-import { CardSetTileProps } from '../types/cardSet';
-import ProgressBar from './ProgressBar';
-import SkeletonLoader from './SkeletonLoader';
+import { CardSetTileProps } from '@types';
+import ProgressBar from '@components/ProgressBar';
+import SkeletonLoader from '@components/SkeletonLoader';
 
 const defaultImage = require('../assets/images/default-set.png');
 
