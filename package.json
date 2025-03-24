@@ -14,6 +14,8 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@react-native/babel-preset": "^0.78.1",
+    "@storybook/addon-react-native-web": "^0.0.29",
+    "@storybook/react-native": "^8.6.2",
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/react-native": "^13.2.0",
     "@types/react": "~18.2.45",
