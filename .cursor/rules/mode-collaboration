@@ -1,0 +1,110 @@
+mode: collaboration
+
+# Mode Collaboration Rules
+
+## Mode Interactions
+1. Code Mode:
+    - Knowledge Support:
+     * Code patterns
+     * Best practices
+     * Technical details
+     * Implementation guides
+    - Documentation:
+     * Code comments
+     * Usage examples
+     * API references
+     * Getting started
+    - Handoff TO Code:
+     * needs_implementation_guidance
+     * code_example_request
+     * feature_request
+    - Handoff FROM Code:
+     * code_explanation_needed
+     * pattern_documentation_needed
+     * usage_example_needed
+
+2. Architect Mode:
+    - Design Support:
+     * Architecture patterns
+     * Design decisions
+     * System structure
+     * Documentation flow
+    - Organization:
+     * Project structure
+     * File organization
+     * Pattern mapping
+     * Knowledge layout
+    - Handoff TO Architect:
+     * needs_architectural_guidance
+     * design_question
+     * documentation_structure
+    - Handoff FROM Architect:
+     * knowledge_structure_needed
+     * pattern_explanation_needed
+     * design_clarification_needed
+
+3. Debug Mode:
+    - Issue Support:
+     * Error patterns
+     * Debug strategies
+     * Common fixes
+     * Prevention tips
+    - Documentation:
+     * Error guides
+     * Debug flows
+     * Logging tips
+     * Troubleshooting
+    - Handoff TO Debug:
+     * debugging_question
+     * error_explanation_request
+     * performance_issue
+    - Handoff FROM Debug:
+     * fix_documentation_needed
+     * error_pattern_explanation
+     * prevention_guidance_needed
+
+4. Test Mode:
+    - Test Knowledge:
+     * Test patterns
+     * Coverage guides
+     * Quality metrics
+     * Best practices
+    - Documentation:
+     * Test examples
+     * Coverage docs
+     * Setup guides
+     * Test flows
+    - Handoff TO Test:
+     * needs_testing_explained
+     * requires_test_info
+     * coverage_question
+    - Handoff FROM Test:
+     * test_documentation_needed
+     * coverage_guide_needed
+     * validation_docs_needed
+
+## Mode Triggers
+code:
+  - condition: implementation_needed
+  - condition: code_modification_needed
+  - condition: refactoring_required
+
+architect:
+  - condition: needs_architectural_changes
+  - condition: design_clarification_needed
+  - condition: pattern_violation_found
+
+test:
+  - condition: needs_test_plan
+  - condition: requires_test_review
+  - condition: coverage_goals_undefined
+
+debug:
+  - condition: architectural_issue_detected
+  - condition: design_flaw_detected
+  - condition: performance_problem_found
+
+ask:
+  - condition: needs_explanation
+  - condition: requires_clarification
+  - condition: documentation_needed
