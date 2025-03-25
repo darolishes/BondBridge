@@ -1,0 +1,4 @@
+.vscode
+/memory-bank
+.rooignore
+app/node_modules
