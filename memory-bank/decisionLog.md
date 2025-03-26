@@ -1,269 +1,64 @@
 # Decision Log
 
-Version: 1.3.0
-Last Updated: 2025-03-26 15:38:00
-Status: 🟢 Active
-Related Files: productContext.md, systemPatterns.md, technical-debt.md
+Version: 2.0.0
+Letzte Aktualisierung: 2025-03-27 15:00:00
+Status: 🟢 Aktiv
 
-## Architecture Decisions 🏗️
+## MVP-Architekturentscheidungen 🏗️
 
-### Feature-Based Folder Structure
+| Entscheidung                        | Status | Begründung                                               | Alternativen                           | Risiken                                      |
+| ----------------------------------- | ------ | -------------------------------------------------------- | -------------------------------------- | -------------------------------------------- |
+| **Einfaches State Management**      | ✅     | Geringere Komplexität, schnellere Implementierung        | Redux Toolkit, Context API, MobX       | Skalierbarkeit bei größeren Datenmengen      |
+| **Feature-basierte Ordnerstruktur** | ✅     | Bessere Codeorganisation, einfachere Feature-Isolation   | Typ-basierte Organisation              | Anfänglicher Strukturierungsaufwand          |
+| **React Native mit Expo**           | ✅     | Schnelle Entwicklung, Cross-Platform-Support             | Flutter, native Entwicklung            | Expo-Limitierungen                           |
+| **Externe Kartenset-Integration**   | ✅     | Benutzerfreundliche Erweiterbarkeit, Community-Potenzial | Nur vorinstallierte Sets, In-App-Käufe | Dateisystem-Zugriff, Validierungskomplexität |
 
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Better code organization
-  - Improved developer experience
-  - Easier feature isolation
-- Implementation:
-  - Group related components, screens, and logic by feature
-  - Shared utilities in common folder
-  - Feature-specific types and constants
-- Alternatives Considered:
-  - Type-based organization (components, screens, etc.)
-  - Domain-driven design
-- Risks:
-  - Initial refactoring effort
-  - Potential duplication of code
+## UI/UX-Entscheidungen für MVP 🎨
 
-### React Native with Expo
+| Entscheidung               | Status | Begründung                                                      | Alternativen               | Risiken                                  |
+| -------------------------- | ------ | --------------------------------------------------------------- | -------------------------- | ---------------------------------------- |
+| **Einfache Kartenansicht** | ✅     | Fokus auf Kernfunktionalität, schnellere Umsetzung              | Komplexe Swipe-Animationen | Einfachere Benutzererfahrung             |
+| **Kategoriefilter**        | ✅     | Grundlegende Filterfunktionalität für bessere Benutzererfahrung | Tag-basierte Filterung     | Komplexität bei vielen Kategorien        |
+| **Einfache Navigation**    | ✅     | Intuitive Bedienung mit minimaler Lernkurve                     | Komplexe Gestenerkennung   | Eingeschränkte Interaktionsmöglichkeiten |
 
-- Date: 2025-03-25
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Rapid development capabilities
-  - Cross-platform support
-  - Strong community and ecosystem
-- Alternatives Considered:
-  - Flutter
-  - Native development
-- Risks:
-  - Expo limitations
-  - Native module integration complexity
+## Technologieentscheidungen für MVP 💻
 
-### Redux Toolkit with RTK Query
+| Entscheidung               | Status | Begründung                                      | Alternativen             | Risiken                           |
+| -------------------------- | ------ | ----------------------------------------------- | ------------------------ | --------------------------------- |
+| **Grundlegende Animation** | ✅     | Funktionale Swipe-Mechanik ohne Überkomplexität | Reanimated, Animated API | Einfachere visuelle Erfahrung     |
+| **AsyncStorage**           | ✅     | Einfache Offline-Unterstützung                  | SQLite, Realm            | Begrenzter Speicherplatz          |
+| **React Navigation**       | ✅     | Einfache Integration, gute Dokumentation        | React Native Navigation  | Einfachere Navigationsmuster      |
+| **react-native-fs**        | ✅     | Zugriff auf Dateisystem für Kartenset-Import    | Expo FileSystem          | Plattformspezifische Unterschiede |
 
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Predictable state management
-  - Built-in dev tools and middleware
-  - TypeScript support
-  - Simplified data fetching with RTK Query
-- Implementation:
-  - Redux Persist for offline state
-  - Selective persistence for performance
-  - RTK Query for potential future API integration
-- Alternatives Considered:
-  - MobX
-  - Context API only
-  - Zustand
-- Risks:
-  - Learning curve for new developers
-  - Potential over-engineering for simple states
+## Produktentscheidungen für MVP 🎯
 
-### AsyncStorage with Redux Persist
+| Entscheidung            | Status | Begründung                                  | Alternativen                   | Risiken                 |
+| ----------------------- | ------ | ------------------------------------------- | ------------------------------ | ----------------------- |
+| **6 Karten-Kategorien** | ✅     | Ausgewogene Themenabdeckung                 | Feinere Kategorien, Tag-System | Balance-Probleme        |
+| **Externe Kartensets**  | ✅     | Benutzergenerierte Inhalte, Erweiterbarkeit | Nur vorinstallierte Inhalte    | Validierungskomplexität |
 
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: Medium
-- Rationale:
-  - Simple key-value storage
-  - Cross-platform compatibility
-  - Async operations support
-  - Seamless Redux integration
-- Implementation:
-  - Persist entire store or selected slices
-  - Rehydration strategies for startup
-  - Migration handling for updates
-- Alternatives Considered:
-  - SQLite
-  - Realm
-  - MMKV Storage
-- Risks:
-  - Storage size limitations
-  - Complex query limitations
-  - Migration complexity
+## Verschobene Entscheidungen (Post-MVP) 🔄
 
-### Automatic CardSet Loading vs UI Import/Export
+Die folgenden Entscheidungen wurden bewusst für spätere Projektphasen zurückgestellt:
 
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Simplifies app UI by removing import/export screens
-  - Better separation of concerns
-  - Enhanced security through stricter validation
-  - Easier batch importing of card sets
-- Implementation:
-  - react-native-fs for filesystem access
-  - App-specific directory for card sets
-  - Automatic scanning and validation
-  - JSON schema validation
-- Alternatives Considered:
-  - In-app UI for import/export
-  - Cloud-based synchronization
-  - Document picker integration
-- Risks:
-  - User learning curve for external file management
-  - OS-specific filesystem access limitations
-  - Security concerns with external files
+1. **Redux Toolkit mit Entity Adapter** - Komplexere Lösung für größere Datenmengen
+2. **Erweiterte Animationen** - Visuelle Verbesserungen nach Kernfunktionalität
+3. **Zod für Schema-Validierung** - Fortgeschrittene Validierungsmechanismen
+4. **Dark Mode** - UI-Verbesserung nach Kernfunktionalität
+5. **Favoritensystem** - Zusätzliche Funktion für spätere Phasen
 
-### Conversation Card Data Model
+## State Management-Entscheidung ✅ (2025-03-27)
 
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Comprehensive data structure for conversation cards
-  - Support for various difficulty levels
-  - Categorization capabilities
-  - Follow-up questions support
-- Implementation:
-  - TypeScript interfaces for type safety
-  - Card categories as union type
-  - Support for metadata like seen status and favorites
-- Alternatives Considered:
-  - Simpler model without follow-up questions
-  - External schema validation (Zod)
-- Risks:
-  - Migration complexity for future changes
-  - Performance with large datasets
+**Entscheidung:** Globale State-Verwaltung der Filterlogik
 
-## UI/UX Decisions 🎨
+**Begründung:**
 
-### Custom Card Animation System
+- Gewährleistet konsistente Filterung über alle Komponenten
+- Ermöglicht zentrale Validierungslogik
+- Vereinfacht zukünftige Erweiterungen
 
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Fine-grained control over animations
-  - Optimized performance
-  - Unique user experience
-- Implementation:
-  - React Native Reanimated 3
-  - Gesture Handler for swipe detection
-  - Worklet-based animation logic
-- Alternatives Considered:
-  - Third-party card swiper libraries
-  - Basic Animated API
-- Risks:
-  - Implementation complexity
-  - Performance on low-end devices
+**Implementierung:**
 
-### Single Card View vs Card List
-
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Better focus on individual conversation prompts
-  - More immersive experience
-  - Alignment with project brief requirements
-  - Tinder-like swiping mechanism familiar to users
-- Implementation:
-  - CardDeck component showing current and next card
-  - Swipe gestures for navigation
-  - Visual cues for swipe direction
-- Alternatives Considered:
-  - List-based card view with tapping
-  - Grid layout for multiple cards
-- Risks:
-  - More complex animation requirements
-  - Potentially higher memory usage
-
-### Category Filter System
-
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: Medium
-- Rationale:
-  - Allows targeting specific conversation topics
-  - Enhances discovery
-  - Prevents repetitive content
-- Implementation:
-  - Filter panel with toggleable category options
-  - Visual distinction between categories
-  - Redux state management for filter persistence
-- Alternatives Considered:
-  - Tag-based filtering
-  - Search functionality only
-- Risks:
-  - UI complexity
-  - Performance with many filters applied
-
-### Difficulty Level Visualization
-
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: Medium
-- Rationale:
-  - Clear indication of conversation depth
-  - Progressive difficulty for couples
-  - Visual feedback for challenge level
-- Implementation:
-  - 1-5 scale visualized as dots or stars
-  - Color coding for quick recognition
-  - Filter by difficulty level
-- Alternatives Considered:
-  - Text-only difficulty indicators
-  - Hidden difficulty levels
-- Risks:
-  - Subjective nature of difficulty assessment
-  - Filtering may limit content variety
-
-### Minimalist Design with Dark Mode
-
-- Date: 2025-03-25
-- Status: ✅ Approved
-- Impact: Medium
-- Rationale:
-  - Better user experience
-  - Reduced eye strain
-  - Modern aesthetic
-- Implementation:
-  - Theme system with CSS-in-JS
-  - System theme detection
-  - Manual theme toggle
-  - Theme stored in Redux
-
-### Swipe Gestures as Primary Interaction
-
-- Date: 2025-03-25
-- Status: ✅ Approved
-- Impact: High
-- Rationale:
-  - Natural mobile interaction
-  - Familiar to users
-  - Efficient navigation
-- Implementation:
-  - React Native Gesture Handler
-  - Custom animation system
-  - Haptic feedback
-  - Optimistic UI updates
-
-## Performance Decisions 🚀
-
-### Card Stack Memory Management
-
-- Date: 2025-03-26
-- Status: ✅ Approved
-- Impact: Medium
-- Rationale:
-  - Efficient memory usage for large card sets
-  - Smooth animations even with complex cards
-  - Predictable performance across devices
-- Implementation:
-  - Limit visible cards to current and next
-  - Load cards on demand from Redux store
-  - Recycle card components
-- Alternatives Considered:
-  - Showing more cards in stack
-  - Pre-loading all cards
-- Risks:
-  - Potential flash of content on slow devices
-  - Animation complexity
+- Nutzung von React Context API
+- Zustandscontainer in `src/store/slices/filters.ts`
+- Integration mit bestehender Storage-Logik
