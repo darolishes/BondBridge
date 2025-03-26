@@ -1,7 +1,7 @@
 # BondBridge Memory Bank
 
 Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 15:00:00
+Letzte Aktualisierung: 2025-03-28 12:00:00
 Status: 🟢 Aktiv
 
 ## Überblick 📖
@@ -18,6 +18,27 @@ Dokumentation für die BondBridge App — eine mobile Anwendung für Gesprächsk
 | `userStories.md`        | User Stories mit Akzeptanzkriterien  |
 | `systemPatterns.md`     | Architekturmuster (für Entwickler)   |
 | `uiPrinciples.md`       | Design-Richtlinien (für Entwickler)  |
+
+## Detaillierte Entwicklungsdokumentation
+
+Die Entwicklungsdokumentation ist in zwei Bereiche aufgeteilt:
+
+1. **Memory Bank** (dieses Verzeichnis): Enthält Zusammenfassungen und Überblicke für schnellen Zugriff
+2. **.ai Verzeichnis**: Enthält detaillierte User Stories und Epics in der folgenden Struktur:
+
+```
+.ai/stories/
+  ├── epic-1/ (User Onboarding & Profile)
+  │   ├── story-1.md (Welcome Experience)
+  ├── epic-2/ (Core Conversation Cards Functionality)
+  │   ├── story-1.md (Card Component)
+  │   ├── story-2.md (Card Navigation)
+  │   ├── story-3.md (Category Filtering)
+  ├── epic-3/ (Conversation Progress Tracking)
+  │   ├── story-2.md (Favorite Cards)
+  └── epic-4/ (External Card Set Integration)
+      ├── story-1.md (Card Set Import)
+```
 
 ## Kern-Features (MVP) ⭐
 
@@ -37,7 +58,12 @@ src/
 │   │   ├── screens/     # Bildschirme
 │   │   └── services/    # Kartenset-Integration
 ├── navigation/          # App-Navigation
-└── theme/               # Einfaches Styling
+└── theme/               # Modulares Styling-System
+    ├── constants/       # Tokens (Farben, Typografie, etc.)
+    ├── hooks.ts         # Theme-Hooks (useTheme, etc.)
+    ├── types.ts         # Typdefinitionen
+    ├── themes.ts        # Theme-Definitionen
+    └── ThemeProvider.tsx # Context-Provider
 ```
 
 ## Eigene Kartensets erstellen (Benutzeranleitung) 🧩
