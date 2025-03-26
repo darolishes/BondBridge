@@ -1,7 +1,7 @@
 # Aktiver Kontext
 
 Version: 2.0.0
-Letzte Aktualisierung: 2025-03-28 12:00:00
+Letzte Aktualisierung: 2025-03-30 10:00:00
 Status: 🟢 Aktiv
 
 ## Aktueller Fokus 🎯
@@ -30,8 +30,8 @@ Detaillierte User Stories sind im `.ai/stories/` Verzeichnis verfügbar:
 
 1. **State Management**
 
-   - Effiziente Struktur für Kartenverwaltung
-   - Grundlegende Filter-Operationen
+   - ✅ Effiziente Struktur für Kartenverwaltung
+   - ✅ Grundlegende Filter-Operationen
 
 2. **Kartenansicht**
 
@@ -54,21 +54,28 @@ Detaillierte User Stories sind im `.ai/stories/` Verzeichnis verfügbar:
   - Verbesserte Typendefinitionen
   - Zentralisierte Theme-Hooks
   - Vereinfachter ThemeProvider
+- Einfache Card-Komponente
+  - Modulare Unterteilung in CategoryBadge, QuestionText, DifficultyIndicator und FollowUpQuestions
+  - Accessibility-Unterstützung
+  - Performance-Optimierung mit React.memo
+- State Management
+  - Redux Store mit Slices (Cards, Filters, Settings)
+  - Persistenz mit AsyncStorage
+  - Typed Custom Hooks für Komponenten
+  - Filter-Funktionalität
 
 ### In Bearbeitung 🔄
 
 #### MVP-Komponenten
 
-- Einfache Card-Komponente (50%)
 - Grundlegende Swipe-Funktion (15%)
-- Basis State Management (45%)
+- Kartennavigation (80%)
 
 ### Nächste Schritte 📋
 
-1. Fertigstellung der Card-Komponente (funktional ohne komplexe Animationen)
-2. Einfache Swipe-Funktionalität
-3. Grundlegende State-Verwaltung
-4. Integration externer Kartensets (Basisfunktion)
+1. Einfache Swipe-Funktionalität implementieren
+2. Integration externer Kartensets (Basisfunktion)
+3. Unit-Tests für Card-Komponenten erstellen
 
 ## Risiken ⚠️
 
@@ -91,3 +98,33 @@ Detaillierte User Stories sind im `.ai/stories/` Verzeichnis verfügbar:
 - **Imports**: Alle Komponenten importieren Theme-Hooks aus "@theme/hooks"
 
 - **Vorteile**: Klare Verantwortlichkeiten, Single Source of Truth, Typensicherheit, einfache Erweiterbarkeit
+
+### Card-Komponenten-System
+
+- **Struktur**: Modular aufgeteilt in Unterkomponenten:
+
+  - `Card.tsx`: Hauptkomponente, die alle Unterkomponenten integriert
+  - `CategoryBadge.tsx`: Anzeige der Kartenkategorie mit passender Farbkodierung
+  - `QuestionText.tsx`: Hauptfrage mit richtiger Typografie
+  - `DifficultyIndicator.tsx`: Anzeige des Schwierigkeitsgrades (1-5 Sterne)
+  - `FollowUpQuestions.tsx`: Optionale Folgefragen mit Aufzählungszeichen
+
+- **Integration**: CardScreen demonstriert die Verwendung des Card-Systems
+
+### State Management System
+
+- **Struktur**: Redux Toolkit mit modularen Slices:
+
+  - `store/`: Zentrales Store-Verzeichnis
+  - `slices/`: Redux Slices (Cards, Filters, Settings)
+  - `hooks.ts`: Typed Custom Hooks für Redux
+  - `providers/`: Redux Provider-Komponenten
+
+- **Persistenz**: Redux Persist mit AsyncStorage
+
+- **Features**:
+  - Effiziente Verwaltung von Karten und Kartensets
+  - Typsicherheit durch TypeScript
+  - Optimierte Selektoren für Performance
+  - Custom Hooks für einfache Komponenten-Integration
+  - Filter-Funktionalität für Kategorien und Suchbegriffe

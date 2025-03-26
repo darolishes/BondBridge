@@ -1,7 +1,16 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, SafeAreaView } from "react-native";
+import React, { useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  ActivityIndicator,
+} from "react-native";
 import { useTheme } from "@theme/hooks";
 import Card from "../components/Card";
+import { useAppDispatch } from "@store/hooks";
+import { useCards } from "../hooks/useCards";
+import { addCard } from "@store/slices/cardsSlice";
 import { Card as CardType } from "../types";
 
 /**
@@ -9,61 +18,85 @@ import { Card as CardType } from "../types";
  */
 const CardScreen: React.FC = () => {
   const { theme } = useTheme();
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const dispatch = useAppDispatch();
 
-  // Sample cards for development/testing
-  const sampleCards: CardType[] = [
-    {
-      id: "1",
-      question: "Was war dein schönstes Erlebnis in der letzten Woche?",
-      category: "icebreakers",
-      difficulty: 1,
-      created: new Date(),
-    },
-    {
-      id: "2",
-      question: "Wenn du eine Sache an dir ändern könntest, was wäre das?",
-      category: "personality",
-      difficulty: 3,
-      followUpQuestions: [
-        "Warum möchtest du das ändern?",
-        "Wie würde diese Änderung dein Leben beeinflussen?",
-      ],
-      created: new Date(),
-    },
-    {
-      id: "3",
-      question: "Was ist deine tiefste Angst in unserer Beziehung?",
-      category: "deepThoughts",
-      difficulty: 5,
-      followUpQuestions: [
-        "Wann hast du diese Angst zum ersten Mal gespürt?",
-        "Was können wir gemeinsam tun, um diese Angst zu bewältigen?",
-      ],
-      created: new Date(),
-    },
-  ];
+  // Use our custom hooks for accessing card state
+  const {
+    activeCard,
+    filteredCards,
+    activeCardIndex,
+    cardCount,
+    goToNextCard,
+    goToPreviousCard,
+    canGoNext,
+    canGoPrevious,
+  } = useCards();
+
+  // Load sample cards on first render
+  useEffect(() => {
+    // Only add sample cards if there are none
+    if (filteredCards.length === 0) {
+      // Sample cards for development/testing
+      const sampleCards: CardType[] = [
+        {
+          id: "1",
+          question: "Was war dein schönstes Erlebnis in der letzten Woche?",
+          category: "icebreakers",
+          difficulty: 1,
+          created: new Date(),
+        },
+        {
+          id: "2",
+          question: "Wenn du eine Sache an dir ändern könntest, was wäre das?",
+          category: "personality",
+          difficulty: 3,
+          followUpQuestions: [
+            "Warum möchtest du das ändern?",
+            "Wie würde diese Änderung dein Leben beeinflussen?",
+          ],
+          created: new Date(),
+        },
+        {
+          id: "3",
+          question: "Was ist deine tiefste Angst in unserer Beziehung?",
+          category: "deepThoughts",
+          difficulty: 5,
+          followUpQuestions: [
+            "Wann hast du diese Angst zum ersten Mal gespürt?",
+            "Was können wir gemeinsam tun, um diese Angst zu bewältigen?",
+          ],
+          created: new Date(),
+        },
+      ];
+
+      // Add cards to store
+      sampleCards.forEach((card) => dispatch(addCard(card)));
+    }
+  }, [dispatch, filteredCards.length]);
 
   const handleSwipe = (direction: "left" | "right") => {
-    if (direction === "left" && currentCardIndex < sampleCards.length - 1) {
+    if (direction === "left" && canGoNext) {
       // Nächste Karte
-      setCurrentCardIndex(currentCardIndex + 1);
-    } else if (direction === "right" && currentCardIndex > 0) {
+      goToNextCard();
+    } else if (direction === "right" && canGoPrevious) {
       // Vorherige Karte
-      setCurrentCardIndex(currentCardIndex - 1);
+      goToPreviousCard();
     }
   };
 
   // Progress indicator (dots)
   const renderProgressDots = () => {
+    // Only show dots if we have cards
+    if (cardCount === 0) return null;
+
     return (
       <View style={styles.progressContainer}>
-        {sampleCards.map((_, index) => (
+        {Array.from({ length: cardCount }).map((_, index) => (
           <View
             key={index}
             style={[
               styles.progressDot,
-              index === currentCardIndex ? styles.activeDot : {},
+              index === activeCardIndex ? styles.activeDot : {},
             ]}
           />
         ))}
@@ -107,21 +140,42 @@ const CardScreen: React.FC = () => {
       fontSize: theme.typography.fontSizes.small,
       marginTop: theme.spacing.sm,
     },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    emptyStateText: {
+      color: theme.colors.textSecondary,
+      fontSize: theme.typography.fontSizes.medium,
+      textAlign: "center",
+      margin: theme.spacing.lg,
+    },
   });
+
+  // Loading state
+  if (cardCount === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <Text style={styles.emptyStateText}>Laden...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cardContainer}>
-        <Card
-          card={sampleCards[currentCardIndex]}
-          isActive={true}
-          onSwipe={handleSwipe}
-        />
+        {activeCard && (
+          <Card card={activeCard} isActive={true} onSwipe={handleSwipe} />
+        )}
       </View>
 
       {renderProgressDots()}
       <Text style={styles.counterText}>
-        {currentCardIndex + 1} / {sampleCards.length}
+        {activeCardIndex + 1} / {cardCount}
       </Text>
     </SafeAreaView>
   );
