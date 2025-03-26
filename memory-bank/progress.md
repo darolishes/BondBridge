@@ -1,7 +1,7 @@
 # Progress Tracking
 
-Version: 1.1.0
-Last Updated: 2025-03-26 10:26:42
+Version: 1.2.0
+Last Updated: 2025-03-26 13:50:30
 Status: 🟢 Active
 Related Files: activeContext.md, decisionLog.md
 
@@ -18,17 +18,17 @@ Related Files: activeContext.md, decisionLog.md
 
 ### Phase 2: Core Development
 
-- 🔄 Feature-based folder restructuring (20%)
-- 🔄 Basic navigation (5%)
-- 🔄 Card component development (10%)
+- ✅ Feature-based folder restructuring (100%)
+- ✅ Basic navigation (100%)
+- 🔄 Card component development (25%)
 - 🔄 State management implementation (15%)
-- 📋 Theme system setup (0%)
+- ✅ Theme system setup (100%)
 
 ### Phase 3: Features
 
-- 📋 Card swiping mechanism (0%)
+- 🔄 Card swiping mechanism (10%)
 - 📋 Category management (0%)
-- 📋 Settings implementation (0%)
+- 🔄 Settings implementation (15%)
 - 📋 Offline storage (0%)
 
 ### Phase 4: Polishing & Testing
@@ -50,11 +50,20 @@ Related Files: activeContext.md, decisionLog.md
 
 ### Progress
 
-- Week 1: 15% complete
+- Week 1: 45% complete
 - Remaining time: 1.5 weeks
 - On track: ✅ Yes
 
 ## Completed Tasks ✅
+
+### Sprint 2 (March 26 - April 2, 2025)
+
+- ✅ Implement feature-based folder structure
+- ✅ Create navigation framework with TabNavigator
+- ✅ Implement CardStack, SettingsStack, and ImportExportStack
+- ✅ Implement theme system with dark mode support
+- ✅ Fix useTheme import paths
+- ✅ Create basic Card components
 
 ### Sprint 1 (March 19-26, 2025)
 
@@ -70,11 +79,11 @@ Related Files: activeContext.md, decisionLog.md
 
 ### High Priority
 
-1. Refactor to feature-based folder structure
+1. Implement Card detail screens
 2. Set up Redux store with AsyncStorage persistence
-3. Implement navigation framework
-4. Create card component prototypes
-5. Implement theming system with dark mode support
+3. Optimize navigation transitions
+4. Create advanced card component with animations
+5. Add user settings screens
 
 ### Medium Priority
 
@@ -88,4 +97,4 @@ Related Files: activeContext.md, decisionLog.md
 
 - Performance concerns for complex card animations on low-end devices
 - Type safety across the Redux store with persistence
-- Navigation integration with theme system
+- Integration of complex card components with the theme system

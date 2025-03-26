@@ -1,18 +1,28 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import ThemedCardItem from "@features/card-management/components/ThemedCardItem";
-import { useTheme } from "@theme/useTheme";
+import { useTheme } from "@theme/ThemeProvider";
+import { createThemedStyles } from "@theme/useTheme";
 import { Theme } from "@theme/themes";
+import { CardItemProps } from "@features/card-management/types";
+import type { ScreenProps } from "@navigation/types";
 
 /**
- * Zeigt eine Liste von Karten im gewählten Theme an
+ * CardListScreen
+ * --------------
+ * Hauptbildschirm zur Anzeige von Kartenlisten mit Filtermöglichkeiten.
+ * Zeigt Karten in einem scrollbaren Container an.
+ *
+ * @component
+ * @screen
+ * @feature card-management
  */
-const CardListScreen: React.FC = () => {
+const CardListScreen: React.FC<ScreenProps["CardList"]> = () => {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const styles = useStyles();
 
   // Beispiel-Karten
-  const sampleCards = [
+  const sampleCards: CardItemProps[] = [
     {
       question: "Wie heißt die Hauptstadt von Deutschland?",
       category: "Geographie",
@@ -23,7 +33,7 @@ const CardListScreen: React.FC = () => {
       question: "Was ist das chemische Symbol für Gold?",
       category: "Chemie",
       difficulty: "medium",
-      followUp: null,
+      followUp: undefined,
     },
     {
       question:
@@ -52,23 +62,24 @@ const CardListScreen: React.FC = () => {
   );
 };
 
-const createStyles = (theme: Theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-      padding: theme.spacing.md,
-    },
-    title: {
-      fontSize: theme.typography.fontSizes.xlarge,
-      fontWeight: "700",
-      color: theme.colors.text,
-      marginBottom: theme.spacing.lg,
-      textAlign: "center",
-    },
-    scrollContainer: {
-      flex: 1,
-    },
-  });
+const createStyles = (theme: Theme) => ({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.md,
+  },
+  title: {
+    fontSize: theme.typography.fontSizes.xlarge,
+    fontWeight: "700" as const,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.lg,
+    textAlign: "center" as const,
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+});
+
+const useStyles = createThemedStyles(createStyles);
 
 export default CardListScreen;

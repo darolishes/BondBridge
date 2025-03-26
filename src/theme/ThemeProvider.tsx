@@ -2,12 +2,10 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { lightTheme, darkTheme, Theme } from "./themes";
 import { useColorScheme } from "react-native";
+import { ThemeType } from "@common/types";
 
 // Konstante für den AsyncStorage-Schlüssel
 const THEME_STORAGE_KEY = "@BondBridge:theme";
-
-// Unterstützte Theme-Typen
-export type ThemeType = "light" | "dark" | "system";
 
 // Context für das Theme
 interface ThemeContextType {
