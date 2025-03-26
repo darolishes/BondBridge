@@ -1,7 +1,7 @@
 # System Patterns
 
-Version: 1.1.0
-Last Updated: 2025-03-26 10:22:18
+Version: 1.2.0
+Last Updated: 2025-03-26 11:15:30
 Status: 🟢 Active
 Related Files: productContext.md, decisionLog.md, technical-debt.md
 
@@ -9,128 +9,150 @@ Related Files: productContext.md, decisionLog.md, technical-debt.md
 
 ### Components
 
-- ✅ PascalCase for component names (e.g., `CardSwiper`)
-- ✅ Props interfaces: `ComponentNameProps` (e.g., `CardSwiperProps`)
-- ✅ Styles: `useStyles.ts` hook in component directory
-- ✅ Component index files for cleaner imports
+- ✅ PascalCase für Komponenten und Dateien (z.B. `CardItem`, `CategorySelector`)
+- ✅ Props-Interfaces: `ComponentNameProps` (z.B. `CardItemProps`)
+- ✅ Descriptive Names: Spezifisch und aussagekräftig (z.B. `ProgressIndicator` statt `Progress`)
+- ✅ Component-Index-Dateien für saubere Imports
 
 ### Files
 
-- ✅ kebab-case for file names (e.g., `card-swiper.tsx`)
-- ✅ Feature-based directory names (e.g., `card-management/`)
-- ✅ Test files: `*.test.tsx` or `*.spec.tsx`
-- ✅ Types: `*.types.ts`
+- ✅ PascalCase für Komponenten-Dateien (z.B. `CardItem.tsx`)
+- ✅ camelCase für Utility-Dateien (z.B. `formatData.ts`)
+- ✅ kebab-case für Verzeichnisnamen (z.B. `card-management/`)
+- ✅ Test-Dateien: `*.test.tsx` oder `*.spec.tsx`
+- ✅ Typen: `index.ts` in einem `types`-Verzeichnis
 
 ### Functions
 
-- ✅ camelCase for function names (e.g., `handleSwipe`)
-- ✅ Event handlers: `handle*` prefix (e.g., `handleSwipe`)
-- ✅ Custom hooks: `use*` prefix (e.g., `useCardSwipe`)
-- ✅ Async functions with Promise return type annotation
+- ✅ camelCase für Funktionsnamen (z.B. `handleSwipe`)
+- ✅ Event-Handler: `handle*`-Präfix (z.B. `handleSwipe`)
+- ✅ Custom Hooks: `use*`-Präfix (z.B. `useCardSwipe`)
+- ✅ Async-Funktionen mit Promise-Return-Type-Annotation
 
 ## Project Structure 📁
 
 ```
 /src
-├── features/            # Feature-based organization
-│   ├── cards/           # Card feature
-│   │   ├── components/  # Card-specific components
-│   │   ├── screens/     # Card screens
-│   │   ├── hooks/       # Card-specific hooks
-│   │   ├── types/       # Card type definitions
-│   │   ├── utils/       # Card utility functions
-│   │   └── index.ts     # Feature exports
-│   ├── categories/      # Categories feature
-│   ├── settings/        # Settings feature
-│   └── auth/            # Authentication feature (future)
-├── common/              # Shared resources
-│   ├── components/      # Shared UI components
-│   ├── hooks/           # Shared custom hooks
-│   ├── utils/           # Shared utility functions
-│   └── types/           # Shared type definitions
-├── navigation/          # Navigation configuration
-├── store/               # Redux store setup
-│   ├── slices/          # Redux slices
-│   ├── middleware/      # Custom middleware
-│   └── hooks.ts         # Typed hooks for store access
-├── theme/               # Theme configuration
-│   ├── index.ts         # Theme exports
-│   ├── lightTheme.ts    # Light theme definition
-│   └── darkTheme.ts     # Dark theme definition
-└── app.tsx              # Main application component
+├── features/                # Feature-basierte Organisation
+│   ├── card-management/     # Karten-Feature
+│   │   ├── components/      # Kartenspezifische Komponenten
+│   │   ├── screens/         # Kartenbildschirme
+│   │   ├── hooks/           # Kartenspezifische Hooks
+│   │   ├── types/           # Kartentypendefinitionen
+│   │   ├── utils/           # Kartennutzfunktionen
+│   │   ├── data/            # Kartendaten
+│   │   └── index.ts         # Feature-Exporte
+│   ├── data-import-export/  # Import/Export-Feature
+│   │   ├── components/      # Import/Export-Komponenten
+│   │   ├── screens/         # Import/Export-Bildschirme
+│   │   ├── hooks/           # Import/Export-Hooks
+│   │   ├── types/           # Import/Export-Typendefinitionen
+│   │   └── index.ts         # Feature-Exporte
+│   └── settings/            # Einstellungen-Feature (geplant)
+├── common/                  # Gemeinsam genutzte Ressourcen
+│   ├── components/          # Gemeinsame UI-Komponenten
+│   ├── hooks/               # Gemeinsame Hooks
+│   ├── utils/               # Gemeinsame Hilfsfunktionen
+│   ├── types/               # Gemeinsame Typendefinitionen
+│   └── index.ts             # Common-Exporte
+├── navigation/              # Navigationskonfiguration
+├── store/                   # Redux-Store-Setup
+│   ├── slices/              # Redux-Slices
+│   ├── middleware/          # Benutzerdefinierte Middleware
+│   └── hooks.ts             # Typisierte Hooks für Store-Zugriff
+├── theme/                   # Themenkonfiguration
+│   ├── index.ts             # Theme-Exporte
+│   ├── lightTheme.ts        # Helle Theme-Definition
+│   └── darkTheme.ts         # Dunkle Theme-Definition
+└── app.tsx                  # Haupt-App-Komponente
 ```
+
+## Feature-Based Architecture 🏗️
+
+### Feature-Module-Struktur
+
+- ✅ Selbstständige Features mit minimalen Abhängigkeiten
+- ✅ Klare öffentliche API über index.ts
+- ✅ Interne Implementierungsdetails versteckt
+- ✅ Typen pro Feature definiert und exportiert
+
+### Import-Muster
+
+- ✅ Feature-Level-Imports (z.B. `import { CardItem } from '@features/card-management'`)
+- ✅ Pfadaliase für saubere Imports
+- ✅ Vermeidung tiefer relativer Pfade
 
 ## Coding Standards 📚
 
 ### TypeScript
 
-- ✅ Strict mode enabled
-- ✅ Explicit return types on functions
-- ✅ Prefer type over interface for consistency
-- ✅ Proper error handling with typed errors
-- ✅ Zod for runtime type validation
+- ✅ Strict Mode aktiviert
+- ✅ Explizite Rückgabetypen für Funktionen
+- ✅ Einheitliche Typdefinitionen in `types`-Verzeichnissen
+- ✅ Korrekte Fehlerbehandlung mit typisierten Fehlern
+- ✅ Zod für Laufzeit-Typvalidierung
 
-### React Patterns
+### React-Muster
 
-- ✅ Functional components with hooks
-- ✅ Custom hooks for shared logic
-- ✅ Memoization with useMemo and useCallback
-- ✅ Component composition over inheritance
-- ✅ Avoid inline styling
+- ✅ Funktionale Komponenten mit Hooks
+- ✅ Benutzerdefinierte Hooks für gemeinsame Logik
+- ✅ Memoization mit useMemo und useCallback
+- ✅ Komponentenkomposition statt Vererbung
+- ✅ Vermeidung von Inline-Styling zugunsten von Theme-System
 
 ### Testing
 
 - ✅ Jest + React Testing Library
-- ✅ Component tests required
-- ✅ Minimum 80% coverage
-- ✅ E2E with Detox
-- ✅ Custom testing hooks for common patterns
+- ✅ Komponentententests erforderlich
+- ✅ Minimum 80% Abdeckung
+- ✅ E2E mit Detox
+- ✅ Benutzerdefinierte Testing-Hooks für häufige Muster
 
-### Code Quality
+### Code-Qualität
 
 - ✅ ESLint + Prettier
-- ✅ Husky pre-commit hooks
-- ✅ SonarQube integration (planned)
-- ✅ Regular dependency updates
-- ✅ Import sorting with eslint-plugin-import
+- ✅ Husky Pre-Commit-Hooks
+- ✅ SonarQube-Integration (geplant)
+- ✅ Regelmäßige Dependency-Updates
+- ✅ Import-Sortierung mit eslint-plugin-import
 
 ## State Management Patterns 🔄
 
-- ✅ Redux Toolkit for global state
+- ✅ Redux Toolkit für globalen Zustand
 
-  - Slices for feature-based state
-  - RTK Query for API caching (future)
-  - Selective state persistence
+  - Slices für Feature-basierten Zustand
+  - RTK Query für API-Caching (Zukunft)
+  - Selektive Zustandspersistenz
 
-- ✅ React Query for remote data
+- ✅ React Query für Remote-Daten
 
-  - Cached responses
-  - Optimistic updates
-  - Automatic retries
+  - Cached Responses
+  - Optimistische Updates
+  - Automatische Wiederholungen
 
-- ✅ Local state
+- ✅ Lokaler Zustand
 
-  - useState for simple UI state
-  - useReducer for complex component state
+  - useState für einfachen UI-Zustand
+  - useReducer für komplexen Komponentenzustand
 
-- ✅ Persistence strategy
-  - Redux-persist for global state
-  - AsyncStorage for app settings
-  - Migration strategies for data schema changes
+- ✅ Persistenzstrategie
+  - Redux-persist für globalen Zustand
+  - AsyncStorage für App-Einstellungen
+  - Migrationsstrategien für Datenschemaänderungen
 
 ## Animation and Gesture Patterns 🎭
 
-- ✅ React Native Reanimated for performance
+- ✅ React Native Reanimated für Performance
 
-  - Worklets for UI thread animations
-  - Shared values for animation state
+  - Worklets für UI-Thread-Animationen
+  - Shared Values für Animationszustand
 
-- ✅ Gesture Handler for interactions
+- ✅ Gesture Handler für Interaktionen
 
-  - Pan handlers for swipe
-  - Tap handlers for press
-  - Composition for complex gestures
+  - Pan-Handler für Swipe
+  - Tap-Handler für Press
+  - Komposition für komplexe Gesten
 
-- ✅ Layout Animation for simple transitions
-  - Automatic layout animations
-  - Coordinated transitions
+- ✅ Layout Animation für einfache Übergänge
+  - Automatische Layout-Animationen
+  - Koordinierte Übergänge

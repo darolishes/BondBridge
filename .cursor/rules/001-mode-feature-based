@@ -1,0 +1,218 @@
+mode: feature-based
+
+identity:
+  name: Feature-Based
+  description: "Organizes and maintains code in a feature-based architecture, ensuring components and logic are grouped by functionality rather than technical type."
+
+guidelines:
+  folder_structure: |
+    /src
+    ├── features/            # Feature-based organization
+    │   ├── feature-name/    # Feature module (kebab-case)
+    │   │   ├── components/  # Feature-specific components
+    │   │   ├── screens/     # Feature screens
+    │   │   ├── hooks/       # Feature-specific hooks
+    │   │   ├── types/       # Feature type definitions
+    │   │   ├── utils/       # Feature utility functions
+    │   │   ├── store/       # Feature state management
+    │   │   └── index.ts     # Feature exports
+    ├── common/              # Shared resources
+    │   ├── components/      # Shared UI components
+    │   ├── hooks/           # Shared custom hooks
+    │   ├── utils/           # Shared utility functions
+    │   └── types/           # Shared type definitions
+    ├── navigation/          # Navigation configuration
+    ├── store/               # Redux store setup
+    ├── theme/               # Theme configuration
+    └── app.tsx              # Main application component
+
+  naming_conventions: |
+    1. Components:
+       - PascalCase for component names and files
+       - Example: CardItem.tsx, CategorySelector.tsx
+
+    2. Hooks:
+       - camelCase with 'use' prefix
+       - Example: useCardSwipe.ts, useStorageState.ts
+
+    3. Utilities:
+       - camelCase for functions
+       - Descriptive prefixes when appropriate (format, parse, handle)
+       - Example: formatCardData.ts, parseImportData.ts
+
+    4. Types:
+       - PascalCase
+       - Suffix with 'Props' for component props
+       - Export from dedicated types files
+       - Example: CardItemProps, ImportOptions
+
+    5. Directories:
+       - kebab-case for feature directories
+       - Example: card-management, data-import-export
+
+    6. Index Files:
+       - Export all public API elements
+       - Use named exports for better import statements
+       - Example: export { CardItem } from './components/CardItem';
+
+  import_patterns: |
+    1. Import from feature modules:
+       ```typescript
+       // Good
+       import { CardItem, useCardSwipe } from '@features/card-management';
+
+       // Avoid
+       import CardItem from '@features/card-management/components/CardItem';
+       ```
+
+    2. Import from common modules:
+       ```typescript
+       // Good
+       import { useStorageState } from '@common/hooks';
+
+       // Avoid
+       import { useStorageState } from '@common/hooks/useStorageState';
+       ```
+
+    3. Absolute imports:
+       Set up path aliases in tsconfig.json:
+       ```json
+       {
+         "compilerOptions": {
+           "paths": {
+             "@features/*": ["src/features/*"],
+             "@common/*": ["src/common/*"],
+             "@store/*": ["src/store/*"],
+             "@theme/*": ["src/theme/*"],
+             "@navigation/*": ["src/navigation/*"],
+           }
+         }
+       }
+       ```
+
+  best_practices: |
+    1. Feature Cohesion:
+       - Each feature should be self-contained
+       - Features should expose a clear public API through index.ts
+       - Minimize dependencies between features
+
+    2. Type Safety:
+       - Define and export clear interfaces
+       - Use TypeScript generics for reusable components
+       - Maintain consistent typing across the application
+
+    3. State Management:
+       - Prefer local state for UI-only states
+       - Use Redux for shared application state
+       - Keep Redux slices organized by feature
+
+    4. Custom Hooks:
+       - Extract complex logic into hooks
+       - Name hooks with clear purpose
+       - Keep hooks focused on a single responsibility
+
+    5. Component Design:
+       - Keep components focused on presentation
+       - Extract business logic to hooks and utility functions
+       - Use composition over inheritance
+
+workflows:
+  creating_new_feature: |
+    1. Create the feature directory structure:
+       ```bash
+       mkdir -p src/features/feature-name/{components,screens,hooks,types,utils}
+       ```
+
+    2. Define types for the feature:
+       ```typescript
+       // src/features/feature-name/types/index.ts
+       export interface FeatureProps {
+         // Properties
+       }
+       ```
+
+    3. Create the feature's index file:
+       ```typescript
+       // src/features/feature-name/index.ts
+       export * from './types';
+       export { default as FeatureComponent } from './components/FeatureComponent';
+       ```
+
+    4. Register in navigation if needed
+
+    5. Set up feature state management if required
+
+  extending_existing_feature: |
+    1. Identify the feature to extend
+
+    2. Add new component/hook/utility following naming conventions
+
+    3. Update the feature's index.ts to export the new element
+
+    4. Update any types as needed
+
+    5. Integrate with existing feature components
+
+  debugging_guidelines: |
+    1. Component isolation:
+       - Test components in isolation
+       - Check if the issue is in the component or its data
+
+    2. State debugging:
+       - Use Redux DevTools for global state
+       - Check component local state with React DevTools
+
+    3. Performance:
+       - Use React Native Flipper for performance monitoring
+       - Check for unnecessary rerenders
+       - Verify memoization is used properly
+
+code_review_checklist:
+  - "Feature organization: Is the code in the correct feature module?"
+  - "Naming: Do files and components follow the conventions?"
+  - "Types: Are proper types defined and exported?"
+  - "Hooks: Is complex logic extracted to custom hooks?"
+  - "Imports: Are imports using the feature's public API?"
+  - "Dependencies: Are feature dependencies minimized?"
+  - "State: Is state managed at the appropriate level?"
+  - "Testing: Are components testable in isolation?"
+
+commands:
+  setup_project_aliases: |
+    1. Update tsconfig.json with path aliases:
+       ```json
+       {
+         "compilerOptions": {
+           "baseUrl": ".",
+           "paths": {
+             "@features/*": ["src/features/*"],
+             "@common/*": ["src/common/*"],
+             "@navigation/*": ["src/navigation/*"],
+             "@store/*": ["src/store/*"],
+             "@theme/*": ["src/theme/*"]
+           }
+         }
+       }
+       ```
+
+    2. Configure babel module resolver if needed:
+       ```javascript
+       // babel.config.js
+       module.exports = {
+         plugins: [
+           [
+             "module-resolver",
+             {
+               root: ["./"],
+               alias: {
+                 "@features": "./src/features",
+                 "@common": "./src/common",
+                 "@navigation": "./src/navigation",
+                 "@store": "./src/store",
+                 "@theme": "./src/theme"
+               }
+             }
+           ]
+         ]
+       };
+       ```

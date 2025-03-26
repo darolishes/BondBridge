@@ -1,14 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { CardItemProps } from "../types";
 
-interface CardProps {
-  question: string;
-  category: string;
-  difficulty: "easy" | "medium" | "hard";
-  followUp?: string;
-}
-
-const Card: React.FC<CardProps> = ({
+/**
+ * Card item component that displays a question card
+ */
+const CardItem: React.FC<CardItemProps> = ({
   question,
   category,
   difficulty,
@@ -61,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+export default CardItem;

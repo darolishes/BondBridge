@@ -1,13 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { CategorySelectorProps } from "../types";
 
-interface CategoryFilterProps {
-  categories: string[];
-  selectedCategory: string | null;
-  onSelectCategory: (category: string) => void;
-}
-
-const CategoryFilter: React.FC<CategoryFilterProps> = ({
+/**
+ * Category selector for filtering cards by category
+ */
+const CategorySelector: React.FC<CategorySelectorProps> = ({
   categories,
   selectedCategory,
   onSelectCategory,
@@ -63,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryFilter;
+export default CategorySelector;
