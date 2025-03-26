@@ -1,0 +1,79 @@
+---
+description: Maintain consistent styling based on BondBridge UI principles for colors, typography, and spacing
+globs: src/**/*.tsx, src/**/*.ts
+alwaysApply: false
+---
+
+# BondBridge UI Styling Standards
+
+## Context
+
+- When implementing UI components
+- When applying styles to components
+- When using colors, typography, or spacing
+- When implementing category-specific styling
+
+## Critical Rules
+
+- Follow the color palette defined in uiPrinciples.md
+- Use the system fonts specified in the document (San Francisco for iOS, Roboto for Android)
+- Apply the 8px grid system for all spacing (8px, 16px, 24px)
+- Use category-specific colors for category indicators
+- Ensure text components follow the defined typography scale (H1: 24px, H2: 20px, Body: 16px)
+- Maintain accessibility requirements (tap targets 44×44px minimum)
+- Keep styling consistent with the minimalist approach for MVP
+
+## Examples
+
+<example>
+// Correct implementation of category-specific styling
+const CategoryBadge = ({ category }: { category: CardCategory }) => {
+  const categoryColors = {
+    'icebreakers': '#5BC0EB',
+    'confessions': '#F44336',
+    'personality': '#9C27B0',
+    'deep-thoughts': '#3F51B5',
+    'intimacy': '#FF9800',
+    'growth': '#4CAF50'
+  };
+
+  return (
+    <View style={[styles.badge, { backgroundColor: categoryColors[category] }]}>
+      <Text style={styles.categoryText}>{category}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  badge: {
+    paddingVertical: 8, // Follows 8px grid
+    paddingHorizontal: 16, // Follows 8px grid
+    borderRadius: 4,
+  },
+  categoryText: {
+    fontSize: 12, // As per typography spec
+    fontWeight: '500',
+    color: '#FFFFFF',
+  },
+});
+</example>
+
+<example type="invalid">
+// Incorrect implementation with inconsistent spacing and colors
+const CategoryBadge = ({ category }: { category: CardCategory }) => {
+  let color;
+  if (category === 'icebreakers') color = 'lightblue'; // Wrong - use exact hex codes
+  else if (category === 'confessions') color = 'red'; // Wrong - use exact hex codes
+
+  return (
+    <View style={{
+      backgroundColor: color,
+      padding: 10, // Wrong - doesn't follow 8px grid
+      margin: 7, // Wrong - doesn't follow 8px grid
+      borderRadius: 5,
+    }}>
+      <Text style={{ fontSize: 11 }}>category</Text> // Wrong - doesn't follow typography spec
+    </View>
+  );
+};
+</example>
