@@ -1,7 +1,7 @@
 # Decision Log
 
-Version: 1.2.0
-Last Updated: 2025-03-26 14:45:45
+Version: 1.3.0
+Last Updated: 2025-03-26 15:38:00
 Status: 🟢 Active
 Related Files: productContext.md, systemPatterns.md, technical-debt.md
 
@@ -87,6 +87,30 @@ Related Files: productContext.md, systemPatterns.md, technical-debt.md
   - Storage size limitations
   - Complex query limitations
   - Migration complexity
+
+### Automatic CardSet Loading vs UI Import/Export
+
+- Date: 2025-03-26
+- Status: ✅ Approved
+- Impact: High
+- Rationale:
+  - Simplifies app UI by removing import/export screens
+  - Better separation of concerns
+  - Enhanced security through stricter validation
+  - Easier batch importing of card sets
+- Implementation:
+  - react-native-fs for filesystem access
+  - App-specific directory for card sets
+  - Automatic scanning and validation
+  - JSON schema validation
+- Alternatives Considered:
+  - In-app UI for import/export
+  - Cloud-based synchronization
+  - Document picker integration
+- Risks:
+  - User learning curve for external file management
+  - OS-specific filesystem access limitations
+  - Security concerns with external files
 
 ### Conversation Card Data Model
 

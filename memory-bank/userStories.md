@@ -1,7 +1,7 @@
 # User Stories
 
-Version: 1.1.0
-Last Updated: 2025-03-26 14:47:15
+Version: 1.2.0
+Last Updated: 2025-03-26 15:42:00
 Status: 🟢 Active
 
 ## High Priority ⚡
@@ -58,6 +58,24 @@ Status: 🟢 Active
   - Priority: 🔥 Critical
   - Story Points: 5
 
+### Automatic Card Set Loading
+
+- **US-202**: Als System möchte ich automatisch neue Kartensets aus einem speziellen Verzeichnis laden, um die App ohne UI-Interaktion zu erweitern.
+
+  - AC1: Die App erstellt ein spezielles Verzeichnis auf dem Gerät für Kartensets
+  - AC2: Das System erkennt JSON-Dateien im Kartenset-Verzeichnis automatisch
+  - AC3: Neue Kartensets werden validiert und bei gültiger Struktur integriert
+  - AC4: Integration erfolgt automatisch beim App-Start und in regelmäßigen Abständen
+  - Priority: 🔥 Critical
+  - Story Points: 8
+
+- **US-203**: Als Nutzer möchte ich informiert werden, wenn neue Kartensets erkannt und geladen wurden.
+  - AC1: Ein Hinweis wird angezeigt, wenn neue Sets gefunden wurden
+  - AC2: Die Anzahl neuer Karten wird angezeigt
+  - AC3: Die neuen Sets werden in der Kategorie-Auswahl hervorgehoben
+  - Priority: 🔆 High
+  - Story Points: 3
+
 ## Medium Priority 🔶
 
 - **US-301**: Als Nutzer möchte ich sehen können, welche Karten ich bereits gesehen habe.
@@ -85,28 +103,37 @@ Status: 🟢 Active
   - Story Points: 3
 
 - **US-304**: Als Nutzer möchte ich den Fortschritt durch die Kartensets sehen können.
+
   - AC1: Ein Fortschrittsbalken zeigt an, wie viele Karten bereits gesehen wurden
   - AC2: Der Fortschritt wird pro Kategorie angezeigt
   - AC3: Der Fortschritt wird gespeichert
   - Priority: 🔶 Medium
   - Story Points: 3
 
+- **US-305**: Als Entwickler möchte ich eine klare Dokumentation für das Format externer Kartensets haben.
+  - AC1: Die Dokumentation definiert das JSON-Schema klar und verständlich
+  - AC2: Beispiele für gültige Kartensets werden bereitgestellt
+  - AC3: Häufige Fehler und deren Behebung werden dokumentiert
+  - Priority: 🔶 Medium
+  - Story Points: 2
+
 ## Low Priority 🔽
 
-- **US-401**: Als Nutzer möchte ich eigene Kartensets über JSON importieren können.
+- **US-401**: Als System möchte ich fehlerhafte Kartensets protokollieren, um Benutzern Feedback zu geben.
 
-  - AC1: Import über einen JSON-Upload
-  - AC2: Validierung des JSON-Formats
-  - AC3: Fehlerbehandlung bei ungültigem Format
-  - Priority: 🔽 Low
-  - Story Points: 5
-
-- **US-402**: Als Nutzer möchte ich meine Favoriten exportieren können.
-
-  - AC1: Export als JSON oder Text
-  - AC2: Teilen-Funktion für den Export
+  - AC1: Validierungsfehler werden mit klaren Meldungen protokolliert
+  - AC2: Bei Bedarf wird ein Protokoll erstellt, das Benutzer einsehen können
+  - AC3: Die spezifische Ursache des Fehlers wird angegeben
   - Priority: 🔽 Low
   - Story Points: 3
+
+- **US-402**: Als Nutzer möchte ich defekte oder fehlerhafte Kartensets entfernen können.
+
+  - AC1: Eine Liste aller Kartensets mit Status wird angezeigt
+  - AC2: Fehlerhafte Sets können aus der App entfernt werden
+  - AC3: Ein Fehlerbericht kann für Entwickler generiert werden
+  - Priority: 🔽 Low
+  - Story Points: 5
 
 - **US-403**: Als Nutzer möchte ich Feedback zu Karten geben können.
   - AC1: Feedback-Formular für jede Karte
