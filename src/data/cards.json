@@ -1,0 +1,50 @@
+[
+  {
+    "question": "Was ist ein Augenblick, an dem du dich an deine Kindheit erinnert hast?",
+    "category": "Icebreakers",
+    "difficulty": "easy",
+    "followUp": "Was war an diesem Moment so bedeutsam für dich?"
+  },
+  {
+    "question": "Was ist etwas, das du an deinem Partner liebst?",
+    "category": "Confessions",
+    "difficulty": "medium",
+    "followUp": "Erzähle mir mehr darüber."
+  },
+  {
+    "question": "Was ist dein tiefste Traum?",
+    "category": "Deep Thoughts",
+    "difficulty": "hard",
+    "followUp": "Warum ist dieser Traum so wichtig für dich?"
+  },
+  {
+    "question": "Was ist etwas, das du an dir selbst bewunderst?",
+    "category": "Personality",
+    "difficulty": "medium",
+    "followUp": "Wie hast du das entwickelt?"
+  },
+  {
+    "question": "Was ist ein Augenblick, an dem du dich an deine Kindheit erinnert hast?",
+    "category": "Icebreakers",
+    "difficulty": "easy",
+    "followUp": "Was war an diesem Moment so bedeutsam für dich?"
+  },
+  {
+    "question": "Was ist etwas, das du an deinem Partner liebst?",
+    "category": "Confessions",
+    "difficulty": "medium",
+    "followUp": "Erzähle mir mehr darüber."
+  },
+  {
+    "question": "Was ist dein tiefste Traum?",
+    "category": "Deep Thoughts",
+    "difficulty": "hard",
+    "followUp": "Warum ist dieser Traum so wichtig für dich?"
+  },
+  {
+    "question": "Was ist etwas, das du an dir selbst bewunderst?",
+    "category": "Personality",
+    "difficulty": "medium",
+    "followUp": "Wie hast du das entwickelt?"
+  }
+]
