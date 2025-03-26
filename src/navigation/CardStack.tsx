@@ -3,7 +3,17 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CardStackParamList } from "./types";
 import CardScreen from "@features/card-management/screens/CardScreen";
 import CardListScreen from "@features/card-management/screens/CardListScreen";
-import { useTheme } from "@theme/useTheme";
+import { useTheme } from "@theme/ThemeProvider";
+
+/**
+ * CardStack
+ * ---------
+ * Stack-Navigation für die Karten-Funktionalität.
+ * Ermöglicht das Anzeigen, Erstellen und Bearbeiten von Karten.
+ *
+ * @component
+ * @navigation
+ */
 
 // Placeholder-Komponenten, bis die tatsächlichen Screens implementiert sind
 const CardDetailScreen = () => null;

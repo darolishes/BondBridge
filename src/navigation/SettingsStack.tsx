@@ -1,7 +1,17 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SettingsStackParamList } from "./types";
-import { useTheme } from "@theme/useTheme";
+import { useTheme } from "@theme/ThemeProvider";
+
+/**
+ * SettingsStack
+ * -------------
+ * Stack-Navigation für die Einstellungen der App.
+ * Ermöglicht die Anpassung von Appearance, Benachrichtigungen und anderen Präferenzen.
+ *
+ * @component
+ * @navigation
+ */
 
 // Placeholder-Komponenten, bis die tatsächlichen Screens implementiert sind
 const SettingsHomeScreen = () => null;

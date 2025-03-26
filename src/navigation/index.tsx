@@ -1,17 +1,22 @@
 import React from "react";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
+import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { TabNavigator } from "./TabNavigator";
-import { useTheme } from "@theme/useTheme";
+import { useTheme } from "@theme/ThemeProvider";
 import { Theme } from "@theme/themes";
+
+/**
+ * Navigation
+ * ----------
+ * Root-Navigationskomponente, die die Tab-Navigation aufbaut.
+ *
+ * @component
+ * @core
+ */
 
 /**
  * Konvertiert unser App-Theme in ein React Navigation Theme
  */
-const createNavigationTheme = (theme: Theme) => {
+export const createNavigationTheme = (theme: Theme) => {
   const navigationTheme = theme.isDark ? DarkTheme : DefaultTheme;
 
   return {
@@ -32,23 +37,10 @@ const createNavigationTheme = (theme: Theme) => {
  * Root-Navigator der App, kombiniert alles
  */
 export const Navigation = () => {
-  const { theme } = useTheme();
-  const navigationTheme = createNavigationTheme(theme);
-
-  return (
-    <NavigationContainer theme={navigationTheme}>
-      <TabNavigator />
-    </NavigationContainer>
-  );
+  return <TabNavigator />;
 };
 
 /**
- * Hook für den Zugriff auf die Navigation außerhalb von React-Komponenten
- * Kann später für Deep-Linking und Analytics verwendet werden
- */
-export * from "./navigationRef";
-
-/**
- * Export aller Navigationstypen
+ * Export aller Navigationstypen und Hilfsfunktionen
  */
 export * from "./types";

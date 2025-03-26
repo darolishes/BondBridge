@@ -5,7 +5,17 @@ import { RootTabParamList } from "./types";
 import { CardStack } from "./CardStack";
 import { ImportExportStack } from "./ImportExportStack";
 import { SettingsStack } from "./SettingsStack";
-import { useTheme } from "@theme/useTheme";
+import { useTheme } from "@theme/ThemeProvider";
+
+/**
+ * TabNavigator
+ * ------------
+ * Hauptnavigation der App mit Bottom-Tabs für die wichtigsten Funktionsbereiche.
+ * Integriert die verschiedenen Feature-Stacks als Tabs.
+ *
+ * @component
+ * @navigation
+ */
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 

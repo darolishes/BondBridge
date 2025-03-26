@@ -1,11 +1,21 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ImportExportStackParamList } from "./types";
-import { useTheme } from "@theme/useTheme";
+import { useTheme } from "@theme/ThemeProvider";
+import ImportScreen from "@features/data-import-export/screens/ImportScreen";
+
+/**
+ * ImportExportStack
+ * -----------------
+ * Stack-Navigation für die Import/Export-Funktionalität.
+ * Ermöglicht Datenaustausch mit externen Quellen und anderen Nutzern.
+ *
+ * @component
+ * @navigation
+ */
 
 // Placeholder-Komponenten, bis die tatsächlichen Screens implementiert sind
 const ImportExportHomeScreen = () => null;
-const ImportDataScreen = () => null;
 const ExportDataScreen = () => null;
 
 const Stack = createNativeStackNavigator<ImportExportStackParamList>();
@@ -39,7 +49,7 @@ export const ImportExportStack = () => {
       />
       <Stack.Screen
         name="ImportData"
-        component={ImportDataScreen}
+        component={ImportScreen}
         options={{ title: "Karten importieren" }}
       />
       <Stack.Screen
