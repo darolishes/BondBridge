@@ -1,7 +1,7 @@
 # Aktiver Kontext
 
 Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 18:30:00
+Letzte Aktualisierung: 2025-03-28 12:00:00
 Status: 🟢 Aktiv
 
 ## Aktueller Fokus 🎯
@@ -11,7 +11,20 @@ Implementierung des MVP für Conversation Cards mit folgenden Kernfunktionen:
 - Einfache Kartenansicht mit Swipe-Funktion
 - Grundlegende Kategoriefilterung
 - Automatische Integration externer Kartensets
-- Einheitliches, modulares Theme-System
+- Einheitliches, modulares Theme-System ✅
+
+## User Story Tracking 📋
+
+Detaillierte User Stories sind im `.ai/stories/` Verzeichnis verfügbar:
+
+| Feature                  | Status            | Epic/Story Referenz                                |
+| ------------------------ | ----------------- | -------------------------------------------------- |
+| Kartenansicht            | 🟡 In Entwicklung | [Epic-2 Story-1](../.ai/stories/epic-2/story-1.md) |
+| Karten-Navigation        | 🟡 In Entwicklung | [Epic-2 Story-2](../.ai/stories/epic-2/story-2.md) |
+| Kategoriefilter          | 🟡 In Entwicklung | [Epic-2 Story-3](../.ai/stories/epic-2/story-3.md) |
+| Kartenset-Integration    | 📋 Geplant        | [Epic-4 Story-1](../.ai/stories/epic-4/story-1.md) |
+| Onboarding-Erfahrung     | 📋 Geplant        | [Epic-1 Story-1](../.ai/stories/epic-1/story-1.md) |
+| Favoriten-Funktionalität | 📋 Geplant        | [Epic-3 Story-2](../.ai/stories/epic-3/story-2.md) |
 
 ## Offene Fragen ❓
 
@@ -37,6 +50,10 @@ Implementierung des MVP für Conversation Cards mit folgenden Kernfunktionen:
 - Grundlegende Ordnerstruktur
 - Basis-Navigation
 - Refaktoriertes Theme-System
+  - Modulare Organisation in logische Unterverzeichnisse
+  - Verbesserte Typendefinitionen
+  - Zentralisierte Theme-Hooks
+  - Vereinfachter ThemeProvider
 
 ### In Bearbeitung 🔄
 

@@ -10,13 +10,27 @@ This directory contains AI-assisted development resources for the BondBridge pro
 | [prd.md](./prd.md)     | Product Requirements Document with feature specifications        |
 | [stories/](./stories/) | User stories organized by epics                                  |
 
-## Stories
+## Epics and Stories
 
 The [stories/](./stories/) directory contains detailed user stories following Agile methodology:
 
-- [Epic-2: Core Conversation Cards Functionality](./stories/epic-2/)
-  - [Story-1: Card Component](./stories/epic-2/story-1.md) - Implementing the card UI component
-  - [Story-2: Card Navigation](./stories/epic-2/story-2.md) - Adding navigation between cards
+### [Epic-1: User Onboarding & Profile](./stories/epic-1/)
+
+- [Story-1: Welcome Experience](./stories/epic-1/story-1.md) - Creating an engaging app introduction
+
+### [Epic-2: Core Conversation Cards Functionality](./stories/epic-2/)
+
+- [Story-1: Card Component](./stories/epic-2/story-1.md) - Implementing the card UI component
+- [Story-2: Card Navigation](./stories/epic-2/story-2.md) - Adding navigation between cards
+- [Story-3: Category Filtering](./stories/epic-2/story-3.md) - Filtering cards by category
+
+### [Epic-3: Conversation Progress Tracking](./stories/epic-3/)
+
+- [Story-2: Favorite Cards](./stories/epic-3/story-2.md) - Marking and managing favorite cards
+
+### [Epic-4: External Card Set Integration](./stories/epic-4/)
+
+- [Story-1: Card Set Import](./stories/epic-4/story-1.md) - Importing external card sets
 
 See the [stories README](./stories/README.md) for more details on the user stories and their structure.
 
@@ -29,10 +43,20 @@ See the [stories README](./stories/README.md) for more details on the user stori
   ├── prd.md
   └── stories/
       ├── README.md
-      └── epic-2/
-          ├── README.md (epic details)
-          ├── story-1.md (Card Component)
-          └── story-2.md (Card Navigation)
+      ├── epic-1/
+      │   ├── README.md
+      │   └── story-1.md
+      ├── epic-2/
+      │   ├── README.md
+      │   ├── story-1.md
+      │   ├── story-2.md
+      │   └── story-3.md
+      ├── epic-3/
+      │   ├── README.md
+      │   └── story-2.md
+      └── epic-4/
+          ├── README.md
+          └── story-1.md
 ```
 
 ## Using These Resources

@@ -14,7 +14,7 @@ The conversation cards are the primary value proposition of BondBridge, providin
 | :---------------------: | :------------------ | :--------- | :----------: | :------: |
 | [Story-1](./story-1.md) | Card Component      | InProgress |      3       |   High   |
 | [Story-2](./story-2.md) | Card Navigation     | Draft      |      2       |   High   |
-|         Story-3         | Category Filtering  | Planned    |      2       |  Medium  |
+| [Story-3](./story-3.md) | Category Filtering  | Planned    |      2       |  Medium  |
 |         Story-4         | Card Set Management | Planned    |      3       |  Medium  |
 
 ## Goals

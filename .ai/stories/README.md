@@ -6,14 +6,21 @@ This directory contains the user stories for the BondBridge application. Each st
 
 |       Epic ID       | Title                                 | Status     | Stories |
 | :-----------------: | :------------------------------------ | :--------- | :-----: |
-| [Epic-2](./epic-2/) | Core Conversation Cards Functionality | InProgress |   2/4   |
+| [Epic-1](./epic-1/) | User Onboarding & Profile             | Planned    |   1/4   |
+| [Epic-2](./epic-2/) | Core Conversation Cards Functionality | InProgress |   3/4   |
+| [Epic-3](./epic-3/) | Conversation Progress Tracking        | Planned    |   1/4   |
+| [Epic-4](./epic-4/) | External Card Set Integration         | Planned    |   1/4   |
 
 ## Current Stories
 
-|            Story ID            | Title           | Epic                |   Status   | Story Points |
-| :----------------------------: | :-------------- | :------------------ | :--------: | :----------: |
-| [Story-1](./epic-2/story-1.md) | Card Component  | [Epic-2](./epic-2/) | InProgress |      3       |
-| [Story-2](./epic-2/story-2.md) | Card Navigation | [Epic-2](./epic-2/) |   Draft    |      2       |
+|               Story ID                | Title              | Epic                |   Status   | Story Points |
+| :-----------------------------------: | :----------------- | :------------------ | :--------: | :----------: |
+| [Epic-1 Story-1](./epic-1/story-1.md) | Welcome Experience | [Epic-1](./epic-1/) |  Planned   |      2       |
+| [Epic-2 Story-1](./epic-2/story-1.md) | Card Component     | [Epic-2](./epic-2/) | InProgress |      3       |
+| [Epic-2 Story-2](./epic-2/story-2.md) | Card Navigation    | [Epic-2](./epic-2/) |   Draft    |      2       |
+| [Epic-2 Story-3](./epic-2/story-3.md) | Category Filtering | [Epic-2](./epic-2/) |  Planned   |      2       |
+| [Epic-3 Story-2](./epic-3/story-2.md) | Favorite Cards     | [Epic-3](./epic-3/) |  Planned   |      2       |
+| [Epic-4 Story-1](./epic-4/story-1.md) | Card Set Import    | [Epic-4](./epic-4/) |  Planned   |      3       |
 
 ## Story Structure
 
@@ -31,6 +38,15 @@ Each story follows a consistent format:
 
 ## Epic Overview
 
+### [Epic-1: User Onboarding & Profile](./epic-1/)
+
+This epic focuses on creating a smooth and engaging user onboarding experience and profile management. It includes:
+
+- Creating an engaging welcome experience
+- Implementing user profile creation and management
+- Setting up user preferences
+- Providing an interactive tutorial
+
 ### [Epic-2: Core Conversation Cards Functionality](./epic-2/)
 
 This epic focuses on implementing the core feature of the application: the conversation cards. It includes:
@@ -40,15 +56,43 @@ This epic focuses on implementing the core feature of the application: the conve
 - Adding category filtering
 - Supporting swipe interactions
 
+### [Epic-3: Conversation Progress Tracking](./epic-3/)
+
+This epic focuses on helping users track their conversation progress and history. It includes:
+
+- Recording conversation history
+- Implementing a favorites system
+- Creating progress visualizations
+- Setting up conversation reminders
+
+### [Epic-4: External Card Set Integration](./epic-4/)
+
+This epic focuses on allowing users to expand their conversation experience by importing external card sets. It includes:
+
+- Implementing card set import functionality
+- Creating card set export capabilities
+- Designing a marketplace UI for discovering sets
+- Ensuring proper validation of imported card sets
+
 ## Directory Structure
 
 ```
 stories/
   ├── README.md (this file)
-  └── epic-2/
+  ├── epic-1/
+  │   ├── README.md (epic details)
+  │   └── story-1.md (Welcome Experience)
+  ├── epic-2/
+  │   ├── README.md (epic details)
+  │   ├── story-1.md (Card Component)
+  │   ├── story-2.md (Card Navigation)
+  │   └── story-3.md (Category Filtering)
+  ├── epic-3/
+  │   ├── README.md (epic details)
+  │   └── story-2.md (Favorite Cards)
+  └── epic-4/
       ├── README.md (epic details)
-      ├── story-1.md (Card Component)
-      └── story-2.md (Card Navigation)
+      └── story-1.md (Card Set Import)
 ```
 
 ## Adding New Stories
