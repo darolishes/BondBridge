@@ -1,19 +1,19 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ThemeProvider, useTheme, useNavigationTheme } from "./src/theme";
-import { TabNavigator } from "./src/navigation";
-import { navigationRef } from "./src/navigation";
+import { ThemeProvider, useTheme, useNavigationTheme } from "./theme";
+import { TabNavigator } from "./navigation";
+import { navigationRef } from "./navigation";
 import { NavigationContainer } from "@react-navigation/native";
+import StoreProvider from "./store/providers/StoreProvider";
 
 /**
  * App
  * ---
  * Haupteinstiegspunkt der BondBridge-Anwendung.
- * Integriert Theming, Navigation und StatusBar.
+ * Integriert Theming, Navigation, StatusBar und Redux Store.
  *
  * @component
- * @root
  */
 
 /**
@@ -38,8 +38,10 @@ const AppCore = () => {
  */
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppCore />
-    </ThemeProvider>
+    <StoreProvider>
+      <ThemeProvider>
+        <AppCore />
+      </ThemeProvider>
+    </StoreProvider>
   );
 }

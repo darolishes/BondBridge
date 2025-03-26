@@ -1,3 +1,32 @@
+## State Management Erweiterung - Umsetzungsplan
+
+### 1. Provider-Restrukturierung
+
+- Umbenennung `FilterProvider` → `CardStateProvider`
+- Neue Zustandsvariablen:
+  - `currentCardSet: CardSetType`
+  - `swipeHistory: SwipeAction[]`
+  - `loadedCardSets: CardSetMeta[]`
+
+### 2. Erweiterte Filtertypen
+
+- Hinzufügen von:
+  - `difficultyRange: [number, number]`
+  - `cardStatus: 'unseen' | 'swiped' | 'reported'`
+  - `cardSetFilters: string[]`
+
+### 3. Persistenzschicht
+
+- AsyncStorage Keys:
+  - `cardSets` → Geladene Sets
+  - `swipeHistory` → Nutzeraktionen
+  - `cardState` → Kombinierter Zustand
+
+### 4. Migrationsstrategie
+
+- Schrittweise Migration vom alten FilterSystem
+- Kompatibilitätslayer für bestehende Komponenten
+
 # Implementierungsplan: Conversation Cards (MVP)
 
 Version: 2.0.0

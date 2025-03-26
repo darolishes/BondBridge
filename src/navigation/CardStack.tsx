@@ -2,10 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CardStackParamList } from "./types";
 import { useTheme } from "@theme/hooks";
-import CardListScreen from "@features/cards/screens/CardListScreen";
-import CardDetailScreen from "@features/cards/screens/CardDetailScreen";
-import CardCreateScreen from "@features/cards/screens/CardCreateScreen";
-import CardEditScreen from "@features/cards/screens/CardEditScreen";
+import { CardScreen } from "@features/conversation-cards/screens";
 
 /**
  * CardStack
@@ -44,22 +41,22 @@ export const CardStack = () => {
     >
       <Stack.Screen
         name="CardList"
-        component={CardListScreen}
+        component={CardScreen}
         options={{ title: "Meine Karten" }}
       />
       <Stack.Screen
         name="CardDetail"
-        component={CardDetailScreen}
+        component={CardScreen}
         options={{ title: "Kartendetails" }}
       />
       <Stack.Screen
         name="CardCreate"
-        component={CardCreateScreen}
+        component={CardScreen}
         options={{ title: "Neue Karte erstellen" }}
       />
       <Stack.Screen
         name="CardEdit"
-        component={CardEditScreen}
+        component={CardScreen}
         options={{ title: "Karte bearbeiten" }}
       />
     </Stack.Navigator>

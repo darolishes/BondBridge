@@ -1,5 +1,7 @@
+import { CardStatus } from "./card";
+
 /**
- * Represents the available filter options for the application
+ * Represents the available filter options for cards
  */
 export interface FilterType {
   /** Search query string */
@@ -7,9 +9,13 @@ export interface FilterType {
   /** Category filter */
   category: string;
   /** Status filter */
-  status: "all" | "active" | "completed";
+  cardStatus: CardStatus;
+  /** Difficulty range [min, max] */
+  difficultyRange: [number, number];
+  /** Card set IDs to include */
+  cardSetIds: string[];
   /** Sort field */
-  sortBy: "name" | "date" | "priority";
+  sortBy: "name" | "date" | "difficulty";
 }
 
 /**
@@ -29,8 +35,12 @@ export interface FilterContextType {
   setSearchQuery: (query: string) => void;
   /** Set category filter */
   setCategory: (category: string) => void;
-  /** Set status filter */
-  setStatus: (status: FilterType["status"]) => void;
+  /** Set card status filter */
+  setCardStatus: (status: CardStatus) => void;
+  /** Set difficulty range */
+  setDifficultyRange: (range: [number, number]) => void;
+  /** Set card set filters */
+  setCardSetIds: (ids: string[]) => void;
   /** Set sort field */
   setSortBy: (sortBy: FilterType["sortBy"]) => void;
   /** Reset filters to default values */
@@ -43,6 +53,8 @@ export interface FilterContextType {
 export const DEFAULT_FILTER: FilterType = {
   searchQuery: "",
   category: "",
-  status: "all",
-  sortBy: "name",
+  cardStatus: "unseen",
+  difficultyRange: [1, 5],
+  cardSetIds: [],
+  sortBy: "date",
 } as const;
