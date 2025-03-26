@@ -62,6 +62,25 @@ Detaillierte User Stories sind im `.ai/stories/` Verzeichnis verfügbar:
   - ✅ Typsichere Custom Hooks für Komponentenzugriff
   - ✅ Optimierte Selektoren für Performance
   - ✅ Filter-Funktionalität für Kategorien und Suche
+- ✅ **Redux Store & Zustandsverwaltung**
+  - Redux Store mit TypeScript eingerichtet
+  - Persistenz mit AsyncStorage
+  - Type-safe Custom Hooks für Redux
+  - Implementierung der Cardsets-Verwaltung
+- ✅ **Swipe-Gesten für Karten**
+  - Integration von React Native Gesture Handler
+  - Erstellung des SwipeHandler-Components
+  - Animationen für Swipe-Gesten
+  - Integration mit der Karten-Navigation
+- ✅ **Integration externer Kartensets**
+  - Service für Import/Export von Kartensets
+  - Validierung der Kartenset-Struktur
+  - UI zur Verwaltung von Kartensets
+  - Integration in den Store
+- ✅ **UI-Komponenten**
+  - Card Component mit Swipe-Unterstützung
+  - CardSetManager zur Verwaltung von Kartensets
+  - Intuitiver Kartennavigator mit visueller Rückmeldung
 
 ## Aktuelle Aufgaben 🔄
 
@@ -100,3 +119,11 @@ Die folgenden Funktionen wurden für eine spätere Phase nach dem MVP zurückges
 - Funktionale Integration externer Kartensets
 - Grundlegende Offline-Nutzbarkeit
 - Wartbare Codestruktur mit klaren Verantwortlichkeiten
+
+## Fortschritt
+
+📊 **Kern-Funktionalität:** 85% (vorher 65%)
+📊 **Kategoriefilter:** 75% (unverändert)
+📊 **Gesamt-Sprint:** 85% (vorher 75%)
+
+🟢 **Status**: Im Zeitplan nach Abschluss der Swipe-Gesten und Kartenset-Integration

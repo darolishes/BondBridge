@@ -2,7 +2,10 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CardStackParamList } from "./types";
 import { useTheme } from "@theme/hooks";
-import { CardScreen } from "@features/conversation-cards/screens";
+import {
+  CardScreen,
+  CardSetScreen,
+} from "@features/conversation-cards/screens";
 
 /**
  * CardStack
@@ -58,6 +61,11 @@ export const CardStack = () => {
         name="CardEdit"
         component={CardScreen}
         options={{ title: "Karte bearbeiten" }}
+      />
+      <Stack.Screen
+        name="CardSet"
+        component={CardSetScreen}
+        options={{ title: "Kartensets verwalten" }}
       />
     </Stack.Navigator>
   );

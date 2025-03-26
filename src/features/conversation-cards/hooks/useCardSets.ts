@@ -21,15 +21,27 @@ export const useCardSets = () => {
 
   // Action handlers
   const handleAddCardSet = useCallback(
-    (cardSet: any) => {
-      dispatch(addCardSet(cardSet));
+    async (cardSet: any): Promise<boolean> => {
+      try {
+        dispatch(addCardSet(cardSet));
+        return true;
+      } catch (error) {
+        console.error("Error adding card set:", error);
+        return false;
+      }
     },
     [dispatch]
   );
 
   const handleRemoveCardSet = useCallback(
-    (cardSetId: string) => {
-      dispatch(removeCardSet(cardSetId));
+    async (cardSetId: string): Promise<boolean> => {
+      try {
+        dispatch(removeCardSet(cardSetId));
+        return true;
+      } catch (error) {
+        console.error("Error removing card set:", error);
+        return false;
+      }
     },
     [dispatch]
   );
@@ -41,8 +53,14 @@ export const useCardSets = () => {
     [dispatch]
   );
 
-  const handleLoadCardSets = useCallback(() => {
-    dispatch(fetchCardSets());
+  const handleLoadCardSets = useCallback(async (): Promise<boolean> => {
+    try {
+      dispatch(fetchCardSets());
+      return true;
+    } catch (error) {
+      console.error("Error loading card sets:", error);
+      return false;
+    }
   }, [dispatch]);
 
   // Utility functions
