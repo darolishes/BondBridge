@@ -1,9 +1,10 @@
 ## Current Focus
 
-[2025-03-26 13:45:20] - Implementierung und Optimierung der Navigation und Theme-Systems
+[2025-03-26 14:45:20] - Implementierung des Swipeable Conversation Card Features
 
 ## Recent Changes
 
+[2025-03-26 14:45:20] - Erstellung des detaillierten Plans für Swipeable Conversation Cards
 [2025-03-26 13:45:20] - Implementierung der Navigation-Stacks (CardStack, SettingsStack, ImportExportStack)
 [2025-03-26 13:30:15] - Korrektur des useTheme-Imports von @theme/useTheme zu @theme/ThemeProvider
 [2025-03-26 13:15:30] - Vollständige Implementierung des Theme-Systems mit ThemeProvider
@@ -14,13 +15,14 @@
 
 ## Open Questions/Issues
 
-- Integration von path-aliases zur Vereinfachung von Import-Statements
 - Performance-Optimierung für Kartenanimationen auf älteren Geräten
+- Optimale Stapeldarstellung für eine natürliche Swipe-Erfahrung
+- Effiziente Datenverwaltung für potenziell große Kartensets
 
 # Active Context
 
-Version: 1.3.0
-Last Updated: 2025-03-26 13:45:20
+Version: 1.4.0
+Last Updated: 2025-03-26 14:45:20
 Status: 🟢 Active
 Related Files: productContext.md, decisionLog.md, systemPatterns.md
 
@@ -56,48 +58,60 @@ Related Files: productContext.md, decisionLog.md, systemPatterns.md
   - Priority: High
   - Dependencies: None
 
-- 🔄 Component optimization with new patterns
-  - Status: In Progress
-  - Priority: High
-  - Dependencies: Theme system, Navigation framework
+- 🔄 Card component development
+
+  - Status: In Progress (High Priority)
+  - Subtasks:
+    - ✅ Datenmodell für Conversation Cards definiert
+    - 🔄 ConversationCard UI-Komponente (30%)
+    - 🔄 CardDeck mit Swipe-Mechanismus (10%)
+    - 📋 Kategoriefilter-Komponente
+    - 📋 Schwierigkeitsgrad-Selektor
+
+- 🔄 State management implementation
+
+  - Status: In Progress (High Priority)
+  - Subtasks:
+    - 🔄 cardsSlice (25%)
+    - 📋 Redux Persist Integration
+    - 📋 Offline-Daten-Synchronisation
 
 ## Recent Changes 📝
 
-- ✅ 2025-03-26 13:45: Implementierung der Navigation-Stacks (CardStack, SettingsStack, ImportExportStack)
-- ✅ 2025-03-26 13:30: Korrektur des useTheme-Imports von @theme/useTheme zu @theme/ThemeProvider
-- ✅ 2025-03-26 13:15: Vollständige Implementierung des Theme-Systems mit ThemeProvider und useTheme hook
-- ✅ 2025-03-26 11:20: Implementierung der feature-basierten Ordnerstruktur
-- ✅ 2025-03-26 11:15: Aktualisierung der Namenskonventionen für Komponenten
-- ✅ 2025-03-26 10:15: Finalisierung der Architekturentscheidungen
-- ✅ 2025-03-26 09:45: Fertigstellung der Projektinfrastruktur
-- ✅ 2025-03-25 15:03: Initialisierung des Memory-Bank-Systems
-- ✅ 2025-03-25 15:02: Erstellung und Strukturierung von productContext.md
+- ✅ 2025-03-26 14:45: Erstellung des detaillierten Plans für Swipeable Conversation Cards
+- ✅ 2025-03-26 14:30: Definition des erweiterten Datenmodells für Conversation Cards
+- ✅ 2025-03-26 14:00: Festlegung der UI-Komponenten-Struktur für das Card-Feature
+- ✅ 2025-03-26 13:45: Implementierung der Navigation-Stacks
+- ✅ 2025-03-26 13:30: Korrektur des useTheme-Imports
+- ✅ 2025-03-26 13:15: Vollständige Implementierung des Theme-Systems
 
 ## Blockers/Risks ⚠️
 
-- TypeScript-Konfiguration für dynamische Importe muss angepasst werden
-- Koordination der komplexen Card-Komponenten mit dem Theme-System
+- Komplexität der Swipe-Animationen könnte die Performance auf älteren Geräten beeinträchtigen
+- Koordination der Kartenübergänge mit dem Redux-State erfordert sorgfältige Implementierung
+- Skalierbarkeit bei großen Kartensets muss berücksichtigt werden
 
 ## Open Questions ❓
 
-1. State Management Strategy
+1. Card Animation Approach
 
-   - ✅ Decision made: Redux Toolkit with redux-persist
-   - 🔄 RTK Query integration approach needed
+   - 🔄 Entscheidung zwischen einer Custom-Implementierung oder einer spezialisierten Bibliothek
+   - 🔄 Optimale Werte für Schwellenwerte bei Swipe-Gesten
 
-2. Card Animation Performance
+2. Card Content Management
 
-   - Decision needed on virtualization approach
-   - Memory optimization for large card sets
+   - 📋 Datenstruktur für Import/Export von Kartensets
+   - 📋 Versionierung und Migration von Kartendaten
 
-3. Path Alias Configuration
-   - ✅ Erste Implementierung der Path-Aliases (@features, @common, @theme, etc.)
-   - 🔄 Weitere Optimierung und Standardisierung notwendig
+3. User Experience Flow
+   - 📋 Optimaler Übergang zwischen Kategorien
+   - 📋 Behandlung des "Ende des Stapels"-Zustands
 
 ## Next Actions 📋
 
-1. Implementierung der Card-Feature-Screens
-2. Redux Toolkit mit Persistenz implementieren
-3. Optimierung der Navigation mit angepassten Übergängen
-4. Card-Komponenten-Prototyp mit Animation entwickeln
-5. Erweiterung des Theme-Systems um benutzerdefinierte Themes
+1. Implementierung der ConversationCard-Komponente
+2. Entwicklung des CardDeck mit Swipe-Funktionalität
+3. Implementierung des cardsSlice mit CRUD-Operationen
+4. Integration von Redux Persist für Offline-Speicherung
+5. Implementierung des CategoryFilter und DifficultySelector
+6. Entwicklung des CardsScreen mit Filter-Integration

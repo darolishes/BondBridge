@@ -1,9 +1,11 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CardStackParamList } from "./types";
-import CardScreen from "@features/card-management/screens/CardScreen";
-import CardListScreen from "@features/card-management/screens/CardListScreen";
 import { useTheme } from "@theme/ThemeProvider";
+import CardListScreen from "@features/cards/screens/CardListScreen";
+import CardDetailScreen from "@features/cards/screens/CardDetailScreen";
+import CardCreateScreen from "@features/cards/screens/CardCreateScreen";
+import CardEditScreen from "@features/cards/screens/CardEditScreen";
 
 /**
  * CardStack
@@ -14,11 +16,6 @@ import { useTheme } from "@theme/ThemeProvider";
  * @component
  * @navigation
  */
-
-// Placeholder-Komponenten, bis die tatsächlichen Screens implementiert sind
-const CardDetailScreen = () => null;
-const CardCreateScreen = () => null;
-const CardEditScreen = () => null;
 
 const Stack = createNativeStackNavigator<CardStackParamList>();
 
@@ -42,6 +39,7 @@ export const CardStack = () => {
         contentStyle: {
           backgroundColor: theme.colors.background,
         },
+        animation: "slide_from_right",
       }}
     >
       <Stack.Screen

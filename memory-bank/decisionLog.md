@@ -1,7 +1,7 @@
 # Decision Log
 
-Version: 1.1.0
-Last Updated: 2025-03-26 10:18:45
+Version: 1.2.0
+Last Updated: 2025-03-26 14:45:45
 Status: 🟢 Active
 Related Files: productContext.md, systemPatterns.md, technical-debt.md
 
@@ -88,6 +88,27 @@ Related Files: productContext.md, systemPatterns.md, technical-debt.md
   - Complex query limitations
   - Migration complexity
 
+### Conversation Card Data Model
+
+- Date: 2025-03-26
+- Status: ✅ Approved
+- Impact: High
+- Rationale:
+  - Comprehensive data structure for conversation cards
+  - Support for various difficulty levels
+  - Categorization capabilities
+  - Follow-up questions support
+- Implementation:
+  - TypeScript interfaces for type safety
+  - Card categories as union type
+  - Support for metadata like seen status and favorites
+- Alternatives Considered:
+  - Simpler model without follow-up questions
+  - External schema validation (Zod)
+- Risks:
+  - Migration complexity for future changes
+  - Performance with large datasets
+
 ## UI/UX Decisions 🎨
 
 ### Custom Card Animation System
@@ -109,6 +130,67 @@ Related Files: productContext.md, systemPatterns.md, technical-debt.md
 - Risks:
   - Implementation complexity
   - Performance on low-end devices
+
+### Single Card View vs Card List
+
+- Date: 2025-03-26
+- Status: ✅ Approved
+- Impact: High
+- Rationale:
+  - Better focus on individual conversation prompts
+  - More immersive experience
+  - Alignment with project brief requirements
+  - Tinder-like swiping mechanism familiar to users
+- Implementation:
+  - CardDeck component showing current and next card
+  - Swipe gestures for navigation
+  - Visual cues for swipe direction
+- Alternatives Considered:
+  - List-based card view with tapping
+  - Grid layout for multiple cards
+- Risks:
+  - More complex animation requirements
+  - Potentially higher memory usage
+
+### Category Filter System
+
+- Date: 2025-03-26
+- Status: ✅ Approved
+- Impact: Medium
+- Rationale:
+  - Allows targeting specific conversation topics
+  - Enhances discovery
+  - Prevents repetitive content
+- Implementation:
+  - Filter panel with toggleable category options
+  - Visual distinction between categories
+  - Redux state management for filter persistence
+- Alternatives Considered:
+  - Tag-based filtering
+  - Search functionality only
+- Risks:
+  - UI complexity
+  - Performance with many filters applied
+
+### Difficulty Level Visualization
+
+- Date: 2025-03-26
+- Status: ✅ Approved
+- Impact: Medium
+- Rationale:
+  - Clear indication of conversation depth
+  - Progressive difficulty for couples
+  - Visual feedback for challenge level
+- Implementation:
+  - 1-5 scale visualized as dots or stars
+  - Color coding for quick recognition
+  - Filter by difficulty level
+- Alternatives Considered:
+  - Text-only difficulty indicators
+  - Hidden difficulty levels
+- Risks:
+  - Subjective nature of difficulty assessment
+  - Filtering may limit content variety
 
 ### Minimalist Design with Dark Mode
 
@@ -142,22 +224,22 @@ Related Files: productContext.md, systemPatterns.md, technical-debt.md
 
 ## Performance Decisions 🚀
 
-### List Virtualization
+### Card Stack Memory Management
 
 - Date: 2025-03-26
 - Status: ✅ Approved
 - Impact: Medium
 - Rationale:
-  - Improved memory management
-  - Reduced render time
-  - Smoother scrolling experience
+  - Efficient memory usage for large card sets
+  - Smooth animations even with complex cards
+  - Predictable performance across devices
 - Implementation:
-  - FlashList for high-performance lists
-  - Window-based rendering
-  - Optimized image loading
+  - Limit visible cards to current and next
+  - Load cards on demand from Redux store
+  - Recycle card components
 - Alternatives Considered:
-  - Standard FlatList
-  - SectionList
+  - Showing more cards in stack
+  - Pre-loading all cards
 - Risks:
-  - Initial setup complexity
-  - Edge cases in item measurement
+  - Potential flash of content on slow devices
+  - Animation complexity
