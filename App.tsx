@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import CardScreen from "./src/screens/CardScreen";
-import ImportScreen from "./src/screens/ImportScreen";
+import CardScreen from "./src/features/cards/screens/CardScreen";
+import ImportScreen from "./src/features/import/screens/ImportScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 

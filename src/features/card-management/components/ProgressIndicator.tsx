@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { ProgressIndicatorProps } from "../types";
 
-interface ProgressDisplayProps {
-  progress: number;
-}
-
-const ProgressDisplay: React.FC<ProgressDisplayProps> = ({ progress }) => {
+/**
+ * Progress indicator component for showing card progress
+ */
+const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ progress }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Fortschritt: {progress}%</Text>
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProgressDisplay;
+export default ProgressIndicator;
