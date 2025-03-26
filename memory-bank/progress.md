@@ -1,109 +1,74 @@
-# Progress Tracking
+# Fortschrittsverfolgung (MVP)
 
-Version: 1.4.0
-Last Updated: 2025-03-26 15:55:00
-Status: 🟢 Active
-Related Files: activeContext.md, decisionLog.md
+Version: 2.0.0
+Letzte Aktualisierung: 2025-03-27 15:00:00
+Status: 🟢 Aktiv
 
-## Project Milestones 🎯
+## MVP-Status 📊
 
-### Phase 1: Project Setup
+| Phase                   | Fortschritt | Hauptkomponenten                                      |
+| ----------------------- | ----------- | ----------------------------------------------------- |
+| **Projekt-Setup**       | ✅ 100%     | Repo, Grundlegende Struktur                           |
+| **Kern-Funktionalität** | 🟡 30%      | Einfache Kartenansicht 🟡, Grundlegende Navigation 🟡 |
+| **Kategoriefilter**     | 🟡 15%      | UI-Komponenten 🟡, Filter-Funktionalität 📋           |
+| **Externe Kartensets**  | 📋 5%       | Grundlegende Strukturen 🟡, Integration 📋            |
 
-- ✅ Project initialization (100%)
-- ✅ Memory bank setup (100%)
-- ✅ Architecture planning (100%)
-- ✅ Technology stack definition (100%)
-- ✅ Repository setup (100%)
-- ✅ Development environment setup (100%)
+## Aktueller Sprint 🏃
 
-### Phase 2: Core Development
+- **Zeitraum**: 26. März - 2. April 2025
+- **Fortschritt**: 35%
+- **Status**: 🟡 Leicht verzögert (Fokus auf MVP-Vereinfachung)
 
-- ✅ Feature-based folder restructuring (100%)
-- ✅ Basic navigation (100%)
-- 🔄 Card component development (30%)
-- 🔄 State management implementation (25%)
-- ✅ Theme system setup (100%)
+### Sprint-Ziele (MVP)
 
-### Phase 3: Features
+- Einfache Conversation Card Komponente
+- Grundlegende Navigation zwischen Karten
+- Einfache Kategorie-Filter
+- Basis für externe Kartenset-Integration
 
-- 🔄 Swipeable conversation cards (15%)
-- 📋 Category filtering (0%)
-- 🔄 Settings implementation (15%)
-- 📋 Automatic CardSet loading (0%)
-- 📋 Offline storage (0%)
+## Abgeschlossene Aufgaben ✅
 
-### Phase 4: Polishing & Testing
+- ✅ Projekt-Setup und Grundstruktur
+- ✅ Vereinfachte Feature-Planung (Fokus auf MVP)
+- ✅ Grundlegende Navigation
+- ✅ Einfache Datenmodelle (ohne komplexe Validierung)
 
-- 📋 Performance optimization (0%)
-- 📋 Accessibility enhancement (0%)
-- 📋 End-to-end testing (0%)
-- 📋 User feedback integration (0%)
+## Aktuelle Aufgaben 🔄
 
-## Current Sprint (Sprint 2) 🏃
+| Aufgabe                   | Status | Priorität | Deadline |
+| ------------------------- | ------ | --------- | -------- |
+| Einfache Card-Komponente  | 🟡 45% | 🔥 Hoch   | Woche 18 |
+| Grundlegende Swipe-Geste  | 🟡 20% | 🔥 Hoch   | Woche 19 |
+| Kategoriefilter (UI)      | 🟡 30% | 🔥 Hoch   | Woche 19 |
+| Externer Kartenset-Import | 📋 5%  | 🔥 Hoch   | Woche 20 |
 
-### Goals
+## Nächste Schritte 📋
 
-- Implementierung der Swipeable Conversation Cards
-- Integration von Redux Toolkit mit Persistenz
-- Entwicklung des Kategorie- und Schwierigkeitsfilters
-- Implementierung des automatischen Ladens externer Kartensets
-- Animation und Gestensteuerung für Kartenstapel
+1. **Diese Woche**:
 
-### Progress
+   - Fertigstellung der einfachen Card-Komponente
+   - Implementierung grundlegender Navigation
+   - Beginn der Arbeit am Kategoriefilter
 
-- Week 1: 55% complete
-- Remaining time: 1.5 weeks
-- On track: ✅ Yes
+2. **Nächste Woche**:
+   - Abschluss der Kategoriefilter-Implementierung
+   - Beginn der externen Kartenset-Integration
+   - Einfache Offline-Speicherung
 
-## Completed Tasks ✅
+## Verzögerte Features (Post-MVP) 🔄
 
-### Sprint 2 (March 26 - April 2, 2025)
+Die folgenden Funktionen wurden für eine spätere Phase nach dem MVP zurückgestellt:
 
-- ✅ Umstellung von UI-basiertem Import/Export auf automatisches Laden externer Kartensets
-- ✅ Aktualisierung der Dokumentation für externe Kartensets
-- ✅ Erstellung des detaillierten Plans für Swipeable Conversation Cards
-- ✅ Definition des erweiterten Datenmodells für Conversation Cards
-- ✅ Implement feature-based folder structure
-- ✅ Create navigation framework with TabNavigator
-- ✅ Implement CardStack, SettingsStack
-- ✅ Implement theme system with dark mode support
-- ✅ Fix useTheme import paths
+- Dark Mode
+- Erweiterte Animationen
+- Redux mit Entity Adapter
+- Favoriten-System
+- Fortschrittsverfolgung
+- Schwierigkeitsfilter
 
-### Sprint 1 (March 19-26, 2025)
+## Fokus auf MVP-Qualität ⚡
 
-- ✅ Set up Git repository
-- ✅ Configure development environment
-- ✅ Create initial project structure
-- ✅ Document architecture decisions
-- ✅ Define coding standards
-- ✅ Install core dependencies
-- ✅ Create basic app shell
-
-## Upcoming Tasks 📋
-
-### High Priority
-
-1. Implementierung der ConversationCard-Komponente
-2. Entwicklung des CardDeck mit Swipe-Funktionalität
-3. Implementierung des cardsSlice mit CRUD-Operationen
-4. Integration von Redux Persist für Offline-Speicherung
-5. Implementierung des CardSetLoader mit react-native-fs
-6. Erstellung des Dateisystem-Verzeichnisses für Kartensets
-7. Implementierung des CategoryFilter und DifficultySelector
-8. Entwicklung des CardsScreen mit Filter-Integration
-
-### Medium Priority
-
-1. Verbessertes Fehler-Logging für invalide Kartensets
-2. Fortschrittsanzeige für gesehene Karten
-3. Favoriten-Funktionalität
-4. Animierte Übergänge zwischen Karten
-5. Performance-Optimierung für große Kartensets
-
-## Blockers/Risks ⚠️
-
-- Komplexität der Swipe-Animationen könnte die Performance auf älteren Geräten beeinträchtigen
-- Koordination der Kartenübergänge mit dem Redux-State erfordert sorgfältige Implementierung
-- Skalierbarkeit bei großen Kartensets muss berücksichtigt werden
-- Dateisystem-Berechtigungen auf verschiedenen Plattformen könnten Probleme verursachen
-- Benutzererfahrung bei fehlerhaften Kartensets muss optimiert werden
+- Stabilität und Zuverlässigkeit der Kernfunktionen
+- Benutzerfreundliche Schnittstelle mit minimaler Komplexität
+- Funktionale Integration externer Kartensets
+- Grundlegende Offline-Nutzbarkeit

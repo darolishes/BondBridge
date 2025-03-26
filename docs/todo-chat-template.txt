@@ -1,0 +1,13 @@
+Hallo Claude,
+
+Ich arbeite am BondBridge-Projekt und möchte mit dir den Projektfortschritt besprechen und aktualisieren.
+
+Ich habe die todo.md-Datei angehängt, die den aktuellen Projektstatus enthält. Diese Datei ist strukturiert nach Epics, Stories und Tasks, und verwendet Emojis für die Statusmarkierung.
+
+Bitte befolge bei der Arbeit mit dieser Datei die Anweisungen in der Cursor-Regel '.cursor/rules/003-todo-tracking.mdc'. Die gesamte Projektdokumentation befindet sich im 'memory-bank/'-Verzeichnis, auf das in der todo.md regelmäßig verwiesen wird.
+
+[Hier kann ich meine spezifische Anfrage einfügen, z.B.:]
+
+Kannst du mir bitte eine aktuelle Zusammenfassung des MVP-Fortschritts geben und Vorschläge für die Priorisierung der nächsten Aufgaben machen? Aktualisiere anschließend die todo.md entsprechend.
+
+Vielen Dank!
