@@ -5,6 +5,7 @@ import {
   Text,
   SafeAreaView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { useTheme } from "@theme/hooks";
 import Card from "../components/Card";
@@ -12,11 +13,18 @@ import { useAppDispatch } from "@store/hooks";
 import { useCards } from "../hooks/useCards";
 import { addCard } from "@store/slices/cardsSlice";
 import { Card as CardType } from "../types";
+import { useCardSets } from "../hooks/useCardSets";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { CardScreenNavigationProp } from "@navigation/types";
+
+interface CardScreenProps {
+  navigation: CardScreenNavigationProp;
+}
 
 /**
  * Hauptbildschirm für die Konversationskarten mit Kartenansicht und Navigation
  */
-const CardScreen: React.FC = () => {
+const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
 
@@ -31,6 +39,14 @@ const CardScreen: React.FC = () => {
     canGoNext,
     canGoPrevious,
   } = useCards();
+
+  // Use card sets hook to get active card set
+  const { activeCardSet } = useCardSets();
+
+  // Navigate to card set screen
+  const navigateToCardSets = () => {
+    navigation.navigate("CardSet");
+  };
 
   // Load sample cards on first render
   useEffect(() => {
@@ -67,6 +83,25 @@ const CardScreen: React.FC = () => {
           ],
           created: new Date(),
         },
+        {
+          id: "4",
+          question:
+            "Welche gemeinsamen Werte sind dir in einer Beziehung wichtig?",
+          category: "intimacy",
+          difficulty: 4,
+          followUpQuestions: [
+            "Wie würdest du unsere gemeinsamen Werte beschreiben?",
+            "Welche Werte möchtest du stärker in unserer Beziehung sehen?",
+          ],
+          created: new Date(),
+        },
+        {
+          id: "5",
+          question: "Was ist dein Lieblingserinnerung mit mir?",
+          category: "intimacy",
+          difficulty: 2,
+          created: new Date(),
+        },
       ];
 
       // Add cards to store
@@ -88,6 +123,15 @@ const CardScreen: React.FC = () => {
   const renderProgressDots = () => {
     // Only show dots if we have cards
     if (cardCount === 0) return null;
+
+    // If we have more than 10 cards, just show position in numbers instead of dots
+    if (cardCount > 10) {
+      return (
+        <Text style={styles.counterText}>
+          {activeCardIndex + 1} / {cardCount}
+        </Text>
+      );
+    }
 
     return (
       <View style={styles.progressContainer}>
@@ -122,6 +166,8 @@ const CardScreen: React.FC = () => {
       justifyContent: "center",
       alignItems: "center",
       marginVertical: theme.spacing.md,
+      flexWrap: "wrap", // Allow dots to wrap to next line if too many
+      maxWidth: "80%",
     },
     progressDot: {
       width: 8,
@@ -130,10 +176,14 @@ const CardScreen: React.FC = () => {
       backgroundColor: theme.colors.textSecondary,
       opacity: 0.3,
       marginHorizontal: 4,
+      marginVertical: 2,
     },
     activeDot: {
       backgroundColor: theme.colors.primary,
       opacity: 1,
+      width: 10, // Slightly larger
+      height: 10,
+      borderRadius: 5,
     },
     counterText: {
       color: theme.colors.textSecondary,
@@ -151,6 +201,46 @@ const CardScreen: React.FC = () => {
       textAlign: "center",
       margin: theme.spacing.lg,
     },
+    navigationHelp: {
+      color: theme.colors.textSecondary,
+      fontSize: theme.typography.fontSizes.small,
+      textAlign: "center",
+      marginBottom: theme.spacing.md,
+      opacity: 0.7,
+    },
+    cardSetButton: {
+      position: "absolute",
+      top: theme.spacing.lg,
+      right: theme.spacing.lg,
+      backgroundColor: theme.colors.primary,
+      borderRadius: 25,
+      width: 50,
+      height: 50,
+      justifyContent: "center",
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    cardSetInfo: {
+      position: "absolute",
+      top: theme.spacing.lg + 2,
+      left: theme.spacing.lg,
+      backgroundColor: theme.colors.card.border,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: 4,
+      borderRadius: theme.borderRadius.small,
+    },
+    cardSetText: {
+      color: theme.colors.text,
+      fontSize: theme.typography.fontSizes.small,
+      fontWeight: "500",
+    },
   });
 
   // Loading state
@@ -167,6 +257,21 @@ const CardScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Card Set FAB Button */}
+      <TouchableOpacity
+        style={styles.cardSetButton}
+        onPress={navigateToCardSets}
+      >
+        <FontAwesome5 name="layer-group" size={20} color="#fff" />
+      </TouchableOpacity>
+
+      {/* Show active card set if present */}
+      {activeCardSet && (
+        <View style={styles.cardSetInfo}>
+          <Text style={styles.cardSetText}>{activeCardSet.name}</Text>
+        </View>
+      )}
+
       <View style={styles.cardContainer}>
         {activeCard && (
           <Card card={activeCard} isActive={true} onSwipe={handleSwipe} />
@@ -174,8 +279,9 @@ const CardScreen: React.FC = () => {
       </View>
 
       {renderProgressDots()}
-      <Text style={styles.counterText}>
-        {activeCardIndex + 1} / {cardCount}
+      <Text style={styles.navigationHelp}>
+        ← Wische nach rechts für die vorherige Karte | Wische nach links für die
+        nächste Karte →
       </Text>
     </SafeAreaView>
   );

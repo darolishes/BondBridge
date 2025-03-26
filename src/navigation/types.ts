@@ -23,6 +23,7 @@ export type CardStackParamList = {
   CardDetail: { cardId: string };
   CardCreate: undefined;
   CardEdit: { cardId: string };
+  CardSet: undefined;
 };
 
 /**

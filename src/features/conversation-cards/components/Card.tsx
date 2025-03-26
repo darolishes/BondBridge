@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Animated } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useTheme } from "@theme/hooks";
 import { CardProps } from "../types";
 import CategoryBadge from "./CategoryBadge";
 import QuestionText from "./QuestionText";
 import DifficultyIndicator from "./DifficultyIndicator";
 import FollowUpQuestions from "./FollowUpQuestions";
+import SwipeHandler from "./SwipeHandler";
 
 /**
  * Konversationskarte Komponente - Zeigt eine Frage, Kategorie und Schwierigkeitsgrad an
@@ -17,7 +18,18 @@ import FollowUpQuestions from "./FollowUpQuestions";
 export const Card: React.FC<CardProps> = React.memo(
   ({ card, isActive = false, onSwipe }) => {
     const { theme } = useTheme();
-    const pan = React.useRef(new Animated.ValueXY()).current;
+
+    const handleSwipeLeft = () => {
+      if (onSwipe) {
+        onSwipe("left");
+      }
+    };
+
+    const handleSwipeRight = () => {
+      if (onSwipe) {
+        onSwipe("right");
+      }
+    };
 
     const styles = StyleSheet.create({
       card: {
@@ -53,14 +65,9 @@ export const Card: React.FC<CardProps> = React.memo(
       },
     });
 
-    return (
-      <Animated.View
-        style={[
-          styles.card,
-          {
-            transform: pan.getTranslateTransform(),
-          },
-        ]}
+    const cardContent = (
+      <View
+        style={styles.card}
         accessible={true}
         accessibilityLabel={`Frage: ${card.question}. Kategorie: ${card.category}. Schwierigkeitsgrad: ${card.difficulty} von 5.`}
         accessibilityRole="button"
@@ -80,8 +87,24 @@ export const Card: React.FC<CardProps> = React.memo(
         <View style={styles.difficultyContainer}>
           <DifficultyIndicator level={card.difficulty} />
         </View>
-      </Animated.View>
+      </View>
     );
+
+    // Only enable swipe gestures if the card is active
+    if (isActive && onSwipe) {
+      return (
+        <SwipeHandler
+          onSwipeLeft={handleSwipeLeft}
+          onSwipeRight={handleSwipeRight}
+          swipeEnabled={isActive}
+        >
+          {cardContent}
+        </SwipeHandler>
+      );
+    }
+
+    // Return card without swipe gestures if not active
+    return cardContent;
   }
 );
 
