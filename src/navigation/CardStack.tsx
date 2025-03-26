@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CardStackParamList } from "./types";
-import { useTheme } from "@theme/ThemeProvider";
+import { useTheme } from "@theme/hooks";
 import CardListScreen from "@features/cards/screens/CardListScreen";
 import CardDetailScreen from "@features/cards/screens/CardDetailScreen";
 import CardCreateScreen from "@features/cards/screens/CardCreateScreen";

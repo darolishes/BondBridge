@@ -1,6 +1,4 @@
-export interface FilterType {
-  searchQuery: string;
-  category: string;
-  status: "all" | "active" | "completed";
-  sortBy: "name" | "date" | "priority";
-}
+/**
+ * Re-export all common types
+ */
+export * from "./filter";

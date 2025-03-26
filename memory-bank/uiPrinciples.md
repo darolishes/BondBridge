@@ -1,7 +1,7 @@
 # UI-Prinzipien (MVP)
 
 Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 15:00:00
+Letzte Aktualisierung: 2025-03-27 18:30:00
 Status: 🟢 Aktiv
 
 ## Kernprinzipien für MVP 🎨
@@ -10,6 +10,18 @@ Status: 🟢 Aktiv
 - **Konsistenz** - Einheitliches Erscheinungsbild der App
 - **Lesbarkeit** - Klare, gut lesbare Inhalte
 - **Zugänglichkeit** - Grundlegende Barrierefreiheit
+- **Wartbarkeit** - Modulare Theme-Struktur für einfache Anpassungen
+
+## Theme-System-Organisation
+
+| Komponente        | Inhalt                                           | Zweck                                          |
+| ----------------- | ------------------------------------------------ | ---------------------------------------------- |
+| **constants/**    | Farben, Typografie, Abstände, Borders            | Single Source of Truth für Design-Tokens       |
+| **types.ts**      | ThemeType, ColorType, etc.                       | Typendefinitionen für Theme-System             |
+| **themes.ts**     | Default und Dark Theme                           | Theme-Varianten mit korrekten Token-Referenzen |
+| **hooks.ts**      | useTheme, createThemedStyles, useNavigationTheme | Theme-Hooks für Komponentenzugriff             |
+| **ThemeProvider** | ThemeContext, ThemeState Management              | Verwaltung des aktiven Themes                  |
+| **index.ts**      | Exportschnittstelle                              | Vereinfachter Import aller Theme-Komponenten   |
 
 ## Basis-Farben
 
@@ -52,14 +64,46 @@ Status: 🟢 Aktiv
 | **Swipe-Geste**       | Wechsel zur nächsten/vorherigen Karte | Grundlegende Swipe-Erkennung |
 | **Kategorie-Auswahl** | Filter ein-/ausschalten               | Sichtbare Statusänderung     |
 
+## Theme-Integration in Komponenten
+
+### Beispiel: Card-Komponente mit Theme
+
+```typescript
+import { useTheme } from "@theme/hooks";
+
+export const Card = ({ card }) => {
+  const { theme } = useTheme();
+
+  const styles = StyleSheet.create({
+    card: {
+      backgroundColor: theme.colors.background,
+      borderRadius: theme.borderRadius.medium,
+      padding: theme.spacing.md,
+      // ...weitere Theme-Referenzen
+    },
+    title: {
+      fontSize: theme.typography.fontSizes.large,
+      color: theme.colors.text,
+    },
+  });
+
+  return (
+    <View style={styles.card}>
+      <Text style={styles.title}>{card.title}</Text>
+    </View>
+  );
+};
+```
+
 ## MVP-Implementierung 🛠️
 
 ### Best Practices
 
 - **Einfachheit**: Minimale Komponenten mit klarer Funktion
-- **Konsistenz**: Einheitliche Abstände und Farbgebung
+- **Konsistenz**: Einheitliche Abstände und Farbgebung durch Theme-System
 - **Performanz**: Minimierung unnötiger Berechnungen
 - **Responsivität**: Anpassung an verschiedene Bildschirmgrößen
+- **Theme-Zugriff**: Verwendung der useTheme-Hook in allen UI-Komponenten
 
 ### Accessibility-Grundlagen
 
@@ -71,7 +115,6 @@ Status: 🟢 Aktiv
 
 Die folgenden UI-Elemente sind für spätere Versionen geplant:
 
-- **Dark Mode** - Alternative Farbschemas
 - **Komplexe Animationen** - Erweiterte visuelle Effekte
 - **Erweiterte Swipe-Interaktionen** - Mit visuellen Feedback-Animationen
 - **Favoriten-System** - UI-Elemente für Favorisierung

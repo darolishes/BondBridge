@@ -1,7 +1,7 @@
 # Fortschrittsverfolgung (MVP)
 
 Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 15:00:00
+Letzte Aktualisierung: 2025-03-27 18:30:00
 Status: 🟢 Aktiv
 
 ## MVP-Status 📊
@@ -9,14 +9,15 @@ Status: 🟢 Aktiv
 | Phase                   | Fortschritt | Hauptkomponenten                                      |
 | ----------------------- | ----------- | ----------------------------------------------------- |
 | **Projekt-Setup**       | ✅ 100%     | Repo, Grundlegende Struktur                           |
-| **Kern-Funktionalität** | 🟡 30%      | Einfache Kartenansicht 🟡, Grundlegende Navigation 🟡 |
+| **Kern-Funktionalität** | 🟡 40%      | Einfache Kartenansicht 🟡, Grundlegende Navigation ✅ |
+| **Theme-System**        | ✅ 100%     | Refaktoriertes Theme-System mit klarer Struktur ✅    |
 | **Kategoriefilter**     | 🟡 15%      | UI-Komponenten 🟡, Filter-Funktionalität 📋           |
 | **Externe Kartensets**  | 📋 5%       | Grundlegende Strukturen 🟡, Integration 📋            |
 
 ## Aktueller Sprint 🏃
 
 - **Zeitraum**: 26. März - 2. April 2025
-- **Fortschritt**: 35%
+- **Fortschritt**: 45%
 - **Status**: 🟡 Leicht verzögert (Fokus auf MVP-Vereinfachung)
 
 ### Sprint-Ziele (MVP)
@@ -32,6 +33,7 @@ Status: 🟢 Aktiv
 - ✅ Vereinfachte Feature-Planung (Fokus auf MVP)
 - ✅ Grundlegende Navigation
 - ✅ Einfache Datenmodelle (ohne komplexe Validierung)
+- ✅ Refaktorierung des Theme-Systems (bessere Organisation und Wartbarkeit)
 
 ## Aktuelle Aufgaben 🔄
 
@@ -59,7 +61,6 @@ Status: 🟢 Aktiv
 
 Die folgenden Funktionen wurden für eine spätere Phase nach dem MVP zurückgestellt:
 
-- Dark Mode
 - Erweiterte Animationen
 - Redux mit Entity Adapter
 - Favoriten-System
@@ -72,3 +73,4 @@ Die folgenden Funktionen wurden für eine spätere Phase nach dem MVP zurückges
 - Benutzerfreundliche Schnittstelle mit minimaler Komplexität
 - Funktionale Integration externer Kartensets
 - Grundlegende Offline-Nutzbarkeit
+- Wartbare Codestruktur mit klaren Verantwortlichkeiten
