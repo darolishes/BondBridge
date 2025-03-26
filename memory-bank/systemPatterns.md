@@ -12,6 +12,16 @@ Status: 🟢 Aktiv
 - **Offline-First**: Grundlegende lokale Datenspeicherung
 - **Integration**: Einfache Einbindung externer Kartensets
 
+## UI Component Patterns
+
+### Card Component Enhancements (2025-03-26)
+
+- Material Design 3 elevation system implementation
+- Dynamic contrast ratio calculations for accessibility
+- Swipe animation feedback using react-native-reanimated
+- Centralized shadow styling through theme constants
+- PointerEvents handling strategy for touch interactions
+
 ## Namenskonventionen 📝
 
 | Typ           | Konvention    | Beispiel               |

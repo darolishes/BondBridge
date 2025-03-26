@@ -6,9 +6,14 @@ import {
   SafeAreaView,
   ActivityIndicator,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
+import {
+  createSelector,
+  createSelector as createReselectSelector,
+} from "reselect";
 import { useTheme } from "@theme/hooks";
-import Card from "../components/Card";
+import { Card } from "../components/Card";
 import { useAppDispatch } from "@store/hooks";
 import { useCards } from "../hooks/useCards";
 import { addCard } from "@store/slices/cardsSlice";
@@ -218,13 +223,7 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
       height: 50,
       justifyContent: "center",
       alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
+      boxShadow: "0px 2px 3.84px rgba(0, 0, 0, 0.25)",
       elevation: 5,
     },
     cardSetInfo: {
@@ -258,12 +257,9 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Card Set FAB Button */}
-      <TouchableOpacity
-        style={styles.cardSetButton}
-        onPress={navigateToCardSets}
-      >
+      <Pressable style={styles.cardSetButton} onPress={navigateToCardSets}>
         <FontAwesome5 name="layer-group" size={20} color="#fff" />
-      </TouchableOpacity>
+      </Pressable>
 
       {/* Show active card set if present */}
       {activeCardSet && (

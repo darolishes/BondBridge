@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
 import { RootState } from "../index";
 import { getData, storeData } from "@common/utils/storage";
 import { Card, CardSet, CardStatus } from "@common/types/card";
@@ -310,8 +315,11 @@ export const selectActiveCard = (state: RootState) =>
   state.cards.activeCardId
     ? state.cards.allCards[state.cards.activeCardId]
     : null;
-export const selectFilteredCards = (state: RootState) =>
-  state.cards.filteredCardIds.map((id: string) => state.cards.allCards[id]);
+export const selectFilteredCards = createSelector(
+  (state: RootState) => state.cards.filteredCardIds,
+  (state: RootState) => state.cards.allCards,
+  (filteredCardIds, allCards) => filteredCardIds.map((id) => allCards[id])
+);
 export const selectCardSets = (state: RootState) => state.cards.cardSets;
 export const selectActiveCardSet = (state: RootState) =>
   state.cards.activeCardSetId

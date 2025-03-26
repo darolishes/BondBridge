@@ -6,13 +6,19 @@ Status: 🟢 Aktiv
 
 ## MVP-Status 📊
 
-| Phase                   | Fortschritt | Hauptkomponenten                                      |
-| ----------------------- | ----------- | ----------------------------------------------------- |
-| **Projekt-Setup**       | ✅ 100%     | Repo, Grundlegende Struktur                           |
-| **Kern-Funktionalität** | 🟡 65%      | Einfache Kartenansicht ✅, Grundlegende Navigation 🟡 |
-| **Theme-System**        | ✅ 100%     | Refaktoriertes Theme-System mit klarer Struktur ✅    |
-| **Kategoriefilter**     | 🟡 75%      | UI-Komponenten 🟡, Filter-Funktionalität ✅           |
-| **Externe Kartensets**  | 📋 5%       | Grundlegende Strukturen 🟡, Integration 📋            |
+| Phase             | Fortschritt | Hauptkomponenten            |
+| ----------------- | ----------- | --------------------------- |
+| **Projekt-Setup** | ✅ 100%     | Repo, Grundlegende Struktur |
+
+- [2025-03-26] Completed Card component UI overhaul with:
+  - Material Design 3 elevation system
+  - Dynamic contrast accessibility features
+  - Animated swipe feedback system
+  - Centralized shadow theme constants
+    | **Kern-Funktionalität** | 🟡 65% | Einfache Kartenansicht ✅, Grundlegende Navigation 🟡 |
+    | **Theme-System** | ✅ 100% | Refaktoriertes Theme-System mit klarer Struktur ✅ |
+    | **Kategoriefilter** | 🟡 75% | UI-Komponenten 🟡, Filter-Funktionalität ✅ |
+    | **Externe Kartensets** | 📋 5% | Grundlegende Strukturen 🟡, Integration 📋 |
 
 ## Verbindung mit User Stories
 
