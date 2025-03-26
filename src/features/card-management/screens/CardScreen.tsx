@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import CardItem from "../components/CardItem";
 import CategorySelector from "../components/CategorySelector";
 import ProgressIndicator from "../components/ProgressIndicator";
-import { CardData } from "../types";
+import { CardData } from "@features/card-management/types";
 
 /**
  * Main screen for displaying and interacting with cards

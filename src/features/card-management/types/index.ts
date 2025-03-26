@@ -3,9 +3,13 @@
  */
 
 export interface CardItemProps {
+  /** Die Frage oder der Inhalt der Karte */
   question: string;
+  /** Die Kategorie der Karte */
   category: string;
-  difficulty: "easy" | "medium" | "hard";
+  /** Der Schwierigkeitsgrad der Karte (easy, medium, hard) */
+  difficulty: string;
+  /** Optionale Folgefrage */
   followUp?: string;
 }
 
@@ -38,4 +42,16 @@ export interface CardState {
   categories: string[];
   loading: boolean;
   error: string | null;
+}
+
+/**
+ * Weitere Typen für das Karten-Management
+ */
+export interface CardCollection {
+  id: string;
+  name: string;
+  description?: string;
+  cards: CardItemProps[];
+  createdAt: Date;
+  updatedAt: Date;
 }
