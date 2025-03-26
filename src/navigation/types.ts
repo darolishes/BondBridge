@@ -7,9 +7,21 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
  */
 export type CardStackParamList = {
   CardList: undefined;
-  CardDetail: { cardId: string };
+  CardDetail: {
+    id: string;
+    title: string;
+    description?: string;
+    category?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
   CardCreate: undefined;
-  CardEdit: { cardId: string };
+  CardEdit: {
+    id: string;
+    title: string;
+    description?: string;
+    category?: string;
+  };
 };
 
 /**
