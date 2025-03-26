@@ -1,35 +1,39 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import type { FilterType } from "../types";
-import storage from "../../common/utils/storage";
+import {
+  FilterContextType,
+  FilterType,
+  DEFAULT_FILTER,
+} from "@common/types/filter";
+import { getData, storeData } from "@common/utils/storage";
 
-interface FilterContextType {
-  filter: FilterType;
-  setFilter: (filter: FilterType) => void;
-  setSearchQuery: (query: string) => void;
-  setCategory: (category: string) => void;
-  setStatus: (status: "all" | "active" | "completed") => void;
-  setSortBy: (sortBy: "name" | "date" | "priority") => void;
-  resetFilters: () => void;
-}
+/**
+ * Context for managing global filter state
+ * @internal
+ */
+const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
-const FilterContext = createContext<FilterContextType>({} as FilterContextType);
+/**
+ * Provider component for managing global filter state
+ * Handles persistence and provides filter operations
+ */
+export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [filter, setFilter] = useState<FilterType>(DEFAULT_FILTER);
 
-export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
-  const [filter, setFilter] = useState<FilterType>({
-    searchQuery: "",
-    category: "",
-    status: "all",
-    sortBy: "name",
-  });
-
+  // Load saved filter state on mount
   useEffect(() => {
     const loadFilter = async () => {
       try {
-        const savedFilter = await storage.getItem("filter");
+        const savedFilter = await getData("filter");
         if (savedFilter) {
           const parsedFilter = JSON.parse(savedFilter);
-          if (typeof parsedFilter === "object") {
-            setFilter(parsedFilter);
+          if (typeof parsedFilter === "object" && parsedFilter !== null) {
+            // Ensure all required fields are present
+            setFilter({
+              ...DEFAULT_FILTER,
+              ...parsedFilter,
+            });
           }
         }
       } catch (error) {
@@ -39,32 +43,66 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
     loadFilter();
   }, []);
 
-  const updateFilter = (updates: Partial<FilterType>) => {
+  /**
+   * Updates filter state and persists to storage
+   */
+  const updateFilter = async (updates: Partial<FilterType>) => {
     const newFilter = {
       ...filter,
       ...updates,
     };
     setFilter(newFilter);
-    storage.setItem("filter", JSON.stringify(newFilter));
+    try {
+      await storeData("filter", JSON.stringify(newFilter));
+    } catch (error) {
+      console.error("Error saving filter to storage:", error);
+    }
   };
 
-  const setSearchQuery = (query: string) =>
-    updateFilter({ searchQuery: query });
-  const setCategory = (category: string) => updateFilter({ category });
-  const setStatus = (status: "all" | "active" | "completed") =>
-    updateFilter({ status });
-  const setSortBy = (sortBy: "name" | "date" | "priority") =>
-    updateFilter({ sortBy });
+  /**
+   * Updates a single filter value
+   */
+  const setFilterValue = <K extends keyof FilterType>(
+    key: K,
+    value: FilterType[K]
+  ) => {
+    updateFilter({ [key]: value });
+  };
 
-  const resetFilters = () => {
-    const defaultFilter: FilterType = {
-      searchQuery: "",
-      category: "",
-      status: "all",
-      sortBy: "name",
-    };
-    setFilter(defaultFilter);
-    storage.setItem("filter", JSON.stringify(defaultFilter));
+  /**
+   * Updates search query filter
+   */
+  const setSearchQuery = (query: string) =>
+    setFilterValue("searchQuery", query);
+
+  /**
+   * Updates category filter
+   */
+  const setCategory = (category: string) =>
+    setFilterValue("category", category);
+
+  /**
+   * Updates status filter
+   */
+  const setStatus = (status: FilterType["status"]) =>
+    setFilterValue("status", status);
+
+  /**
+   * Updates sort field
+   */
+  const setSortBy = (sortBy: FilterType["sortBy"]) =>
+    setFilterValue("sortBy", sortBy);
+
+  /**
+   * Resets all filters to default values
+   */
+  const resetFilters = async () => {
+    setFilter(DEFAULT_FILTER);
+    try {
+      await storeData("filter", JSON.stringify(DEFAULT_FILTER));
+    } catch (error) {
+      console.error("Error saving default filter to storage:", error);
+    }
   };
 
   return (
@@ -72,15 +110,27 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         filter,
         setFilter,
+        setFilterValue,
         setSearchQuery,
         setCategory,
         setStatus,
         setSortBy,
         resetFilters,
       }}
-      children={children}
-    />
+    >
+      {children}
+    </FilterContext.Provider>
   );
 };
 
-export const useFilter = () => useContext(FilterContext);
+/**
+ * Hook to access filter context
+ * @throws {Error} If used outside of FilterProvider
+ */
+export const useFilter = (): FilterContextType => {
+  const context = useContext(FilterContext);
+  if (context === undefined) {
+    throw new Error("useFilter must be used within a FilterProvider");
+  }
+  return context;
+};

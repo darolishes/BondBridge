@@ -1,6 +1,6 @@
 # Architecture for BondBridge
 
-Status: Draft
+Status: Approved
 
 ## Related Documents
 

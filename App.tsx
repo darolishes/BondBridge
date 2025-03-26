@@ -1,11 +1,7 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {
-  ThemeProvider,
-  useTheme,
-  createNavigationTheme,
-} from "./src/theme/ThemeProvider";
+import { ThemeProvider, useTheme, useNavigationTheme } from "./src/theme";
 import { TabNavigator } from "./src/navigation";
 import { navigationRef } from "./src/navigation";
 import { NavigationContainer } from "@react-navigation/native";
@@ -25,7 +21,7 @@ import { NavigationContainer } from "@react-navigation/native";
  */
 const AppCore = () => {
   const { theme, isDark } = useTheme();
-  const navigationTheme = createNavigationTheme(theme);
+  const navigationTheme = useNavigationTheme();
 
   return (
     <SafeAreaProvider>

@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SettingsStackParamList } from "./types";
-import { useTheme } from "@theme/ThemeProvider";
+import { useTheme } from "@theme/hooks";
 
 /**
  * SettingsStack

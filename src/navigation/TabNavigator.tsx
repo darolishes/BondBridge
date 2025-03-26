@@ -4,7 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { RootTabParamList } from "./types";
 import { CardStack } from "./CardStack";
 import { SettingsStack } from "./SettingsStack";
-import { useTheme } from "@theme/ThemeProvider";
+import { useTheme } from "@theme/hooks";
 
 /**
  * TabNavigator

@@ -1,24 +1,14 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { lightTheme, darkTheme, Theme } from "./themes";
 import { useColorScheme } from "react-native";
-import { ThemeType } from "@common/types";
-import { DarkTheme, DefaultTheme } from "@react-navigation/native";
+import { lightTheme, darkTheme } from "./themes";
+import { Theme, ThemeContextType, ThemeType } from "./types";
 
-// Konstante für den AsyncStorage-Schlüssel
+// Storage key for theme preference
 const THEME_STORAGE_KEY = "@BondBridge:theme";
 
-// Context für das Theme
-interface ThemeContextType {
-  theme: Theme;
-  themeType: ThemeType;
-  isDark: boolean;
-  setThemeType: (type: ThemeType) => void;
-  toggleTheme: () => void;
-}
-
-// Erstelle den Context mit Default-Werten
-const ThemeContext = createContext<ThemeContextType>({
+// Create the theme context with default values
+export const ThemeContext = createContext<ThemeContextType>({
   theme: lightTheme,
   themeType: "system",
   isDark: false,
@@ -26,30 +16,31 @@ const ThemeContext = createContext<ThemeContextType>({
   toggleTheme: () => {},
 });
 
-// Props für den ThemeProvider
+// ThemeProvider props interface
 interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
 /**
- * Theme Provider Komponente
+ * Theme Provider Component
+ * Manages theme state and provides theme context to the application
  */
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // State für den Theme-Typ (light, dark, system)
+  // Theme type state (light, dark, or system)
   const [themeType, setThemeType] = useState<ThemeType>("system");
-  // State für das aktuelle Theme-Objekt
+  // Current theme object
   const [theme, setTheme] = useState<Theme>(lightTheme);
-  // System-Theme vom Gerät
+  // Get device color scheme
   const colorScheme = useColorScheme();
 
-  // Aktualisiere das Theme basierend auf dem Theme-Typ und System-Theme
+  // Update theme when themeType or system color scheme changes
   useEffect(() => {
     const applyTheme = () => {
       if (themeType === "system") {
-        // Wenn 'system' gewählt ist, verwende das System-Theme
+        // Use system preference if set to 'system'
         setTheme(colorScheme === "dark" ? darkTheme : lightTheme);
       } else {
-        // Sonst verwende das explizit gewählte Theme
+        // Otherwise use explicitly selected theme
         setTheme(themeType === "dark" ? darkTheme : lightTheme);
       }
     };
@@ -57,7 +48,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     applyTheme();
   }, [themeType, colorScheme]);
 
-  // Lade die Theme-Präferenz beim App-Start
+  // Load saved theme preference on app start
   useEffect(() => {
     const loadThemePreference = async () => {
       try {
@@ -66,35 +57,35 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
           setThemeType(savedThemeType as ThemeType);
         }
       } catch (error) {
-        console.error("Fehler beim Laden der Theme-Präferenz:", error);
+        console.error("Error loading theme preference:", error);
       }
     };
 
     loadThemePreference();
   }, []);
 
-  // Speichere die Theme-Präferenz bei Änderungen
+  // Save theme preference when it changes
   const saveThemePreference = async (newThemeType: ThemeType) => {
     try {
       await AsyncStorage.setItem(THEME_STORAGE_KEY, newThemeType);
     } catch (error) {
-      console.error("Fehler beim Speichern der Theme-Präferenz:", error);
+      console.error("Error saving theme preference:", error);
     }
   };
 
-  // Handler für Theme-Wechsel
+  // Handler for theme type changes
   const handleSetThemeType = (newThemeType: ThemeType) => {
     setThemeType(newThemeType);
     saveThemePreference(newThemeType);
   };
 
-  // Handler für Theme-Toggle (zwischen Light und Dark)
+  // Toggle between light and dark theme
   const toggleTheme = () => {
     const newType = theme.isDark ? "light" : "dark";
     handleSetThemeType(newType);
   };
 
-  // Context-Wert zusammenstellen
+  // Prepare context value
   const contextValue: ThemeContextType = {
     theme,
     themeType,
@@ -108,37 +99,4 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
-};
-
-/**
- * Hook für den Zugriff auf das aktuelle Theme und Theme-Funktionen
- */
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-
-  return context;
-};
-
-/**
- * Konvertiert unser App-Theme in ein React Navigation Theme
- */
-export const createNavigationTheme = (theme: Theme) => {
-  const navigationTheme = theme.isDark ? DarkTheme : DefaultTheme;
-
-  return {
-    ...navigationTheme,
-    colors: {
-      ...navigationTheme.colors,
-      primary: theme.colors.primary,
-      background: theme.colors.background,
-      card: theme.colors.surface,
-      text: theme.colors.text,
-      border: theme.colors.card.border,
-      notification: theme.colors.error,
-    },
-  };
 };

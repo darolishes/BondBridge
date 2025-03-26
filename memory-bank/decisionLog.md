@@ -1,7 +1,7 @@
 # Decision Log
 
 Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 15:00:00
+Letzte Aktualisierung: 2025-03-27 18:30:00
 Status: 🟢 Aktiv
 
 ## MVP-Architekturentscheidungen 🏗️
@@ -12,6 +12,7 @@ Status: 🟢 Aktiv
 | **Feature-basierte Ordnerstruktur** | ✅     | Bessere Codeorganisation, einfachere Feature-Isolation   | Typ-basierte Organisation              | Anfänglicher Strukturierungsaufwand          |
 | **React Native mit Expo**           | ✅     | Schnelle Entwicklung, Cross-Platform-Support             | Flutter, native Entwicklung            | Expo-Limitierungen                           |
 | **Externe Kartenset-Integration**   | ✅     | Benutzerfreundliche Erweiterbarkeit, Community-Potenzial | Nur vorinstallierte Sets, In-App-Käufe | Dateisystem-Zugriff, Validierungskomplexität |
+| **Theme-System Refaktorierung**     | ✅     | Bessere Wartbarkeit, klarere Struktur, Typensicherheit   | Monolithisches Theme-System            | Kurzfristiger Refaktorierungsaufwand         |
 
 ## UI/UX-Entscheidungen für MVP 🎨
 
@@ -44,8 +45,7 @@ Die folgenden Entscheidungen wurden bewusst für spätere Projektphasen zurückg
 1. **Redux Toolkit mit Entity Adapter** - Komplexere Lösung für größere Datenmengen
 2. **Erweiterte Animationen** - Visuelle Verbesserungen nach Kernfunktionalität
 3. **Zod für Schema-Validierung** - Fortgeschrittene Validierungsmechanismen
-4. **Dark Mode** - UI-Verbesserung nach Kernfunktionalität
-5. **Favoritensystem** - Zusätzliche Funktion für spätere Phasen
+4. **Favoritensystem** - Zusätzliche Funktion für spätere Phasen
 
 ## State Management-Entscheidung ✅ (2025-03-27)
 
@@ -62,3 +62,22 @@ Die folgenden Entscheidungen wurden bewusst für spätere Projektphasen zurückg
 - Nutzung von React Context API
 - Zustandscontainer in `src/store/slices/filters.ts`
 - Integration mit bestehender Storage-Logik
+
+## Theme-System Refaktorierung ✅ (2025-03-27)
+
+**Entscheidung:** Refaktorierung des Theme-Systems in modulare Struktur
+
+**Begründung:**
+
+- Verbesserte Wartbarkeit durch klare Trennung von Verantwortlichkeiten
+- Single Source of Truth für Theme-Tokens
+- Bessere Typensicherheit durch zentrale Typendefinitionen
+- Vereinfachung des Imports von Theme-Hooks
+
+**Implementierung:**
+
+- Strukturierung in Unterverzeichnisse: constants, hooks, types
+- Trennung von Farben, Typografie, Spacing und Borders in eigene Dateien
+- Zentralisierung von Hooks in einer dedizierten hooks.ts Datei
+- Vereinfachung des ThemeProviders zur reinen Zustandsverwaltung
+- Klare Exportschnittstelle über index.ts
