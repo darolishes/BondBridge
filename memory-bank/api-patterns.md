@@ -1,97 +1,153 @@
-# API Patterns
+# API & Data Handling Patterns
 
-Version: 1.0.0
-Last Updated: 2024-03-25 15:11:00
+Version: 1.1.0
+Last Updated: 2025-03-26 10:34:25
 Status: 🟢 Active
-Related Files: systemPatterns.md, decisionLog.md
+Related Files: systemPatterns.md, decisionLog.md, technical-debt.md
 
-## API Design Principles 📝
+## Local Data Management 📝
 
-### RESTful Endpoints
-
-- Use nouns for resources
-- HTTP methods for actions
-- Proper status codes
-- Versioning in URL
-
-### Response Format
+### JSON Data Structure
 
 ```typescript
-interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message: string;
-  timestamp: string;
+// Card schema
+interface Card {
+  id: string;
+  category: string;
+  text: string;
+  difficulty: "easy" | "medium" | "hard";
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Category schema
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+  icon: string;
+}
+
+// User progress schema
+interface UserProgress {
+  cardId: string;
+  status: "unseen" | "seen" | "favorited" | "completed";
+  lastSeenAt: string;
 }
 ```
 
-### Error Handling
+### Data Loading Strategy
 
-```typescript
-interface ApiError {
-  code: string;
-  message: string;
-  details?: Record<string, unknown>;
-  timestamp: string;
-}
-```
+- Load JSON data on app initialization
+- Store in Redux with AsyncStorage persistence
+- Normalize data for efficient access
+- Batch updates for performance
 
-## Authentication 🔐
-
-### JWT Implementation
-
-- Access token in Authorization header
-- Refresh token in secure HTTP-only cookie
-- Token rotation on refresh
-- Proper CORS configuration
-
-## Data Patterns 📊
-
-### Request Validation
-
-- Zod schema validation
-- Type-safe request parsing
-- Input sanitization
-- Rate limiting
-
-### Response Caching
-
-- Client-side caching strategy
-- Cache invalidation rules
-- Offline-first approach
-- Stale-while-revalidate pattern
-
-## Security Measures 🛡️
+## Offline-First Approach 🌐
 
 ### Implementation
 
-- HTTPS only
-- CORS configuration
-- Rate limiting
-- Input validation
-- XSS prevention
-- CSRF protection
+- Local-first data operations
+- Optimistic UI updates
+- Background synchronization (future)
+- Conflict resolution strategies (future)
 
-### Headers
+### Storage Strategy
 
-- Content-Security-Policy
-- X-Content-Type-Options
-- X-Frame-Options
-- X-XSS-Protection
+- Redux Persist for app state
+- AsyncStorage for user preferences
+- FileSystem for larger assets (future)
+- Selective persistence for performance
 
-## Performance Optimization 🚀
+## Future API Integration 🔄
+
+### RTK Query Implementation
+
+```typescript
+// Example RTK Query service
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const cardsApi = createApi({
+  reducerPath: "cardsApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  tagTypes: ["Cards", "Categories"],
+  endpoints: (builder) => ({
+    getCards: builder.query<Card[], void>({
+      query: () => "cards",
+      providesTags: ["Cards"],
+    }),
+    addCard: builder.mutation<Card, Partial<Card>>({
+      query: (card) => ({
+        url: "cards",
+        method: "POST",
+        body: card,
+      }),
+      invalidatesTags: ["Cards"],
+    }),
+  }),
+});
+
+export const { useGetCardsQuery, useAddCardMutation } = cardsApi;
+```
+
+### Data Synchronization
+
+- Periodic background syncing
+- Differential updates
+- Merge strategies for conflicts
+- Queue for offline operations
+
+## JSON Import/Export 📤 📥
+
+### Import Implementation
+
+- File picker integration
+- Schema validation with Zod
+- Data migration for version differences
+- Merge options for existing data
+
+```typescript
+// Example import validation
+import { z } from "zod";
+
+const CardSchema = z.object({
+  id: z.string().uuid(),
+  category: z.string(),
+  text: z.string().min(1),
+  difficulty: z.enum(["easy", "medium", "hard"]),
+  tags: z.array(z.string()),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+const CardsImportSchema = z.array(CardSchema);
+
+function validateImport(data: unknown) {
+  return CardsImportSchema.safeParse(data);
+}
+```
+
+### Export Implementation
+
+- Full data export
+- Selective category export
+- Format options (JSON, CSV)
+- Share functionality
+
+## Performance Considerations 🚀
 
 ### Strategies
 
-- Response compression
-- Pagination
-- Lazy loading
-- Request batching
-- Connection pooling
+- Data normalization in Redux store
+- Selective persistence
+- Batch updates for multiple changes
+- Memoized selectors for derived data
 
-### Monitoring
+### Optimization Techniques
 
-- Response time tracking
-- Error rate monitoring
-- Cache hit ratio
-- API usage metrics
+- Virtualized lists for large datasets
+- Lazy loading for card content
+- Progressive loading for images
+- Incremental updates to storage
