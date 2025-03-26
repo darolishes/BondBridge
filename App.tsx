@@ -1,28 +1,31 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import CardScreen from "./src/features/cards/screens/CardScreen";
-import ImportScreen from "./src/features/import/screens/ImportScreen";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ThemeProvider, useTheme } from "./src/theme/ThemeProvider";
+import { Navigation } from "./src/navigation";
+import { navigationRef } from "./src/navigation/navigationRef";
 
-const Tab = createBottomTabNavigator();
+/**
+ * App-Kern mit aktivierter ThemeProvider-Umgebung
+ */
+const AppCore = () => {
+  const { theme, isDark } = useTheme();
 
+  return (
+    <SafeAreaProvider>
+      <StatusBar style={isDark ? "light" : "dark"} />
+      <Navigation />
+    </SafeAreaProvider>
+  );
+};
+
+/**
+ * Haupteinstiegspunkt der Anwendung
+ */
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={CardScreen} />
-        <Tab.Screen name="Import" component={ImportScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <ThemeProvider>
+      <AppCore />
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
