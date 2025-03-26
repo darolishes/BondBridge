@@ -1,40 +1,32 @@
-import type { NavigatorScreenParams } from "@react-navigation/native";
-import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 
 /**
- * Parameter-Typen für den Card-Stack
+ * Navigation Types
+ * ---------------
+ * Typendefinitionen für die Navigation in der App.
+ * Definiert die Parameter und Routen für die verschiedenen Navigator-Typen.
+ */
+
+/**
+ * Root-Tab-Navigation-Parameter
+ */
+export type RootTabParamList = {
+  CardTab: undefined;
+  SettingsTab: undefined;
+};
+
+/**
+ * Card-Stack-Navigation-Parameter
  */
 export type CardStackParamList = {
   CardList: undefined;
-  CardDetail: {
-    id: string;
-    title: string;
-    description?: string;
-    category?: string;
-    createdAt?: string;
-    updatedAt?: string;
-  };
+  CardDetail: { cardId: string };
   CardCreate: undefined;
-  CardEdit: {
-    id: string;
-    title: string;
-    description?: string;
-    category?: string;
-  };
+  CardEdit: { cardId: string };
 };
 
 /**
- * Parameter-Typen für den Import/Export-Stack
- */
-export type ImportExportStackParamList = {
-  ImportExportHome: undefined;
-  ImportData: undefined;
-  ExportData: { selectedDeckIds?: string[] };
-};
-
-/**
- * Parameter-Typen für den Settings-Stack
+ * Settings-Stack-Navigation-Parameter
  */
 export type SettingsStackParamList = {
   SettingsHome: undefined;
@@ -44,49 +36,52 @@ export type SettingsStackParamList = {
 };
 
 /**
- * Parameter-Typen für den Root-Tab-Navigator
+ * Typ für die Navigation-Props in den Card-Screens
  */
-export type RootTabParamList = {
-  CardTab: NavigatorScreenParams<CardStackParamList>;
-  ImportExportTab: NavigatorScreenParams<ImportExportStackParamList>;
-  SettingsTab: NavigatorScreenParams<SettingsStackParamList>;
-};
+export type CardScreenNavigationProp = NavigationProp<CardStackParamList>;
 
 /**
- * Vereinigter Typ für alle Screen-Props in der Anwendung
+ * Typ für die Route-Props in den Card-Screens
  */
-export type ScreenProps = {
-  // Card Stack Screen Props
-  CardList: NativeStackScreenProps<CardStackParamList, "CardList">;
-  CardDetail: NativeStackScreenProps<CardStackParamList, "CardDetail">;
-  CardCreate: NativeStackScreenProps<CardStackParamList, "CardCreate">;
-  CardEdit: NativeStackScreenProps<CardStackParamList, "CardEdit">;
+export type CardScreenRouteProp<T extends keyof CardStackParamList> = RouteProp<
+  CardStackParamList,
+  T
+>;
 
-  // Import/Export Stack Screen Props
-  ImportExportHome: NativeStackScreenProps<
-    ImportExportStackParamList,
-    "ImportExportHome"
-  >;
-  ImportData: NativeStackScreenProps<ImportExportStackParamList, "ImportData">;
-  ExportData: NativeStackScreenProps<ImportExportStackParamList, "ExportData">;
+/**
+ * Typ für die Navigation-Props in den Settings-Screens
+ */
+export type SettingsScreenNavigationProp =
+  NavigationProp<SettingsStackParamList>;
 
-  // Settings Stack Screen Props
-  SettingsHome: NativeStackScreenProps<SettingsStackParamList, "SettingsHome">;
-  ThemeSettings: NativeStackScreenProps<
-    SettingsStackParamList,
-    "ThemeSettings"
-  >;
-  NotificationSettings: NativeStackScreenProps<
-    SettingsStackParamList,
-    "NotificationSettings"
-  >;
-  About: NativeStackScreenProps<SettingsStackParamList, "About">;
+/**
+ * Typ für die Route-Props in den Settings-Screens
+ */
+export type SettingsScreenRouteProp<T extends keyof SettingsStackParamList> =
+  RouteProp<SettingsStackParamList, T>;
 
-  // Tab Screen Props
-  CardTab: BottomTabScreenProps<RootTabParamList, "CardTab">;
-  ImportExportTab: BottomTabScreenProps<RootTabParamList, "ImportExportTab">;
-  SettingsTab: BottomTabScreenProps<RootTabParamList, "SettingsTab">;
-};
+/**
+ * Typ für alle möglichen Screen-Namen
+ */
+export type AppScreens =
+  | {
+      screen: keyof RootTabParamList;
+      params?: never;
+    }
+  | {
+      screen: "CardTab";
+      params: {
+        screen: keyof CardStackParamList;
+        params: CardStackParamList[keyof CardStackParamList];
+      };
+    }
+  | {
+      screen: "SettingsTab";
+      params: {
+        screen: keyof SettingsStackParamList;
+        params: SettingsStackParamList[keyof SettingsStackParamList];
+      };
+    };
 
 /**
  * Deklaration für das erweiterung des React Navigation Namespace

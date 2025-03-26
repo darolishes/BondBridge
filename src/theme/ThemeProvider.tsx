@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { lightTheme, darkTheme, Theme } from "./themes";
 import { useColorScheme } from "react-native";
 import { ThemeType } from "@common/types";
+import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 
 // Konstante für den AsyncStorage-Schlüssel
 const THEME_STORAGE_KEY = "@BondBridge:theme";
@@ -120,4 +121,24 @@ export const useTheme = () => {
   }
 
   return context;
+};
+
+/**
+ * Konvertiert unser App-Theme in ein React Navigation Theme
+ */
+export const createNavigationTheme = (theme: Theme) => {
+  const navigationTheme = theme.isDark ? DarkTheme : DefaultTheme;
+
+  return {
+    ...navigationTheme,
+    colors: {
+      ...navigationTheme.colors,
+      primary: theme.colors.primary,
+      background: theme.colors.background,
+      card: theme.colors.surface,
+      text: theme.colors.text,
+      border: theme.colors.card.border,
+      notification: theme.colors.error,
+    },
+  };
 };

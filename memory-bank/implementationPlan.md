@@ -1,12 +1,12 @@
 # Implementation Plan: Swipeable Conversation Cards
 
-Version: 1.0.0
-Last Updated: 2025-03-26 14:49:30
+Version: 1.1.0
+Last Updated: 2025-03-26 15:48:00
 Status: 🟢 Active
 
 ## Überblick 📋
 
-Dieses Dokument beschreibt den Implementierungsplan für das Swipeable Conversation Cards Feature der BondBridge App. Es definiert die Komponenten, Datenmodelle, State Management und Animation Patterns, die für dieses Feature benötigt werden.
+Dieses Dokument beschreibt den Implementierungsplan für das Swipeable Conversation Cards Feature der BondBridge App. Es definiert die Komponenten, Datenmodelle, State Management und Animation Patterns, die für dieses Feature benötigt werden. Zusätzlich beschreibt es die automatische Integration externer Kartensets ohne UI-basierte Import/Export-Funktionalität.
 
 ## Zeitplan 📅
 
@@ -15,6 +15,7 @@ Dieses Dokument beschreibt den Implementierungsplan für das Swipeable Conversat
 - **Phase 3**: Swipe-Animation & Gestures (Sprint 3, Woche 1)
 - **Phase 4**: Filter & Kategorien (Sprint 3, Woche 1-2)
 - **Phase 5**: Persistenz & Offline-Funktionalität (Sprint 3, Woche 2)
+- **Phase 6**: Automatisches Laden externer Kartensets (Sprint 3, Woche 2-3)
 
 ## 1. Datenmodell 📊
 
@@ -41,11 +42,20 @@ export type CardCategory =
   | "deep-thoughts"
   | "intimacy"
   | "growth";
+
+// Schema für externe Kartensets
+export interface ExternalCardSet {
+  id: string; // Eindeutige ID des Sets
+  name: string; // Name des Kartensets
+  description: string; // Beschreibung des Sets
+  version: string; // Version (semver)
+  cards: ConversationCard[]; // Enthaltene Karten
+}
 ```
 
 ### Mock Data
 
-- Erstelle einen initialien Kartensatz mit mindestens 5 Karten pro Kategorie
+- Erstelle einen initialen Kartensatz mit mindestens 5 Karten pro Kategorie
 - Speichere diese in `features/conversation-cards/data/mockCards.ts`
 
 ## 2. Redux State Management 🧠
@@ -56,6 +66,15 @@ export type CardCategory =
 // features/conversation-cards/cards.slice.ts
 interface CardsState {
   items: ConversationCard[];
+  cardSets: {
+    [id: string]: {
+      id: string;
+      name: string;
+      description: string;
+      version: string;
+      isActive: boolean;
+    };
+  };
   currentCardIndex: number;
   activeCategories: CardCategory[];
   activeDifficulty: (1 | 2 | 3 | 4 | 5)[];
@@ -69,6 +88,9 @@ interface CardsState {
 ### Key Actions
 
 - `fetchCards`: Lade Karten (zunächst Mock-Daten)
+- `loadExternalCardSets`: Lade externe Kartensets aus dem Dateisystem
+- `addCardSet`: Füge ein neues Kartenset hinzu
+- `toggleCardSetActive`: Aktiviere/Deaktiviere ein Kartenset
 - `likeCard`: Markiere Karte als gemocht und zur History hinzufügen
 - `skipCard`: Überspringe Karte und zur History hinzufügen
 - `toggleFavorite`: Karte als Favorit markieren/demarkieren
@@ -83,6 +105,7 @@ interface CardsState {
 - `selectActiveCategories`: Gibt aktive Kategorien zurück
 - `selectActiveDifficulty`: Gibt aktive Schwierigkeitsgrade zurück
 - `selectFavorites`: Gibt favorisierte Karten zurück
+- `selectCardSets`: Gibt alle verfügbaren Kartensets zurück
 
 ## 3. UI Komponenten 🎨
 
@@ -205,7 +228,194 @@ const persistConfig = {
 };
 ```
 
-## 7. Navigation Integration 🧭
+## 7. Automatische Kartenset-Integration 🔄
+
+### CardSetLoader Service
+
+```typescript
+// features/conversation-cards/services/cardsets/CardSetLoader.ts
+import * as FileSystem from "react-native-fs";
+import { ExternalCardSet } from "../../types";
+
+class CardSetLoader {
+  private cardSetsDir: string;
+
+  constructor() {
+    this.cardSetsDir = `${FileSystem.DocumentDirectoryPath}/cardsets`;
+    this.ensureCardSetsDirectory();
+  }
+
+  private async ensureCardSetsDirectory(): Promise<void> {
+    const exists = await FileSystem.exists(this.cardSetsDir);
+    if (!exists) {
+      await FileSystem.mkdir(this.cardSetsDir);
+    }
+  }
+
+  async loadCardSets(): Promise<ExternalCardSet[]> {
+    try {
+      await this.ensureCardSetsDirectory();
+
+      const files = await FileSystem.readdir(this.cardSetsDir);
+      const jsonFiles = files.filter((file) => file.endsWith(".json"));
+
+      const cardSets: ExternalCardSet[] = [];
+
+      for (const file of jsonFiles) {
+        try {
+          const content = await FileSystem.readFile(
+            `${this.cardSetsDir}/${file}`,
+            "utf8"
+          );
+          const cardSet = JSON.parse(content);
+
+          if (this.validateCardSet(cardSet)) {
+            cardSets.push(cardSet);
+          } else {
+            console.warn(`Invalid card set format in ${file}`);
+          }
+        } catch (error) {
+          console.error(`Error loading card set from ${file}:`, error);
+        }
+      }
+
+      return cardSets;
+    } catch (error) {
+      console.error("Error loading card sets:", error);
+      return [];
+    }
+  }
+
+  private validateCardSet(cardSet: any): cardSet is ExternalCardSet {
+    // Grundlegende Validierung
+    if (!cardSet || typeof cardSet !== "object") return false;
+    if (
+      !cardSet.id ||
+      !cardSet.name ||
+      !cardSet.version ||
+      !Array.isArray(cardSet.cards)
+    )
+      return false;
+
+    // Karten-Validierung
+    for (const card of cardSet.cards) {
+      if (!this.validateCard(card)) return false;
+    }
+
+    return true;
+  }
+
+  private validateCard(card: any): boolean {
+    if (!card || typeof card !== "object") return false;
+    if (!card.id || !card.question || !card.category || !card.difficulty)
+      return false;
+
+    // Kategorie-Validierung
+    const validCategories = [
+      "icebreakers",
+      "confessions",
+      "personality",
+      "deep-thoughts",
+      "intimacy",
+      "growth",
+    ];
+    if (!validCategories.includes(card.category)) return false;
+
+    // Schwierigkeitsgrad-Validierung
+    if (![1, 2, 3, 4, 5].includes(card.difficulty)) return false;
+
+    return true;
+  }
+
+  getCardSetsPath(): string {
+    return this.cardSetsDir;
+  }
+}
+
+export default new CardSetLoader();
+```
+
+### Integration in Redux
+
+```typescript
+// features/conversation-cards/cards.slice.ts (Action)
+export const loadExternalCardSets = createAsyncThunk(
+  "cards/loadExternalCardSets",
+  async (_, { rejectWithValue }) => {
+    try {
+      const cardSets = await CardSetLoader.loadCardSets();
+      return cardSets;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Im Reducer
+builder.addCase(loadExternalCardSets.fulfilled, (state, action) => {
+  const newCardSets = action.payload;
+
+  // Neue Kartensets hinzufügen
+  for (const set of newCardSets) {
+    state.cardSets[set.id] = {
+      id: set.id,
+      name: set.name,
+      description: set.description,
+      version: set.version,
+      isActive: true,
+    };
+
+    // Karten zum Gesamtbestand hinzufügen
+    for (const card of set.cards) {
+      // Prüfen, ob die Karte bereits existiert
+      const existingIndex = state.items.findIndex((c) => c.id === card.id);
+      if (existingIndex >= 0) {
+        // Aktualisieren, falls Version neuer
+        state.items[existingIndex] = card;
+      } else {
+        // Neue Karte hinzufügen
+        state.items.push(card);
+      }
+    }
+  }
+
+  state.isLoading = false;
+});
+```
+
+### Automatisches Laden beim Start
+
+```typescript
+// features/conversation-cards/screens/CardsScreen.tsx
+useEffect(() => {
+  dispatch(loadExternalCardSets());
+}, [dispatch]);
+
+// Alternativ in App.tsx für globale Verfügbarkeit
+```
+
+### Regelmäßige Überprüfung auf neue Sets
+
+```typescript
+// features/conversation-cards/hooks/useCardSetSync.ts
+export const useCardSetSync = (intervalInMinutes = 60) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Initial laden
+    dispatch(loadExternalCardSets());
+
+    // Regelmäßiges Überprüfen
+    const interval = setInterval(() => {
+      dispatch(loadExternalCardSets());
+    }, intervalInMinutes * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch, intervalInMinutes]);
+};
+```
+
+## 8. Navigation Integration 🧭
 
 ### CardStack Updates
 
@@ -214,7 +424,7 @@ const persistConfig = {
 - Optionen für Tab-Integration
 - Korrekte Header-Konfiguration
 
-## 8. Implementierungsreihenfolge 📑
+## 9. Implementierungsreihenfolge 📑
 
 1. **Datenmodell & Redux Setup**
 
@@ -255,7 +465,7 @@ const persistConfig = {
    - UI-Verfeinerung
    - Accessibility
 
-## 9. Abhängigkeiten 🔄
+## 10. Abhängigkeiten 🔄
 
 - React Native Reanimated 2+
 - React Native Gesture Handler
@@ -264,16 +474,18 @@ const persistConfig = {
 - AsyncStorage
 - React Navigation
 
-## 10. Risiken & Mitigationen ⚠️
+## 11. Risiken & Mitigationen ⚠️
 
-| Risiko                             | Wahrscheinlichkeit | Auswirkung | Mitigation                                |
-| ---------------------------------- | ------------------ | ---------- | ----------------------------------------- |
-| Performance-Probleme bei Animation | Mittel             | Hoch       | Worklets verwenden, UI-Thread-Optimierung |
-| Komplexe Redux-State-Updates       | Mittel             | Mittel     | Selektoren verwenden, Immutability wahren |
-| Inkonsistenzen bei Persistierung   | Niedrig            | Hoch       | Migrations-Strategie, Daten-Validierung   |
-| Gestenkonflikt mit Navigation      | Mittel             | Mittel     | Gesture Handler richtig konfigurieren     |
+| Risiko                             | Wahrscheinlichkeit | Auswirkung | Mitigation                                      |
+| ---------------------------------- | ------------------ | ---------- | ----------------------------------------------- |
+| Performance-Probleme bei Animation | Mittel             | Hoch       | Worklets verwenden, UI-Thread-Optimierung       |
+| Komplexe Redux-State-Updates       | Mittel             | Mittel     | Selektoren verwenden, Immutability wahren       |
+| Dateisystem-Berechtigungen         | Hoch               | Hoch       | Fallback-Mechanismen, klare Fehlermeldungen     |
+| Korrupte externe Kartensets        | Mittel             | Hoch       | Robuste Validierung, isolierte Fehlerbehandlung |
+| Inkonsistenzen bei Persistierung   | Niedrig            | Hoch       | Migrations-Strategie, Daten-Validierung         |
+| Gestenkonflikt mit Navigation      | Mittel             | Mittel     | Gesture Handler richtig konfigurieren           |
 
-## 11. Definition of Done ✅
+## 12. Definition of Done ✅
 
 - Alle UI-Komponenten implementiert und getestet
 - Vollständige Swipe-Funktionalität mit Animationen
@@ -281,4 +493,6 @@ const persistConfig = {
 - Favoriten-Markierung und -Anzeige funktionieren
 - Persistenz über App-Neustarts hinweg
 - Vollständige Offline-Funktionalität
+- Automatisches Laden von externen Kartensets
+- Validierung von Kartensets mit klaren Fehlermeldungen
 - Unit- und Integrationstests mit >80% Coverage

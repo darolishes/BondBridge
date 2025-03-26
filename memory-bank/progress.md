@@ -1,7 +1,7 @@
 # Progress Tracking
 
-Version: 1.3.0
-Last Updated: 2025-03-26 14:45:30
+Version: 1.4.0
+Last Updated: 2025-03-26 15:55:00
 Status: 🟢 Active
 Related Files: activeContext.md, decisionLog.md
 
@@ -29,8 +29,8 @@ Related Files: activeContext.md, decisionLog.md
 - 🔄 Swipeable conversation cards (15%)
 - 📋 Category filtering (0%)
 - 🔄 Settings implementation (15%)
+- 📋 Automatic CardSet loading (0%)
 - 📋 Offline storage (0%)
-- 📋 Import/Export functionality (0%)
 
 ### Phase 4: Polishing & Testing
 
@@ -46,11 +46,12 @@ Related Files: activeContext.md, decisionLog.md
 - Implementierung der Swipeable Conversation Cards
 - Integration von Redux Toolkit mit Persistenz
 - Entwicklung des Kategorie- und Schwierigkeitsfilters
+- Implementierung des automatischen Ladens externer Kartensets
 - Animation und Gestensteuerung für Kartenstapel
 
 ### Progress
 
-- Week 1: 50% complete
+- Week 1: 55% complete
 - Remaining time: 1.5 weeks
 - On track: ✅ Yes
 
@@ -58,11 +59,13 @@ Related Files: activeContext.md, decisionLog.md
 
 ### Sprint 2 (March 26 - April 2, 2025)
 
+- ✅ Umstellung von UI-basiertem Import/Export auf automatisches Laden externer Kartensets
+- ✅ Aktualisierung der Dokumentation für externe Kartensets
 - ✅ Erstellung des detaillierten Plans für Swipeable Conversation Cards
 - ✅ Definition des erweiterten Datenmodells für Conversation Cards
 - ✅ Implement feature-based folder structure
 - ✅ Create navigation framework with TabNavigator
-- ✅ Implement CardStack, SettingsStack, and ImportExportStack
+- ✅ Implement CardStack, SettingsStack
 - ✅ Implement theme system with dark mode support
 - ✅ Fix useTheme import paths
 
@@ -84,12 +87,14 @@ Related Files: activeContext.md, decisionLog.md
 2. Entwicklung des CardDeck mit Swipe-Funktionalität
 3. Implementierung des cardsSlice mit CRUD-Operationen
 4. Integration von Redux Persist für Offline-Speicherung
-5. Implementierung des CategoryFilter und DifficultySelector
-6. Entwicklung des CardsScreen mit Filter-Integration
+5. Implementierung des CardSetLoader mit react-native-fs
+6. Erstellung des Dateisystem-Verzeichnisses für Kartensets
+7. Implementierung des CategoryFilter und DifficultySelector
+8. Entwicklung des CardsScreen mit Filter-Integration
 
 ### Medium Priority
 
-1. Import/Export-Funktionalität für Kartensets
+1. Verbessertes Fehler-Logging für invalide Kartensets
 2. Fortschrittsanzeige für gesehene Karten
 3. Favoriten-Funktionalität
 4. Animierte Übergänge zwischen Karten
@@ -100,3 +105,5 @@ Related Files: activeContext.md, decisionLog.md
 - Komplexität der Swipe-Animationen könnte die Performance auf älteren Geräten beeinträchtigen
 - Koordination der Kartenübergänge mit dem Redux-State erfordert sorgfältige Implementierung
 - Skalierbarkeit bei großen Kartensets muss berücksichtigt werden
+- Dateisystem-Berechtigungen auf verschiedenen Plattformen könnten Probleme verursachen
+- Benutzererfahrung bei fehlerhaften Kartensets muss optimiert werden

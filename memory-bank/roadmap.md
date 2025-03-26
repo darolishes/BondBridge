@@ -1,12 +1,12 @@
 # Roadmap
 
-Version: 1.2.0
-Last Updated: 2025-03-26 14:52:15
+Version: 1.3.0
+Last Updated: 2025-03-26 15:45:00
 Status: 🟢 Active
 
 ## Überblick 🔭
 
-Dieses Dokument definiert die Entwicklungs-Roadmap für die BondBridge App mit Schwerpunkt auf Swipeable Conversation Cards.
+Dieses Dokument definiert die Entwicklungs-Roadmap für die BondBridge App mit Schwerpunkt auf Swipeable Conversation Cards und automatischer Integration externer Kartensets.
 
 ## Aktuelle Milestone: MVP (Alpha) 🏆
 
@@ -32,6 +32,11 @@ Dieses Dokument definiert die Entwicklungs-Roadmap für die BondBridge App mit S
 - 📅 Offline-Funktionalität
   - 📅 AsyncStorage-Integration
   - 📅 Redux Persist
+- 📅 Externe Kartenset-Integration
+  - 📅 Dateisystem-Verzeichnis einrichten
+  - 📅 Automatischer Scan mit react-native-fs
+  - 📅 JSON-Schema-Validierung
+  - 📅 Integration in Redux Store
 
 ## Milestone 2: Beta 🚀
 
@@ -40,9 +45,10 @@ Dieses Dokument definiert die Entwicklungs-Roadmap für die BondBridge App mit S
 
 ### Features:
 
-- 📋 Benutzerdefinierte Kartensets
-  - 📋 JSON-Import/Export
-  - 📋 Editor für eigene Karten
+- 📋 Kartenset-Verwaltung
+  - 📋 Anzeige installierter Kartensets
+  - 📋 Deaktivieren/Aktivieren von Sets
+  - 📋 Fehlerbehandlung für invalide Sets
 - 📋 Fortschrittsanzeige
   - 📋 Statistiken zu gesehenen Karten
   - 📋 Kategorie-Fortschritt
@@ -67,12 +73,12 @@ Dieses Dokument definiert die Entwicklungs-Roadmap für die BondBridge App mit S
 - 📋 Erweiterte Filteroptionen
   - 📋 Textbasierte Suche
   - 📋 Tags
-- 📋 Teilen-Funktionalität
-  - 📋 Einzelne Karten teilen
-  - 📋 Favoriten exportieren
-- 📋 Backup & Sync (optional)
-  - 📋 Cloud-Backup
-  - 📋 Geräteübergreifende Synchronisation
+- 📋 Erweitertes Dateisystem
+  - 📋 Verbessertes Logging
+  - 📋 Backup für Benutzerdaten
+- 📋 Content-Validation
+  - 📋 Verbesserte Validierungsfehlermeldungen
+  - 📋 Kartenvorschau
 
 ## Zukünftige Ideen 💡
 
@@ -88,22 +94,22 @@ Dieses Dokument definiert die Entwicklungs-Roadmap für die BondBridge App mit S
 - 📋 Wöchentliche Themen
 - 📋 Streaks und Belohnungen
 
-### Community Features (Q2 2026)
+### Community Kartensets (Q2 2026)
 
-- 📋 Öffentliche Kartendecks
-- 📋 Community-Bewertungen
+- 📋 Online-Verzeichnis für Kartensets
+- 📋 Einfaches Installieren von validierten Sets
 - 📋 Kuratierte Sammlungen
 
 ## Release-Plan 📅
 
-| Version | Codename    | Datum   | Hauptfeatures                            |
-| ------- | ----------- | ------- | ---------------------------------------- |
-| 0.1.0   | Alpha       | Q2 2025 | Swipeable Cards, Basis-Funktionalität    |
-| 0.2.0   | Beta        | Q3 2025 | Offline-Modus, Benutzerdefinierte Karten |
-| 1.0.0   | Release     | Q3 2025 | Vollständige Basis-App                   |
-| 1.1.0   | Enhancement | Q4 2025 | Couple Mode                              |
-| 1.2.0   | Challenges  | Q1 2026 | Herausforderungen und Streaks            |
-| 2.0.0   | Community   | Q2 2026 | Community-Features und Content-Sharing   |
+| Version | Codename    | Datum   | Hauptfeatures                                |
+| ------- | ----------- | ------- | -------------------------------------------- |
+| 0.1.0   | Alpha       | Q2 2025 | Swipeable Cards, Basis-Funktionalität        |
+| 0.2.0   | Beta        | Q3 2025 | Offline-Modus, Externe Kartensets            |
+| 1.0.0   | Release     | Q3 2025 | Vollständige Basis-App                       |
+| 1.1.0   | Enhancement | Q4 2025 | Couple Mode                                  |
+| 1.2.0   | Challenges  | Q1 2026 | Herausforderungen und Streaks                |
+| 2.0.0   | Community   | Q2 2026 | Community-Kartensets und Content-Kuratierung |
 
 ## Priorisierungskriterien 📊
 
@@ -136,18 +142,20 @@ Bei der Entwicklung werden folgende Kriterien für Priorisierungsentscheidungen 
 ### Backend & Daten
 
 - 🔄 Lokale Datenpersistenz
-- 📋 JSON-Import/Export
+- 📋 Dateisystem-Integration
 - 📋 Offline-First-Architektur
-- 📋 Optional: Cloud-Integration
+- 📋 Schema-Validierung
 
 ## Risiken & Mitigationen ⚠️
 
-| Risiko                                  | Wahrscheinlichkeit | Auswirkung | Mitigation                                     |
-| --------------------------------------- | ------------------ | ---------- | ---------------------------------------------- |
-| Performance bei komplexen Animationen   | Hoch               | Mittel     | Frühe Prototypen, Optimierung mit Reanimated   |
-| Offline-Synchronisation                 | Mittel             | Hoch       | Robustes State Management, Conflict Resolution |
-| UX-Konsistenz auf verschiedenen Geräten | Mittel             | Mittel     | Umfassendes Testing auf verschiedenen Geräten  |
-| Skalierbarkeit für große Kartensets     | Niedrig            | Hoch       | Virtualisierung, Lazy Loading                  |
+| Risiko                                  | Wahrscheinlichkeit | Auswirkung | Mitigation                                                               |
+| --------------------------------------- | ------------------ | ---------- | ------------------------------------------------------------------------ |
+| Performance bei komplexen Animationen   | Hoch               | Mittel     | Frühe Prototypen, Optimierung mit Reanimated                             |
+| Offline-Synchronisation                 | Mittel             | Hoch       | Robustes State Management, Conflict Resolution                           |
+| Dateisystem-Berechtigungen              | Hoch               | Hoch       | Frühzeitiges Testen auf verschiedenen OS-Versionen, Fallback-Mechanismen |
+| Korrupte externe Kartensets             | Mittel             | Hoch       | Strikte Validierung, Isolierte Fehlerbehandlung                          |
+| UX-Konsistenz auf verschiedenen Geräten | Mittel             | Mittel     | Umfassendes Testing auf verschiedenen Geräten                            |
+| Skalierbarkeit für große Kartensets     | Niedrig            | Hoch       | Virtualisierung, Lazy Loading                                            |
 
 ## Erfolgsmetriken 📈
 
@@ -155,3 +163,4 @@ Bei der Entwicklung werden folgende Kriterien für Priorisierungsentscheidungen 
 - **Wiederkehrende Nutzer**: 7-Tage und 30-Tage Retention
 - **Feature-Nutzung**: % der genutzten Kategorien und Schwierigkeitsgrade
 - **Favoriten**: Durchschnittliche Anzahl favorisierter Karten pro Nutzer
+- **Kartensets**: Anzahl und Häufigkeit der installierten externen Kartensets

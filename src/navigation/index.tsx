@@ -1,46 +1,39 @@
-import React from "react";
-import { DefaultTheme, DarkTheme } from "@react-navigation/native";
+/**
+ * Navigation Index
+ * ---------------
+ * Zentraler Einstiegspunkt für die Navigation.
+ * Exportiert die verschiedenen Navigator-Komponenten und die Navigation-Referenz.
+ */
+
+import { createNavigationContainerRef } from "@react-navigation/native";
 import { TabNavigator } from "./TabNavigator";
-import { useTheme } from "@theme/ThemeProvider";
-import { Theme } from "@theme/themes";
+import { CardStack } from "./CardStack";
+import { SettingsStack } from "./SettingsStack";
+import * as NavigationRef from "./navigationRef";
+import type { AppScreens } from "./types";
 
-/**
- * Navigation
- * ----------
- * Root-Navigationskomponente, die die Tab-Navigation aufbaut.
- *
- * @component
- * @core
- */
+// Re-export Navigator-Komponenten
+export { TabNavigator, CardStack, SettingsStack };
 
-/**
- * Konvertiert unser App-Theme in ein React Navigation Theme
- */
-export const createNavigationTheme = (theme: Theme) => {
-  const navigationTheme = theme.isDark ? DarkTheme : DefaultTheme;
+// Re-export Navigation-Referenz
+export { NavigationRef };
 
-  return {
-    ...navigationTheme,
-    colors: {
-      ...navigationTheme.colors,
-      primary: theme.colors.primary,
-      background: theme.colors.background,
-      card: theme.colors.surface,
-      text: theme.colors.text,
-      border: theme.colors.card.border,
-      notification: theme.colors.error,
-    },
-  };
-};
+// Re-export Navigation-Typen
+export type {
+  RootTabParamList,
+  CardStackParamList,
+  SettingsStackParamList,
+  CardScreenNavigationProp,
+  CardScreenRouteProp,
+  SettingsScreenNavigationProp,
+  SettingsScreenRouteProp,
+  AppScreens,
+} from "./types";
 
-/**
- * Root-Navigator der App, kombiniert alles
- */
-export const Navigation = () => {
-  return <TabNavigator />;
-};
+// Erstellt eine typisierte Navigation-Referenz
+export const navigationRef = createNavigationContainerRef<AppScreens>();
 
-/**
- * Export aller Navigationstypen und Hilfsfunktionen
- */
-export * from "./types";
+// Exportiert Navigation-Helfer-Funktionen
+export const navigate = NavigationRef.navigate;
+export const goBack = NavigationRef.goBack;
+export const resetRoot = NavigationRef.resetRoot;
