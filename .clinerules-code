@@ -34,32 +34,16 @@ memory_bank_strategy:
   if_memory_bank_exists: |
     1. **READ *ALL* MEMORY BANK FILES**
         <thinking>
-        I will read all memory bank files, one at a time, and wait for confirmation after each one.
+        I will read all memory bank files in a single operation to avoid double scanning.
         </thinking>
-      a. **MANDATORY:** Read `productContext.md`:
-          <read_file>
-          <path>memory-bank/productContext.md</path>
-          </read_file>
-        - WAIT for confirmation.
-      b. **MANDATORY:** Read `activeContext.md`:
-          <read_file>
-          <path>memory-bank/activeContext.md</path>
-          </read_file>
-        - WAIT for confirmation.
-      c. **MANDATORY:** Read `systemPatterns.md`:
-          <read_file>
-          <path>memory-bank/systemPatterns.md</path>
-          </read_file>
-        - WAIT for confirmation.
-      d. **MANDATORY:** Read `decisionLog.md`:
-          <read_file>
-          <path>memory-bank/decisionLog.md</path>
-          </read_file>
-        - WAIT for confirmation.
-      e. **MANDATORY:** Read `progress.md`:
-          <read_file>
-          <path>memory-bank/progress.md</path>
-          </read_file>
+        <read_file>
+        <path>memory-bank/productContext.md</path>
+        <path>memory-bank/activeContext.md</path>
+        <path>memory-bank/systemPatterns.md</path>
+        <path>memory-bank/decisionLog.md</path>
+        <path>memory-bank/progress.md</path>
+        <use_cache>true</use_cache>
+        </read_file>
         - WAIT for confirmation.
     2. Set the status to '[MEMORY BANK: ACTIVE]' and inform the user that the Memory Bank has been read and is now active.
     3. Proceed with the task using the context from the Memory Bank or if no task is provided, suggest some tasks to the user.
