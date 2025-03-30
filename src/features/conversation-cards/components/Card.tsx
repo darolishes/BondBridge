@@ -7,12 +7,12 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { CardProps } from "../types";
-import CategoryBadge from "./CategoryBadge";
-import QuestionText from "./QuestionText";
-import DifficultyIndicator from "./DifficultyIndicator";
-import FollowUpQuestions from "./FollowUpQuestions";
-import SwipeHandler from "./SwipeHandler";
+import { CardProps } from "@cards/types";
+import CategoryBadge from "@cards/components/CategoryBadge";
+import QuestionText from "@cards/components/QuestionText";
+import DifficultyIndicator from "@cards/components/DifficultyIndicator";
+import FollowUpQuestions from "@cards/components/FollowUpQuestions";
+import { SwipeHandler } from "@cards/components/SwipeHandler";
 
 /**
  * Konversationskarte Komponente - Zeigt eine Frage, Kategorie und Schwierigkeitsgrad an

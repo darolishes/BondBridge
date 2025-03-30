@@ -2,11 +2,18 @@
  * Theme system for BondBridge
  */
 
+// Import constants
+import { colors } from "./constants/colors";
+import { spacing } from "./constants/spacing";
+import { uiComponents } from "./constants/uiComponents";
+
 // Export types
 export * from "./types";
 
-// Export themes
-export { lightTheme, darkTheme } from "./themes";
+// Export constants
+export { colors } from "./constants/colors";
+export { spacing } from "./constants/spacing";
+export { uiComponents } from "./constants/uiComponents";
 
 // Export provider component
 export { ThemeProvider, ThemeContext } from "./ThemeProvider";
@@ -14,5 +21,9 @@ export { ThemeProvider, ThemeContext } from "./ThemeProvider";
 // Export hooks
 export { useTheme, createThemedStyles, useNavigationTheme } from "./hooks";
 
-// Export constants for direct access where needed
-export * from "./constants";
+// Export default theme
+export const defaultTheme = {
+  colors,
+  spacing,
+  uploadComponents: uiComponents,
+};

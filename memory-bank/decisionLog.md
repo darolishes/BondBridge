@@ -66,6 +66,23 @@ Status: 🟢 Aktiv
 
 ## Entscheidung: Swipe-Gesten-Implementierung
 
+## Browser-Optimierungs-Architektur (2025-03-30)
+
+**Entscheidung**: Implementierung eines browser-spezifischen Optimierungsadapters
+
+**Begründung**:
+
+- Unterschiedliche Browser-Implementierungen für Hardware-Beschleunigung
+- Notwendigkeit für passive Event-Listener zur Performance-Verbesserung
+- Adaptive Bildqualität basierend auf Gerätefähigkeiten
+
+**Umsetzung**:
+
+- BrowserOptimizationAdapter mit Singleton-Pattern
+- Automatische Feature-Erkennung bei Initialisierung
+- Integration in WebSwipeAdapter und React-Komponenten
+- Unit-Tests für Chrome/Safari/Firefox-spezifisches Verhalten
+
 **Datum:** 2025-03-26
 
 **Beschreibung:**

@@ -12,7 +12,23 @@
    - Gewichte (light, regular, bold)
 3. **Spacing**
    - 8px-Grid-System
-   - Relative Einheiten (1x, 2x, 4x, 8x)
+
+### Gestenbehandlung
+
+- react-native-gesture-handler + react-native-reanimated
+- 60 FPS Performance-Ziel
+- Batch-Update-Pattern für State-Änderungen
+- Deklarative Performance-Metriken
+- Web Worker für schwere Berechnungen
+- InteractionManager für kritische Updates
+
+### Gestenbehandlung
+
+- Animated-API mit react-native-gesture-handler
+- 60 FPS als Performance-Ziel
+- Batch-Update-Pattern für State-Änderungen
+- Deklarative Performance-Metriken
+  - Relative Einheiten (1x, 2x, 4x, 8x)
 
 ### Benennungskonvention
 
