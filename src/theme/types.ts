@@ -24,6 +24,8 @@ export interface ThemeColors {
   text: string;
   textSecondary: string;
   error: string;
+  errorContainer: string;
+  onErrorContainer: string;
   warning: string;
   success: string;
   card: {

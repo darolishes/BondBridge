@@ -6,6 +6,22 @@ Status: 🟢 Aktiv
 
 ## MVP-Status 📊
 
+## Card Swipe Implementation
+
+**Status:** Completed 2025-03-26
+
+**Details:**
+
+- Implemented swipe gestures with threshold detection
+- Added error boundary for swipe operations
+- Integrated with existing card component
+- Documented architecture decisions
+
+**Pending:**
+
+- Version compatibility updates for related packages
+- Additional testing on older devices
+
 | Phase             | Fortschritt | Hauptkomponenten            |
 | ----------------- | ----------- | --------------------------- |
 | **Projekt-Setup** | ✅ 100%     | Repo, Grundlegende Struktur |

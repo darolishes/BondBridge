@@ -67,6 +67,8 @@ export const semanticColors = {
     text: palette.neutral.black,
     textSecondary: palette.neutral.darkGray,
     error: palette.status.error.light,
+    errorContainer: "#FFDAD6",
+    onErrorContainer: "#410002",
     warning: palette.status.warning.light,
     success: palette.status.success.light,
     card: {
@@ -83,6 +85,8 @@ export const semanticColors = {
     text: palette.neutral.white,
     textSecondary: palette.neutral.gray,
     error: palette.status.error.dark,
+    errorContainer: "#93000A",
+    onErrorContainer: "#FFDAD6",
     warning: palette.status.warning.dark,
     success: palette.status.success.dark,
     card: {
