@@ -1,60 +1,66 @@
-/**
- * Represents a conversation card
- */
+export type CardCategory =
+  | "icebreakers"
+  | "confessions"
+  | "personality"
+  | "deepThoughts"
+  | "intimacy"
+  | "growth";
+
+export interface CardStyle {
+  backgroundColor: string;
+  textColor: string;
+  borderRadius: number;
+  backgroundActive: string;
+  backgroundError: string;
+  borderActive: string;
+  borderError: string;
+  borderWidth: number;
+  borderColor: string;
+  borderStyle?: string;
+}
+
 export interface Card {
-  /** Unique identifier */
   id: string;
-  /** Main question text */
   question: string;
-  /** Category of the card */
-  category: string;
-  /** Difficulty level (1-5) */
+  category: CardCategory;
   difficulty: number;
-  /** Follow-up questions */
   followUpQuestions?: string[];
-  /** Creation date */
+  tags?: string[];
   created: string;
-  /** Last updated date */
-  updated?: string;
-  /** Card status */
-  status?: CardStatus;
+  lastModified: string;
 }
 
-/**
- * Metadata for a card set
- */
-export interface CardSetMeta {
-  /** Unique identifier */
+export interface CardSet {
   id: string;
-  /** Display name */
   name: string;
-  /** Description of the set */
   description: string;
-  /** Creation/import date */
-  createdAt: string;
-}
-
-/**
- * Complete card set with metadata and cards
- */
-export interface CardSet extends CardSetMeta {
-  /** Cards in the set */
+  version: string;
+  author?: string;
+  created: string;
+  lastModified: string;
   cards: Card[];
+  metadata?: {
+    totalCards: number;
+    categories: string[];
+    difficultyRange: {
+      min: number;
+      max: number;
+    };
+    tags?: string[];
+  };
 }
 
-/**
- * Possible swipe actions
- */
-export type SwipeAction = {
-  /** Card identifier */
-  cardId: string;
-  /** Direction swiped */
-  direction: "left" | "right";
-  /** Timestamp of action */
-  timestamp: string;
-};
+export interface CardSetImportProgress {
+  total: number;
+  current: number;
+  status: "parsing" | "validating" | "importing" | "complete" | "error";
+  error?: string;
+}
 
-/**
- * Card status types
- */
-export type CardStatus = "unseen" | "swiped" | "reported";
+export interface CardSetStats {
+  totalCards: number;
+  categoryCounts: Record<string, number>;
+  averageDifficulty: number;
+  difficultyDistribution: Record<number, number>;
+  tagsCount?: Record<string, number>;
+}

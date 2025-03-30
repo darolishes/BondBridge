@@ -25,10 +25,17 @@ module.exports = function (api) {
             "@store": "./src/store",
             "@theme": "./src/theme",
             "@app": "./src",
+            "@cards": "./src/features/conversation-cards",
+            "@cards/components": "./src/features/conversation-cards/components",
+            "@cards/screens": "./src/features/conversation-cards/screens",
+            "@cards/hooks": "./src/features/conversation-cards/hooks",
+            "@cards/services": "./src/features/conversation-cards/services",
+            "@cards/types": "./src/features/conversation-cards/types",
           },
         },
       ],
       "react-native-reanimated/plugin",
+      "@babel/plugin-syntax-import-meta",
     ],
   };
 };

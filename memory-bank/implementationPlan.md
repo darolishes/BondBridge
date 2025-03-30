@@ -1,129 +1,94 @@
-## State Management Erweiterung - Umsetzungsplan
+# Import Refactoring Plan
 
-### 1. Provider-Restrukturierung
+## Phase 1: Theme & Store (Hohe Priorität)
 
-- Umbenennung `FilterProvider` → `CardStateProvider`
-- Neue Zustandsvariablen:
-  - `currentCardSet: CardSetType`
-  - `swipeHistory: SwipeAction[]`
-  - `loadedCardSets: CardSetMeta[]`
+### Theme-System
 
-### 2. Erweiterte Filtertypen
+- [ ] Ersetze "../../../theme" mit "@theme"
+- [ ] Ersetze "../../../theme/types" mit "@theme/types"
+- Dateien:
+  - src/features/conversation-cards/components/PerformanceOverlay.tsx
+  - src/features/conversation-cards/components/CardSetUploader.tsx
+  - src/features/conversation-cards/components/CardSetManager.tsx
 
-- Hinzufügen von:
-  - `difficultyRange: [number, number]`
-  - `cardStatus: 'unseen' | 'swiped' | 'reported'`
-  - `cardSetFilters: string[]`
+### Store
 
-### 3. Persistenzschicht
+- [ ] Ersetze "../../../store" mit "@store"
+- [ ] Aktualisiere Slice-Imports auf "@store/slices/\*"
+- Dateien:
+  - src/features/conversation-cards/hooks/useCardSetUpload.ts
+  - src/features/conversation-cards/hooks/useCards.ts
+  - src/features/conversation-cards/hooks/useCardFilters.ts
+  - src/features/conversation-cards/hooks/useCardSets.ts
 
-- AsyncStorage Keys:
-  - `cardSets` → Geladene Sets
-  - `swipeHistory` → Nutzeraktionen
-  - `cardState` → Kombinierter Zustand
+## Phase 2: Feature-spezifische Imports (Medium Priorität)
 
-### 4. Migrationsstrategie
+### Komponenten
 
-- Schrittweise Migration vom alten FilterSystem
-- Kompatibilitätslayer für bestehende Komponenten
+- [ ] Ersetze relative Pfade mit "@cards/components"
+- Dateien:
+  - src/features/conversation-cards/components/Card.tsx
+  - src/features/conversation-cards/screens/CardScreen.tsx
 
-# Implementierungsplan: Conversation Cards (MVP)
+### Types
 
-Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 15:00:00
-Status: 🟢 Aktiv
+- [ ] Ersetze "../types" mit "@cards/types"
+- Dateien:
+  - src/features/conversation-cards/components/Card.tsx
+  - src/features/conversation-cards/components/CategoryBadge.tsx
+  - src/features/conversation-cards/hooks/useCards.ts
 
-## Überblick 🔍
+### Hooks
 
-BondBridge App - MVP mit fokussierten Kernfeatures:
+- [ ] Ersetze "../hooks" mit "@cards/hooks"
+- Dateien:
+  - src/features/conversation-cards/components/SwipeHandler.tsx
+  - src/features/conversation-cards/screens/CardScreen.tsx
 
-- Einfache Kartenansicht mit grundlegender Swipe-Funktion
-- Minimales State Management für Karten und Filter
-- Benutzerfreundliche Integration externer Kartensets
+## Phase 3: Services & Utils (Niedrige Priorität)
 
-## Phasenplan 📅
+### Services
 
-| Phase | Bereich              | Zeitraum       | Kernkomponenten                           |
-| ----- | -------------------- | -------------- | ----------------------------------------- |
-| 1     | Datenmodell          | Sprint 2, W1   | Einfaches Schema, Mock-Daten              |
-| 2     | UI-Komponenten       | Sprint 2, W2   | Card-Komponente, CardDeck (Basisfunktion) |
-| 3     | Einfache Interaktion | Sprint 2, W3   | Grundlegende Swipe-Funktion               |
-| 4     | Kategoriefilter      | Sprint 3, W1   | Einfache Filteroptionen                   |
-| 5     | Externe Kartensets   | Sprint 3, W1-2 | Einfacher Import-Mechanismus, Validierung |
+- [ ] Ersetze relative Pfade mit "@cards/services"
+- Dateien:
+  - src/features/conversation-cards/services/cardsets/\*.ts
+  - src/features/conversation-cards/services/CardSetService.ts
 
-## Kernkonzepte 🧩
+### Utils
 
-### 1. Einfaches Datenmodell
+- [ ] Ersetze relative Pfade mit "@cards/utils"
+- Dateien:
+  - src/features/conversation-cards/utils/cardSetTransform.ts
+  - src/features/conversation-cards/utils/styleConverter.ts
 
-```typescript
-// Vereinfachtes Kartenmodell
-type ConversationCard = {
-  id: string;
-  question: string;
-  followUpQuestions?: string[];
-  difficulty: 1 | 2 | 3 | 4 | 5;
-  category:
-    | "icebreakers"
-    | "confessions"
-    | "personality"
-    | "deep-thoughts"
-    | "intimacy"
-    | "growth";
-};
-```
+## Validierung
 
-### 2. Minimales State Management
+1. Build-Tests
 
-```typescript
-// Grundlegende State-Struktur
-const initialState = {
-  cards: [], // Array von Karten
-  currentCardIndex: 0,
-  activeCategories: ["icebreakers", "confessions"], // Standardfilter
-  activeDifficulty: [1, 2, 3], // Standardfilter
-};
-```
+   - [ ] TypeScript-Kompilierung
+   - [ ] Babel-Transpilierung
+   - [ ] ESLint-Prüfung
 
-### 3. Einfache UI-Komponenten
+2. Runtime-Tests
+   - [ ] Unit-Tests ausführen
+   - [ ] E2E-Tests ausführen
+   - [ ] Manuelle Funktionsprüfung
 
-```typescript
-// Einfache Card-Komponente
-interface CardProps {
-  card: ConversationCard;
-  onSwipeLeft: () => void;
-  onSwipeRight: () => void;
-}
-```
+## Rollout-Strategie
 
-### 4. Externe Kartensets
+1. Schrittweise Implementierung
 
-```typescript
-// Grundlegende Struktur für externe Sets
-type ExternalCardSet = {
-  id: string;
-  name: string;
-  description: string;
-  cards: ConversationCard[];
-};
-```
+   - Änderungen pro Komponente
+   - Sofortige Tests nach jeder Änderung
+   - Git-Commit pro abgeschlossener Phase
 
-## Implementierungspriorität ⚡
+2. Fehlerbehandlung
 
-1. **Einfache Kartenansicht** - Grundlegende Darstellung der Fragen
-2. **Grundlegende Swipe-Funktion** - Minimal funktional, ohne komplexe Animation
-3. **Einfache Filterung** - Basis-Kategoriefilter
-4. **Externe Kartenintegration** - Grundlegender Import-Mechanismus
+   - Backup der Original-Imports
+   - Rollback-Plan bei Problemen
+   - Dokumentation aller Änderungen
 
-## Zukünftige Erweiterungen (Post-MVP) 🔮
-
-- **Favoriten-System** - Für spätere Implementierung
-- **Dark Mode** - Für spätere Implementierung
-- **Komplexe Animationen** - Nach MVP-Release
-- **Erweitertes Filtermanagement** - Nach grundlegender Funktionalität
-- **Redux Toolkit mit Entity Adapter** - Für größere Datenmengen
-
-## Erfolgsmetriken MVP ✅
-
-- **Funktionalität**: Grundlegende Kartenansicht und Swipe-Funktion
-- **Benutzerfreundlichkeit**: Einfache, intuitive Bedienung
-- **Minimalität**: Fokus auf Kernfunktionen, ohne Überfrachtung
+3. Performance-Monitoring
+   - Build-Zeiten vor/nach
+   - Bundle-Größe vor/nach
+   - Import-Auflösungszeiten

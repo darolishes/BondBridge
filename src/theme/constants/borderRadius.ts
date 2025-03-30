@@ -7,6 +7,10 @@ export const borderRadius = {
   small: 4,
   medium: 8,
   large: 16,
+  extraLarge: 24,
+  extraExtraLarge: 32,
+  extraExtraExtraLarge: 40,
+  extraExtraExtraExtraLarge: 48,
 };
 
 // Specific UI element border radii

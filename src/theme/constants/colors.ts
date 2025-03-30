@@ -1,87 +1,36 @@
-/**
- * Color tokens for the BondBridge application
- * Single source of truth for all colors used in the app
- */
+import type { ThemeColors } from "../types";
 
-// Unified color palette
-export const palette = {
-  primary: {
-    light: "#4A6FA5",
-    dark: "#6889BA",
+export const colors: ThemeColors = {
+  primary: "#007AFF",
+  secondary: "#5856D6",
+  background: "#FFFFFF",
+  surface: "#F2F2F7",
+  text: "#000000",
+  textSecondary: "#8E8E93",
+  textOnPrimary: "#FFFFFF",
+  error: "#FF3B30",
+  warning: "#FF9500",
+  success: "#34C759",
+  card: {
+    shadow: "rgba(0, 0, 0, 0.1)",
+    background: "#FFFFFF",
+    backgroundActive: "#F2F2F7",
+    backgroundError: "#FFEBED",
+    borderActive: "#007AFF",
+    borderError: "#FF3B30",
   },
-  secondary: {
-    light: "#9BB1D3",
-    dark: "#7F95B7",
-  },
-  accent: {
-    light: "#FF6B6B",
-    dark: "#FF8080",
-  },
-  neutral: {
-    white: "#FFFFFF",
-    backgroundLight: "#F8F9FA",
-    surfaceLight: "#E9ECEF",
-    textLight: "#495057",
-    backgroundDark: "#121212",
-    surfaceDark: "#1E1E1E",
-    textDark: "#FFFFFF",
-  },
-  status: {
-    success: {
-      light: "#28A745",
-      dark: "#4CAF50",
+  button: {
+    primary: {
+      background: "#007AFF",
+      text: "#FFFFFF",
     },
-    warning: {
-      light: "#FFC107",
-      dark: "#FFC107",
+    secondary: {
+      background: "#F2F2F7",
+      text: "#007AFF",
     },
-    error: {
-      light: "#DC3545",
-      dark: "#F44336",
-    },
-  },
-  categories: {
-    icebreakers: "#5BC0EB",
-    confessions: "#F44336",
-    personality: "#9C27B0",
-    deepThoughts: "#3F51B5",
-    intimacy: "#FF9800",
-    growth: "#4CAF50",
-  },
-};
-
-// Semantic color tokens
-export const semanticColors = {
-  light: {
-    primary: palette.primary.light,
-    secondary: palette.secondary.light,
-    accent: palette.accent.light,
-    background: palette.neutral.backgroundLight,
-    surface: palette.neutral.white,
-    text: palette.neutral.textLight,
-    textSecondary: palette.neutral.surfaceLight,
-    error: palette.status.error.light,
-    warning: palette.status.warning.light,
-    success: palette.status.success.light,
-    card: {
-      border: palette.neutral.surfaceLight,
-      shadow: "rgba(0, 0, 0, 0.1)",
-    },
-  },
-  dark: {
-    primary: palette.primary.dark,
-    secondary: palette.secondary.dark,
-    accent: palette.accent.dark,
-    background: palette.neutral.backgroundDark,
-    surface: palette.neutral.surfaceDark,
-    text: palette.neutral.textDark,
-    textSecondary: palette.neutral.surfaceLight,
-    error: palette.status.error.dark,
-    warning: palette.status.warning.dark,
-    success: palette.status.success.dark,
-    card: {
-      border: palette.neutral.surfaceDark,
-      shadow: "rgba(0, 0, 0, 0.3)",
+    destructive: {
+      background: "#FF3B30",
+      text: "#FFFFFF",
     },
   },
 };

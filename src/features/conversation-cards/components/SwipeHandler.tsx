@@ -1,191 +1,202 @@
-import React, { useRef, useState, useCallback } from "react";
-import SwipeErrorBoundary from "./SwipeErrorBoundary";
-import {
-  Animated,
-  StyleSheet,
-  View,
-  Dimensions,
-  findNodeHandle,
-} from "react-native";
-import {
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
-} from "react-native-gesture-handler";
-import {
-  runOnJS,
+import React, { useCallback, useRef } from "react";
+import { StyleSheet, ViewStyle, Platform } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PanGestureHandler } from "react-native-gesture-handler";
+import type { PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
+import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  withTiming,
+  runOnJS,
 } from "react-native-reanimated";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25; // 25% of screen width
+import { useSwipePerformance } from "../hooks/useSwipePerformance";
+import { useWebSwipe } from "../hooks/useWebSwipe";
+import { useBrowserOptimizations } from "../hooks/useBrowserOptimizations";
+import { convertStyleToWeb, mergeStyles } from "../utils/styleConverter";
+import { PerformanceOverlay } from "./PerformanceOverlay";
+import { haptics } from "../services/HapticService";
 
 interface SwipeHandlerProps {
   children: React.ReactNode;
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;
-  swipeEnabled?: boolean;
   swipeThreshold?: number;
-  animationDuration?: number;
-  springConfig?: {
-    damping: number;
-    stiffness: number;
-    mass: number;
-  };
+  enableDebug?: boolean;
+  enableHaptics?: boolean;
+  style?: ViewStyle;
 }
 
-/**
- * SwipeHandler Component
- * ----------------------
- * Wraps content in swipe gesture functionality.
- * Handles left and right swipe gestures with animations.
- */
-const SwipeHandler: React.FC<SwipeHandlerProps> = ({
+const SPRING_CONFIG = {
+  stiffness: 150,
+  damping: 15,
+  mass: 0.8,
+  overshootClamping: false,
+};
+
+export function SwipeHandler({
   children,
   onSwipeLeft,
   onSwipeRight,
-  swipeEnabled = true,
-  swipeThreshold = SWIPE_THRESHOLD,
-  animationDuration = 300,
-  springConfig = { damping: 10, stiffness: 100, mass: 1 },
-}) => {
-  // Animation values
-  const translateX = useSharedValue(0);
-  const rotate = useSharedValue(0);
-  const opacity = useSharedValue(1);
-  const isAnimating = useRef(false);
-  const gestureHandlerRef = useRef<PanGestureHandler>(null);
-  const animatedViewRef = useRef<any>(null);
+  swipeThreshold = 100,
+  enableDebug = false,
+  enableHaptics = true,
+  style,
+}: SwipeHandlerProps) {
+  const translationX = useSharedValue(0);
+  const context = useRef({ startX: 0 });
 
-  const resetPosition = () => {
-    translateX.value = withSpring(0, springConfig);
-    rotate.value = withSpring(0, springConfig);
-    opacity.value = withTiming(1, { duration: animationDuration });
-  };
-
-  const completeSwipeLeft = () => {
-    translateX.value = withTiming(-SCREEN_WIDTH * 1.5, {
-      duration: animationDuration,
+  const { metrics, startTracking, updatePosition, stopTracking } =
+    useSwipePerformance({
+      targetFps: 60,
+      sampleSize: 60,
+      enableDebug,
     });
-    opacity.value = withTiming(0, { duration: animationDuration });
-    if (onSwipeLeft) {
-      setTimeout(() => {
-        onSwipeLeft();
-        translateX.value = 0;
-        rotate.value = 0;
-        opacity.value = 1;
-        isAnimating.current = false;
-      }, animationDuration);
-    } else {
-      isAnimating.current = false;
-    }
-  };
 
-  const completeSwipeRight = () => {
-    translateX.value = withTiming(SCREEN_WIDTH * 1.5, {
-      duration: animationDuration,
-    });
-    opacity.value = withTiming(0, { duration: animationDuration });
-    if (onSwipeRight) {
-      setTimeout(() => {
-        onSwipeRight();
-        translateX.value = 0;
-        rotate.value = 0;
-        opacity.value = 1;
-        isAnimating.current = false;
-      }, animationDuration);
-    } else {
-      isAnimating.current = false;
-    }
-  };
+  const {
+    styles: browserStyles,
+    eventOptions,
+    isReducedMotion,
+    isLoading: browserOptLoading,
+  } = useBrowserOptimizations();
 
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, context: any) => {
-      context.startX = translateX.value;
+  const cssTransition = isReducedMotion
+    ? "none"
+    : "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+  const triggerHapticFeedback = useCallback(
+    (progress: number) => {
+      if (!enableHaptics) return;
+      haptics.swipeProgress(progress);
     },
-    onActive: (event, context) => {
-      if (!swipeEnabled || isAnimating.current) return;
+    [enableHaptics]
+  );
 
-      translateX.value = context.startX + event.translationX;
-      // Calculate rotation based on swipe distance (max 15 degrees)
-      rotate.value = (translateX.value / SCREEN_WIDTH) * 15;
+  const handleSwipeComplete = useCallback(
+    async (direction: "left" | "right") => {
+      if (enableHaptics) {
+        await haptics.swipeComplete(true);
+      }
 
-      // Gradually reduce opacity as card moves further from center
-      const distanceRatio = Math.abs(translateX.value) / (SCREEN_WIDTH / 2);
-      opacity.value = Math.max(1 - distanceRatio * 0.2, 0.8);
+      if (direction === "left" && onSwipeLeft) {
+        onSwipeLeft();
+      } else if (direction === "right" && onSwipeRight) {
+        onSwipeRight();
+      }
+    },
+    [onSwipeLeft, onSwipeRight, enableHaptics]
+  );
+
+  const handleSwipeCancelled = useCallback(async () => {
+    if (enableHaptics) {
+      await haptics.impact("light");
+    }
+  }, [enableHaptics]);
+
+  // Web-spezifische Swipe-Logik
+  const { getProps: getWebProps } = useWebSwipe({
+    enabled: Platform.OS === "web",
+    onSwipeLeft,
+    onSwipeRight,
+    swipeThreshold,
+    onSwipeProgress: triggerHapticFeedback,
+    cssTransition,
+    ...eventOptions,
+  });
+
+  // Native Gesture Handler
+  const gestureHandler = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    { startX: number }
+  >({
+    onStart: (_, ctx) => {
+      ctx.startX = translationX.value;
+      runOnJS(startTracking)(translationX.value, 0);
+    },
+    onActive: (event, ctx) => {
+      translationX.value = ctx.startX + event.translationX;
+      runOnJS(updatePosition)(translationX.value, 0);
+
+      const progress = Math.abs(event.translationX) / swipeThreshold;
+      runOnJS(triggerHapticFeedback)(progress);
     },
     onEnd: (event) => {
-      if (!swipeEnabled || isAnimating.current) return;
-      isAnimating.current = true;
+      runOnJS(stopTracking)();
 
-      if (translateX.value < -swipeThreshold) {
-        if (onSwipeLeft) {
-          runOnJS(completeSwipeLeft)();
-        } else {
-          runOnJS(() => {
-            resetPosition();
-            isAnimating.current = false;
-          })();
-        }
-      } else if (translateX.value > swipeThreshold) {
-        if (onSwipeRight) {
-          runOnJS(completeSwipeRight)();
-        } else {
-          runOnJS(() => {
-            resetPosition();
-            isAnimating.current = false;
-          })();
-        }
+      const shouldSwipe = Math.abs(event.translationX) > swipeThreshold;
+      if (shouldSwipe) {
+        const direction = event.translationX > 0 ? "right" : "left";
+        const finalPosition = direction === "right" ? 400 : -400;
+
+        translationX.value = withSpring(finalPosition, SPRING_CONFIG, () => {
+          runOnJS(handleSwipeComplete)(direction);
+        });
       } else {
-        runOnJS(() => {
-          resetPosition();
-          isAnimating.current = false;
-        })();
+        translationX.value = withSpring(0, SPRING_CONFIG, () => {
+          runOnJS(handleSwipeCancelled)();
+        });
       }
     },
   });
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { rotate: `${rotate.value}deg` },
-      ],
-      opacity: opacity.value,
-    };
-  });
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translationX.value }],
+  }));
 
+  // Web-Version
+  if (Platform.OS === "web") {
+    if (browserOptLoading) {
+      // Einfacher Fallback während der Initialisierung
+      const baseStyles = mergeStyles(styles.container, style);
+      return <div style={convertStyleToWeb(baseStyles)}>{children}</div>;
+    }
+
+    const webProps = getWebProps();
+    const allStyles = mergeStyles(
+      styles.container,
+      style,
+      browserStyles as ViewStyle,
+      webProps.style as ViewStyle
+    );
+
+    return (
+      <div {...webProps} style={convertStyleToWeb(allStyles)}>
+        <div style={convertStyleToWeb(styles.content)}>{children}</div>
+        {enableDebug && (
+          <PerformanceOverlay
+            metrics={metrics}
+            showDetails={true}
+            position="top-right"
+          />
+        )}
+      </div>
+    );
+  }
+
+  // Native Version
   return (
-    <SwipeErrorBoundary onReset={resetPosition}>
-      <View style={styles.container}>
-        <PanGestureHandler
-          onGestureEvent={gestureHandler}
-          enabled={swipeEnabled}
-        >
-          <Animated.View style={[styles.cardContainer, animatedStyle]}>
-            {children}
-          </Animated.View>
-        </PanGestureHandler>
-      </View>
-    </SwipeErrorBoundary>
+    <GestureHandlerRootView style={[styles.container, style]}>
+      <PanGestureHandler onGestureEvent={gestureHandler}>
+        <Animated.View style={[styles.content, animatedStyle]}>
+          {children}
+        </Animated.View>
+      </PanGestureHandler>
+      {enableDebug && (
+        <PerformanceOverlay
+          metrics={metrics}
+          showDetails={true}
+          position="top-right"
+        />
+      )}
+    </GestureHandlerRootView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
   },
-  cardContainer: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+  content: {
+    flex: 1,
   },
 });
-
-export default SwipeHandler;

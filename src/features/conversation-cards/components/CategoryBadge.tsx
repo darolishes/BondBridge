@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useTheme } from "@theme/hooks";
-import { CardCategory } from "../types";
+import { CardCategory } from "@cards/types";
+import { categoryColors } from "@theme/constants/colors";
 
 interface CategoryBadgeProps {
   category: CardCategory;

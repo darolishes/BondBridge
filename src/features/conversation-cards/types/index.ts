@@ -1,18 +1,5 @@
-/**
- * Definition einer Konversationskarte
- */
-export interface Card {
-  id: string;
-  question: string;
-  category: CardCategory;
-  difficulty: number; // 1-5
-  followUpQuestions?: string[];
-  created: string;
-}
+import type { Card } from "@common/types/card";
 
-/**
- * Card categories
- */
 export type CardCategory =
   | "icebreakers"
   | "confessions"
@@ -25,21 +12,38 @@ export type CardCategory =
  * Props für die Card-Komponente
  */
 export interface CardProps {
+  /** Die Karteninformationen */
   card: Card;
   isActive?: boolean;
   onSwipe?: (direction: "left" | "right") => void;
 }
 
 /**
- * Definition eines Kartensets
+ * Upload-spezifische Kartenstruktur
  */
-export interface CardSet {
-  id: string;
+export interface UploadCard extends Omit<Card, "created" | "lastModified"> {
+  /** Optional descriptions or hints */
+  hints?: string[];
+}
+
+/**
+ * Upload-spezifische Kartenset-Metadaten
+ */
+export interface UploadCardSetMeta {
+  /** Name des Kartensets */
   name: string;
+  /** Beschreibung des Kartensets */
   description: string;
-  cards: Card[];
-  version: string;
-  author: string;
-  created: Date;
-  modified: Date;
+  /** Version des Kartenset-Formats */
+  version?: string;
+  /** Quelle des Kartensets */
+  source?: string;
+}
+
+/**
+ * Vollständiges Upload-Kartenset
+ */
+export interface UploadCardSet extends UploadCardSetMeta {
+  /** Karten im Set */
+  cards: UploadCard[];
 }
