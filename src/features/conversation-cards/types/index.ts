@@ -7,7 +7,7 @@ export interface Card {
   category: CardCategory;
   difficulty: number; // 1-5
   followUpQuestions?: string[];
-  created: Date;
+  created: string;
 }
 
 /**

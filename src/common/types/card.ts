@@ -11,7 +11,13 @@ export interface Card {
   /** Difficulty level (1-5) */
   difficulty: number;
   /** Follow-up questions */
-  followUps?: string[];
+  followUpQuestions?: string[];
+  /** Creation date */
+  created: string;
+  /** Last updated date */
+  updated?: string;
+  /** Card status */
+  status?: CardStatus;
 }
 
 /**

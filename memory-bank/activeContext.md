@@ -1,3 +1,22 @@
+## Debugging Status [2025-03-30 17:24]
+
+- Debug-Komponenten entfernt
+- Swipe-Funktionalität optimiert
+- Code-Basis bereinigt
+- Hauptfokus auf Produktionscode
+
+## Aktuelle Änderungen
+
+- `CardDebug.tsx`, `DebugOverlay.tsx`, `SwipeHandlerWeb.tsx` und `PlatformSwipeHandler.tsx` entfernt
+- Debug-Logs aus `CardScreen.tsx` und `App.tsx` entfernt
+- `SwipeHandler`-Integration in `Card.tsx` wiederhergestellt
+- `GestureHandlerRootView` korrekt eingebunden
+
+## Offene Punkte
+
+- Performance-Optimierung der Swipe-Gesten
+- UI/UX-Verbesserungen für Web-Version
+
 # Aktiver Kontext
 
 Version: 2.0.0

@@ -89,11 +89,10 @@ const Card: React.FC<CardProps> = React.memo(
       card: {
         width: "100%",
         minHeight: 220,
-        backgroundColor: Platform.select({
-          web: `color-mix(in srgb, ${theme.colors.surface} 92%, ${theme.colors.primary} 8%)`,
-          default: theme.colors.surface,
-        }),
+        backgroundColor: theme.colors.surface,
         borderRadius: theme.borderRadius.medium,
+        borderWidth: 1,
+        borderColor: theme.colors.card.border,
         position: "relative",
         overflow: "hidden",
       },
@@ -158,7 +157,8 @@ const Card: React.FC<CardProps> = React.memo(
       </View>
     );
 
-    // Only enable swipe gestures if the card is active
+    // Conditionally render SwipeHandler based on platform
+    // Conditionally render SwipeHandler based on platform
     if (isActive && onSwipe) {
       return (
         <SwipeHandler
@@ -169,10 +169,9 @@ const Card: React.FC<CardProps> = React.memo(
           <CardContent />
         </SwipeHandler>
       );
+    } else {
+      return <CardContent />;
     }
-
-    // Return card without swipe gestures if not active
-    return <CardContent />;
   }
 );
 
