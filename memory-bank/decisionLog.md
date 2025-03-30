@@ -6,6 +6,38 @@ Status: 🟢 Aktiv
 
 ## MVP-Architekturentscheidungen 🏗️
 
+## Entscheidung: Gesture-Architektur
+
+## Entscheidung: Swipe-Gesten-Implementierung
+
+**Datum:** 2025-03-26
+
+**Beschreibung:**
+Implementierung von Karten-Swipe-Gesten mit:
+
+- Reanimated 3 für Animationen
+- Custom Error Boundary
+- State-Locking Mechanismus
+
+**Begründung:**
+
+- Höhere Performance durch native Gestenerkennung
+- Bessere Fehlerbehandlung
+- Vermeidung von Race Conditions
+
+**Auswirkungen:**
+
+- Keine zusätzlichen Abhängigkeiten
+- Kompatibel mit bestehendem Theme-System
+
+**Rationale:**
+Kombination aus react-native-gesture-handler und Reanimated ermöglicht 60 FPS Animationen bei gleichzeitiger Kompatibilität mit React Native Screens
+
+**Implikationen:**
+
+- Native Module erforderlich
+- Separater Jest Setup für Gesture Testing
+
 | Entscheidung                        | Status | Begründung                                               | Alternativen                           | Risiken                                      |
 | ----------------------------------- | ------ | -------------------------------------------------------- | -------------------------------------- | -------------------------------------------- |
 | **Einfaches State Management**      | ✅     | Geringere Komplexität, schnellere Implementierung        | Redux Toolkit, Context API, MobX       | Skalierbarkeit bei größeren Datenmengen      |

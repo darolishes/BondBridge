@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import SwipeErrorBoundary from "./SwipeErrorBoundary";
 import { Animated, StyleSheet, View, Dimensions } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import {
@@ -46,6 +47,7 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
   const translateX = useSharedValue(0);
   const rotate = useSharedValue(0);
   const opacity = useSharedValue(1);
+  const isAnimating = useRef(false);
 
   // For regular Animated API (legacy React Native animations)
   const pan = useRef(new Animated.ValueXY()).current;
@@ -67,7 +69,10 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
         translateX.value = 0;
         rotate.value = 0;
         opacity.value = 1;
+        isAnimating.current = false;
       }, animationDuration);
+    } else {
+      isAnimating.current = false;
     }
   };
 
@@ -82,7 +87,10 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
         translateX.value = 0;
         rotate.value = 0;
         opacity.value = 1;
+        isAnimating.current = false;
       }, animationDuration);
+    } else {
+      isAnimating.current = false;
     }
   };
 
@@ -91,7 +99,7 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
       context.startX = translateX.value;
     },
     onActive: (event, context) => {
-      if (!swipeEnabled) return;
+      if (!swipeEnabled || isAnimating.current) return;
 
       translateX.value = context.startX + event.translationX;
       // Calculate rotation based on swipe distance (max 15 degrees)
@@ -102,22 +110,32 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
       opacity.value = Math.max(1 - distanceRatio * 0.2, 0.8);
     },
     onEnd: (event) => {
-      if (!swipeEnabled) return;
+      if (!swipeEnabled || isAnimating.current) return;
+      isAnimating.current = true;
 
       if (translateX.value < -swipeThreshold) {
         if (onSwipeLeft) {
           runOnJS(completeSwipeLeft)();
         } else {
-          runOnJS(resetPosition)();
+          runOnJS(() => {
+            resetPosition();
+            isAnimating.current = false;
+          })();
         }
       } else if (translateX.value > swipeThreshold) {
         if (onSwipeRight) {
           runOnJS(completeSwipeRight)();
         } else {
-          runOnJS(resetPosition)();
+          runOnJS(() => {
+            resetPosition();
+            isAnimating.current = false;
+          })();
         }
       } else {
-        runOnJS(resetPosition)();
+        runOnJS(() => {
+          resetPosition();
+          isAnimating.current = false;
+        })();
       }
     },
   });
@@ -133,13 +151,18 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
   });
 
   return (
-    <View style={styles.container}>
-      <PanGestureHandler onGestureEvent={gestureHandler} enabled={swipeEnabled}>
-        <Animated.View style={[styles.cardContainer, animatedStyle]}>
-          {children}
-        </Animated.View>
-      </PanGestureHandler>
-    </View>
+    <SwipeErrorBoundary onReset={resetPosition}>
+      <View style={styles.container}>
+        <PanGestureHandler
+          onGestureEvent={gestureHandler}
+          enabled={swipeEnabled}
+        >
+          <Animated.View style={[styles.cardContainer, animatedStyle]}>
+            {children}
+          </Animated.View>
+        </PanGestureHandler>
+      </View>
+    </SwipeErrorBoundary>
   );
 };
 
