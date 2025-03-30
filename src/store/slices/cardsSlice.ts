@@ -20,15 +20,34 @@ interface CardsState {
   error: string | null;
 }
 
-// Initial state
+// Initial state with sample cards
 const initialState: CardsState = {
-  allCards: {},
-  activeCardId: null,
-  cardOrder: [],
-  filteredCardIds: [],
+  allCards: {
+    "1": {
+      id: "1",
+      question: "Was war dein schönstes Erlebnis in der letzten Woche?",
+      category: "icebreakers",
+      difficulty: 1,
+      created: new Date().toISOString(),
+    },
+    "2": {
+      id: "2",
+      question: "Wenn du eine Sache an dir ändern könntest, was wäre das?",
+      category: "personality",
+      difficulty: 3,
+      followUpQuestions: [
+        "Warum möchtest du das ändern?",
+        "Wie würde diese Änderung dein Leben beeinflussen?",
+      ],
+      created: new Date().toISOString(),
+    },
+  },
+  activeCardId: "1",
+  cardOrder: ["1", "2"],
+  filteredCardIds: ["1", "2"],
   cardSets: [],
   activeCardSetId: null,
-  loading: "idle",
+  loading: "succeeded",
   error: null,
 };
 

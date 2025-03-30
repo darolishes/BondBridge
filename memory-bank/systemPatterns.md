@@ -1,3 +1,31 @@
+## Design Token System (2025-03-30 15:50:00)
+
+### Token-Kategorien
+
+1. **Farben**
+   - Primär/Sekundär/Akzent
+   - Semantische Rollen (background, surface, text)
+   - Status (success, warning, error)
+2. **Typografie**
+   - Schriftfamilien
+   - Größen (small, medium, large)
+   - Gewichte (light, regular, bold)
+3. **Spacing**
+   - 8px-Grid-System
+   - Relative Einheiten (1x, 2x, 4x, 8x)
+
+### Benennungskonvention
+
+- Immer lowercase
+- Konsistente Skalierung (small < medium < large)
+- Keine plattformspezifischen Namen
+
+### Implementierungsregeln
+
+1. Keine Hardcoded-Werte in Komponenten
+2. Theme-Hook für alle Styling-Entscheidungen
+3. Token-Referenzen statt direkter Werte
+
 # System Patterns & Conventions
 
 Version: 2.0.0
@@ -179,6 +207,12 @@ interface FilterProps {
 - **Modularität**: Logische Gruppierung verwandter Funktionen
 - **Testbarkeit**: Einfache Struktur für bessere Testbarkeit
 - **Erweiterbarkeit**: Grundlagen für spätere Erweiterungen legen
+
+### Tech Debt Items (2025-03-30)
+
+- **react-native-fs**: Replace with expo-file-system in future update
+- **redux-persist**: Migrate to modern async storage solution
+- **Metro version conflict**: Monitor and resolve during next major Expo update
 
 ### Künftige Erweiterungen (Post-MVP)
 

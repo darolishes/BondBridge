@@ -21,7 +21,14 @@ export interface FiltersState {
 // Initial state with all available categories
 const initialState: FiltersState = {
   categories: {
-    selected: [],
+    selected: [
+      "icebreakers",
+      "confessions",
+      "personality",
+      "deepThoughts",
+      "intimacy",
+      "growth",
+    ],
     available: [
       "icebreakers",
       "confessions",

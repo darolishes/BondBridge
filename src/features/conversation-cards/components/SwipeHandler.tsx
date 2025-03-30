@@ -1,7 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import SwipeErrorBoundary from "./SwipeErrorBoundary";
-import { Animated, StyleSheet, View, Dimensions } from "react-native";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import {
+  Animated,
+  StyleSheet,
+  View,
+  Dimensions,
+  findNodeHandle,
+} from "react-native";
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
 import {
   runOnJS,
   useAnimatedGestureHandler,
@@ -48,9 +57,8 @@ const SwipeHandler: React.FC<SwipeHandlerProps> = ({
   const rotate = useSharedValue(0);
   const opacity = useSharedValue(1);
   const isAnimating = useRef(false);
-
-  // For regular Animated API (legacy React Native animations)
-  const pan = useRef(new Animated.ValueXY()).current;
+  const gestureHandlerRef = useRef<PanGestureHandler>(null);
+  const animatedViewRef = useRef<any>(null);
 
   const resetPosition = () => {
     translateX.value = withSpring(0, springConfig);

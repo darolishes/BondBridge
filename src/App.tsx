@@ -6,6 +6,7 @@ import { TabNavigator } from "./navigation";
 import { navigationRef } from "./navigation";
 import { NavigationContainer } from "@react-navigation/native";
 import StoreProvider from "./store/providers/StoreProvider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 /**
  * App
@@ -37,11 +38,15 @@ const AppCore = () => {
  * Haupteinstiegspunkt der Anwendung
  */
 export default function App() {
+  const showDebugView = process.env.NODE_ENV === "development";
+
   return (
-    <StoreProvider>
-      <ThemeProvider>
-        <AppCore />
-      </ThemeProvider>
-    </StoreProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <StoreProvider>
+        <ThemeProvider>
+          <AppCore />
+        </ThemeProvider>
+      </StoreProvider>
+    </GestureHandlerRootView>
   );
 }

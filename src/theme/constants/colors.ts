@@ -3,34 +3,29 @@
  * Single source of truth for all colors used in the app
  */
 
-// Base palette
+// Unified color palette
 export const palette = {
-  // Primary colors
-  blue: {
+  primary: {
     light: "#4A6FA5",
     dark: "#6889BA",
   },
-  // Secondary colors
-  blueGray: {
+  secondary: {
     light: "#9BB1D3",
     dark: "#7F95B7",
   },
-  // Accent colors
-  red: {
+  accent: {
     light: "#FF6B6B",
     dark: "#FF8080",
   },
-  // Neutrals
   neutral: {
     white: "#FFFFFF",
-    lightGray: "#F8F9FA",
-    gray: "#E9ECEF",
-    darkGray: "#495057",
-    black: "#212529",
-    darker: "#121212",
-    dark: "#1E1E1E",
+    backgroundLight: "#F8F9FA",
+    surfaceLight: "#E9ECEF",
+    textLight: "#495057",
+    backgroundDark: "#121212",
+    surfaceDark: "#1E1E1E",
+    textDark: "#FFFFFF",
   },
-  // Status colors
   status: {
     success: {
       light: "#28A745",
@@ -45,7 +40,6 @@ export const palette = {
       dark: "#F44336",
     },
   },
-  // Category-specific colors from the PRD
   categories: {
     icebreakers: "#5BC0EB",
     confessions: "#F44336",
@@ -56,41 +50,37 @@ export const palette = {
   },
 };
 
-// Semantic color tokens (these map to theme values)
+// Semantic color tokens
 export const semanticColors = {
   light: {
-    primary: palette.blue.light,
-    secondary: palette.blueGray.light,
-    accent: palette.red.light,
-    background: palette.neutral.lightGray,
+    primary: palette.primary.light,
+    secondary: palette.secondary.light,
+    accent: palette.accent.light,
+    background: palette.neutral.backgroundLight,
     surface: palette.neutral.white,
-    text: palette.neutral.black,
-    textSecondary: palette.neutral.darkGray,
+    text: palette.neutral.textLight,
+    textSecondary: palette.neutral.surfaceLight,
     error: palette.status.error.light,
-    errorContainer: "#FFDAD6",
-    onErrorContainer: "#410002",
     warning: palette.status.warning.light,
     success: palette.status.success.light,
     card: {
-      border: palette.neutral.gray,
+      border: palette.neutral.surfaceLight,
       shadow: "rgba(0, 0, 0, 0.1)",
     },
   },
   dark: {
-    primary: palette.blue.dark,
-    secondary: palette.blueGray.dark,
-    accent: palette.red.dark,
-    background: palette.neutral.darker,
-    surface: palette.neutral.dark,
-    text: palette.neutral.white,
-    textSecondary: palette.neutral.gray,
+    primary: palette.primary.dark,
+    secondary: palette.secondary.dark,
+    accent: palette.accent.dark,
+    background: palette.neutral.backgroundDark,
+    surface: palette.neutral.surfaceDark,
+    text: palette.neutral.textDark,
+    textSecondary: palette.neutral.surfaceLight,
     error: palette.status.error.dark,
-    errorContainer: "#93000A",
-    onErrorContainer: "#FFDAD6",
     warning: palette.status.warning.dark,
     success: palette.status.success.dark,
     card: {
-      border: "#2A2A2A",
+      border: palette.neutral.surfaceDark,
       shadow: "rgba(0, 0, 0, 0.3)",
     },
   },

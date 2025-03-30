@@ -1,3 +1,59 @@
+## [2025-03-30 17:24] - Debug-Komponenten entfernt und Code bereinigt
+
+### Entscheidung
+
+Debug-Komponenten und -Logs aus dem Produktionscode entfernt, um die Codebase zu bereinigen und die Performance zu verbessern.
+
+### Begründung
+
+- Debug-Komponenten waren nur für die Entwicklung notwendig
+- Code-Bereinigung verbessert Wartbarkeit
+- Entfernung von Debug-Logs reduziert Bundle-Größe
+
+### Änderungen
+
+- Entfernte Komponenten:
+  - `CardDebug.tsx`
+  - `DebugOverlay.tsx`
+  - `SwipeHandlerWeb.tsx`
+  - `PlatformSwipeHandler.tsx`
+- Debug-Logs aus `CardScreen.tsx` und `App.tsx` entfernt
+- `SwipeHandler`-Integration in `Card.tsx` wiederhergestellt
+
+### Auswirkungen
+
+- Verbesserte Code-Qualität
+- Reduzierte Bundle-Größe
+- Bessere Wartbarkeit
+- Klarere Komponenten-Struktur
+
+## Design Token Migration (2025-03-30 15:50:00)
+
+### Entscheidung
+
+Vereinheitlichung der Design-Tokens für bessere Konsistenz
+
+### Begründung
+
+- Aktuelle Token-Struktur zeigt Inkonsistenzen
+- Hardcoded Werte in Komponenten
+- Redundante Definitionen
+
+### Umsetzung
+
+1. Farb-Tokens:
+   - Einheitliche Benennung (small/medium/large)
+   - Kategorie-Farben als Tokens
+2. Typografie:
+   - Relative Line Heights
+3. Spacing:
+   - Entfernung redundanter elementSpacing
+
+### Betroffene Dateien
+
+- src/theme/constants/\*
+- Alle UI-Komponenten
+
 # Decision Log
 
 Version: 2.0.0
@@ -78,6 +134,12 @@ Die folgenden Entscheidungen wurden bewusst für spätere Projektphasen zurückg
 2. **Erweiterte Animationen** - Visuelle Verbesserungen nach Kernfunktionalität
 3. **Zod für Schema-Validierung** - Fortgeschrittene Validierungsmechanismen
 4. **Favoritensystem** - Zusätzliche Funktion für spätere Phasen
+
+## Metro Version Conflict (2025-03-30)
+
+**Decision:** Accept Metro version conflict between CLI plugin (0.76.9) and project (0.81.0)
+**Rationale:** No functional impact observed, build process works correctly
+**Action:** Monitor for potential issues, revisit during next major Expo update
 
 ## State Management-Entscheidung ✅ (2025-03-27)
 

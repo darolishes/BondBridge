@@ -10,15 +10,15 @@ export const fontFamilies = {
   android: "Roboto",
 };
 
-// Font sizes
+// Font sizes (based on 4px grid)
 export const fontSizes = {
-  small: 12,
-  medium: 16,
-  large: 20,
-  xlarge: 24,
+  small: 12, // 12px
+  medium: 16, // 16px
+  large: 20, // 20px
+  xlarge: 24, // 24px
 };
 
-// Font weights (using React Native compatible values)
+// Font weights
 export const fontWeights = {
   light: "300",
   regular: "400",
@@ -26,12 +26,12 @@ export const fontWeights = {
   bold: "700",
 };
 
-// Line heights
+// Line heights (1.5x font size)
 export const lineHeights = {
-  small: 16,
-  medium: 24,
-  large: 28,
-  xlarge: 32,
+  small: 18, // 12 * 1.5
+  medium: 24, // 16 * 1.5
+  large: 30, // 20 * 1.5
+  xlarge: 36, // 24 * 1.5
 };
 
 // Typography tokens for semantic usage

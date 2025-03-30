@@ -1,4 +1,4 @@
-import React, { ErrorInfo } from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useTheme } from "@theme/hooks";
 
@@ -7,65 +7,53 @@ interface SwipeErrorBoundaryProps {
   onReset?: () => void;
 }
 
-interface State {
-  hasError: boolean;
-  error?: Error;
-}
+const SwipeErrorBoundary: React.FC<SwipeErrorBoundaryProps> = ({
+  children,
+  onReset,
+}) => {
+  const { theme } = useTheme();
+  const [error, setError] = useState<Error | null>(null);
 
-class SwipeErrorBoundary extends React.Component<
-  SwipeErrorBoundaryProps,
-  State
-> {
-  state: State = { hasError: false };
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Swipe Error:", error, errorInfo);
-  }
-
-  handleReset = () => {
-    this.setState({ hasError: false, error: undefined });
-    this.props.onReset?.();
+  const handleReset = () => {
+    setError(null);
+    onReset?.();
   };
 
-  render() {
-    const { theme } = useTheme();
-
-    if (this.state.hasError) {
-      return (
-        <View
-          style={[styles.container, { backgroundColor: theme.colors.error }]}
+  if (error) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.colors.error }]}>
+        <Text style={[styles.text, { color: theme.colors.text }]}>
+          Swipe operation failed
+        </Text>
+        <Text style={[styles.errorText, { color: theme.colors.text }]}>
+          {error.message}
+        </Text>
+        <Pressable
+          onPress={handleReset}
+          style={({ pressed }) => [
+            styles.button,
+            {
+              backgroundColor: pressed
+                ? theme.colors.primary + "CC"
+                : theme.colors.primary,
+              opacity: pressed ? 0.8 : 1,
+            },
+          ]}
         >
-          <Text style={[styles.text, { color: theme.colors.text }]}>
-            Swipe operation failed
-          </Text>
-          <Text style={[styles.errorText, { color: theme.colors.text }]}>
-            {this.state.error?.message}
-          </Text>
-          <Pressable
-            onPress={this.handleReset}
-            style={({ pressed }) => [
-              styles.button,
-              {
-                backgroundColor: pressed
-                  ? theme.colors.primary + "CC"
-                  : theme.colors.primary,
-                opacity: pressed ? 0.8 : 1,
-              },
-            ]}
-          >
-            <Text style={{ color: theme.colors.text }}>Reset Card</Text>
-          </Pressable>
-        </View>
-      );
-    }
-
-    return this.props.children;
+          <Text style={{ color: theme.colors.text }}>Reset Card</Text>
+        </Pressable>
+      </View>
+    );
   }
-}
+
+  try {
+    return <>{children}</>;
+  } catch (err) {
+    console.error("Swipe Error:", err);
+    setError(err as Error);
+    return null;
+  }
+};
 
 const styles = StyleSheet.create({
   container: {

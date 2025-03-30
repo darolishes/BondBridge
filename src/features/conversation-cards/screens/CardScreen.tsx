@@ -64,7 +64,7 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
           question: "Was war dein schönstes Erlebnis in der letzten Woche?",
           category: "icebreakers",
           difficulty: 1,
-          created: new Date(),
+          created: new Date().toISOString(),
         },
         {
           id: "2",
@@ -75,7 +75,7 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
             "Warum möchtest du das ändern?",
             "Wie würde diese Änderung dein Leben beeinflussen?",
           ],
-          created: new Date(),
+          created: new Date().toISOString(),
         },
         {
           id: "3",
@@ -86,7 +86,7 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
             "Wann hast du diese Angst zum ersten Mal gespürt?",
             "Was können wir gemeinsam tun, um diese Angst zu bewältigen?",
           ],
-          created: new Date(),
+          created: new Date().toISOString(),
         },
         {
           id: "4",
@@ -98,14 +98,14 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
             "Wie würdest du unsere gemeinsamen Werte beschreiben?",
             "Welche Werte möchtest du stärker in unserer Beziehung sehen?",
           ],
-          created: new Date(),
+          created: new Date().toISOString(),
         },
         {
           id: "5",
           question: "Was ist dein Lieblingserinnerung mit mir?",
           category: "intimacy",
           difficulty: 2,
-          created: new Date(),
+          created: new Date().toISOString(),
         },
       ];
 
@@ -242,13 +242,21 @@ const CardScreen: React.FC<CardScreenProps> = ({ navigation }) => {
     },
   });
 
+  // Debug logging
+  console.log("Active card:", activeCard);
+  console.log("Filtered cards:", filteredCards);
+  console.log("Card count:", cardCount);
+  console.log("Theme colors:", theme.colors);
+
   // Loading state
   if (cardCount === 0) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
-          <Text style={styles.emptyStateText}>Laden...</Text>
+          <Text style={styles.emptyStateText}>
+            Keine Karten gefunden. Bitte Kartenset auswählen.
+          </Text>
         </View>
       </SafeAreaView>
     );
