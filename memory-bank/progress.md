@@ -12,6 +12,12 @@
 - **17:24**: `GestureHandlerRootView` korrekt eingebunden
 - **17:24**: Performance-Optimierung der Swipe-Gesten
 - **17:24**: UI/UX-Verbesserungen für Web-Version
+
+## Current Tasks
+
+- [ ] Implement FileService core components (ETA: 2025-04-02)
+- [ ] Refactor memory-bank file handlers (ETA: 2025-04-03)
+- [ ] Validate cache consistency (ETA: 2025-04-04)
 - **17:24**: Implementierung des MVP für Conversation Cards mit folgenden Kernfunktionen:
   - Einfache Kartenansicht mit Swipe-Funktion
   - Grundlegende Kategoriefilterung
@@ -22,9 +28,16 @@
 - **17:24**: Unit-Tests für Card-Komponenten erstellt
 - **17:24**: Refaktoriertes Theme-System
   - Modulare Organisation in logische Unterverzeichnisse
-  - Verbesserte Typendefinitionen
-  - Zentralisierte Theme-Hooks
-  - Vereinfachter ThemeProvider
+
+## Next Steps
+
+1. Code review of FileService interface
+2. Performance benchmarking setup
+3. Documentation updates
+
+- Verbesserte Typendefinitionen
+- Zentralisierte Theme-Hooks
+- Vereinfachter ThemeProvider
 - **17:24**: Einfache Card-Komponente
   - Modulare Unterteilung in CategoryBadge, QuestionText, DifficultyIndicator und FollowUpQuestions
   - Accessibility-Unterstützung

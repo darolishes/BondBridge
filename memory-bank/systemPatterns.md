@@ -1,240 +1,119 @@
-## Design Token System (2025-03-30 15:50:00)
-
-### Token-Kategorien
-
-1. **Farben**
-   - Primär/Sekundär/Akzent
-   - Semantische Rollen (background, surface, text)
-   - Status (success, warning, error)
-2. **Typografie**
-   - Schriftfamilien
-   - Größen (small, medium, large)
-   - Gewichte (light, regular, bold)
-3. **Spacing**
-   - 8px-Grid-System
-
-### Gestenbehandlung
-
-- react-native-gesture-handler + react-native-reanimated
-- 60 FPS Performance-Ziel
-- Batch-Update-Pattern für State-Änderungen
-- Deklarative Performance-Metriken
-- Web Worker für schwere Berechnungen
-- InteractionManager für kritische Updates
-
-### Gestenbehandlung
-
-- Animated-API mit react-native-gesture-handler
-- 60 FPS als Performance-Ziel
-- Batch-Update-Pattern für State-Änderungen
-- Deklarative Performance-Metriken
-  - Relative Einheiten (1x, 2x, 4x, 8x)
-
-### Benennungskonvention
-
-- Immer lowercase
-- Konsistente Skalierung (small < medium < large)
-- Keine plattformspezifischen Namen
-
-### Implementierungsregeln
-
-1. Keine Hardcoded-Werte in Komponenten
-2. Theme-Hook für alle Styling-Entscheidungen
-3. Token-Referenzen statt direkter Werte
-
 # System Patterns & Conventions
 
-Version: 2.0.0
-Letzte Aktualisierung: 2025-03-27 15:00:00
-Status: 🟢 Aktiv
+## Version Information
 
-## Kernkonzepte für MVP 🔍
+- **Current Version**: 2.0.0
+- **Last Updated**: 2025-03-30 19:05:47
+- **Status**: Active 🟢
 
-- **Feature-basierte Architektur**: Komponenten nach Funktionalität gruppiert
-- **Typsicherheit**: Grundlegende TypeScript-Typdefinitionen
-- **State Management**: Einfache, funktionale Zustandsverwaltung
-- **Offline-First**: Grundlegende lokale Datenspeicherung
-- **Integration**: Einfache Einbindung externer Kartensets
+## Core Architecture Patterns
 
-## Gesture Handling Pattern
+### File Access Pattern (2025-03-30)
 
-**Anwendung:**
-The following packages should be updated for best compatibility with the installed expo version:
-@react-native-async-storage/async-storage@2.1.2 - expected version: 1.23.1
-expo@52.0.40 - expected version: ~52.0.41
-react-native-gesture-handler@2.24.0 - expected version: ~2.20.2
-react-native-reanimated@3.17.1 - expected version: ~3.16.1
-react-native-safe-area-context@5.3.0 - expected version: 4.12.0
-react-native-screens@4.9.2 - expected version: ~4.4.0
-Your project may not work correctly until you install the expected versions of the packages.
+**Purpose**: Eliminate redundant file scans and ensure consistency
 
-- Alle interaktiven Gesten
-
-**Implementierung:**
-
-## Redux State Management Pattern
-
-## Gesture Handling Architecture
-
-**Components:**
-
-1. SwipeHandler (Gesture logic)
-2. Card (Presentation)
-3. ErrorBoundary (Fault tolerance)
-
-**Data Flow:**
-Gesture → Animation → State Update → Redux
-
-**Key Decisions:**
-
-- Reanimated 3 for 60fps animations
-- Separate gesture logic from presentation
-- Custom error boundary for swipe operations
-  **Anwendung:**
-
-- Globaler App-Zustand
-- Swipe-Historie
-- Kartenstapel-Verwaltung
-
-**Implementierung:**
-
-1. RTK Query für API Calls
-2. createAsyncThunk für async Actions
-3. Normalized State Structure
-
-**Sicherheitsmechanismen:**
-
-- Auto-batch Actions
-- Immutable Updates
-- Transaction Middleware
-
-1. react-native-gesture-handler für Basisgesten
-2. Reanimated für performante Animationen
-3. Zustandsisolation mittels Shared Values
-
-**Vorteile:**
-
-- 60 FPS Animationen
-- Native Gestenerkennung
-- Trennung von Logik und Darstellung
-
-## UI Component Patterns
-
-## Cross-Component State Flow
-
-**Anwendung:**
-
-- UI-Interaktionen mit globalen Effekten
-
-**Implementierung:**
-
-1. Lokaler UI-State in Shared Values
-2. Globale Effekte über Redux Actions
-3. Callback-Propagation über Komponentenhierarchie
-
-**Vorteile:**
-
-- Entkopplung von UI und Business-Logik
-- Vorhersagbare State-Aktualisierungen
-
-### Card Component Enhancements (2025-03-26)
-
-- Material Design 3 elevation system implementation
-- Dynamic contrast ratio calculations for accessibility
-- Swipe animation feedback using react-native-reanimated
-- Centralized shadow styling through theme constants
-- PointerEvents handling strategy for touch interactions
-
-## Namenskonventionen 📝
-
-| Typ           | Konvention    | Beispiel               |
-| ------------- | ------------- | ---------------------- |
-| Komponenten   | PascalCase    | `ConversationCard.tsx` |
-| Funktionen    | camelCase     | `handleSwipe()`        |
-| Verzeichnisse | kebab-case    | `conversation-cards/`  |
-| Event Handler | handle-Präfix | `handleSwipe`          |
-| Zustände      | is/has-Präfix | `isLoading`            |
-
-## Vereinfachte Projektstruktur 🏗️
-
-```
-src/
-├── features/            # Feature-Module
-│   ├── conversation-cards/
-│   │   ├── components/  # Komponenten
-│   │   ├── screens/     # Screens
-│   │   └── services/    # Kartenset-Integration
-├── navigation/          # Navigation
-└── theme/               # Grundlegendes Styling
-```
-
-## Datenmodell 📊
-
-> **Hinweis**: Das zentrale Datenmodell ist in `productContext.md` definiert und
-> sollte nicht dupliziert werden, um Inkonsistenzen zu vermeiden.
-
-## Einfaches State Management 🧠
+**Implementation**:
 
 ```typescript
-// Grundlegender Zustandsansatz für MVP
-const [cards, setCards] = useState<ConversationCard[]>([]);
-const [currentIndex, setCurrentIndex] = useState(0);
-const [activeCategories, setActiveCategories] = useState<CardCategory[]>([
-  "icebreakers",
-  "confessions",
-]);
-
-// Einfache Filter-Funktion
-const filteredCards = cards.filter((card) =>
-  activeCategories.includes(card.category)
-);
-```
-
-## Einfache Animation & Gesten 🎬
-
-- Grundlegende Swipe-Erkennung mit React Native's `PanResponder`
-- Einfache Übergangsanimationen für Kartenwechsel
-- Fokus auf Funktionalität statt komplexer visueller Effekte
-
-## UI-Komponenten 🎨
-
-### Grundlegende Komponenten für MVP
-
-```typescript
-// Einfache Card-Komponente
-interface CardProps {
-  card: ConversationCard;
-  onSwipeLeft: () => void;
-  onSwipeRight: () => void;
-}
-
-// Einfacher Filter
-interface FilterProps {
-  categories: CardCategory[];
-  activeCategories: CardCategory[];
-  onToggleCategory: (category: CardCategory) => void;
+interface MemoryBankFileService {
+  readFile(path: string): Promise<string>;
+  writeFile(path: string, content: string): Promise<void>;
+  invalidateCache(path: string): void;
 }
 ```
 
-## Best Practices für MVP 🌟
+**Key Components**:
 
-- **Einfachheit**: Fokus auf Kernfunktionalität
-- **Lesbarkeit**: Klarer, verständlicher Code
-- **Modularität**: Logische Gruppierung verwandter Funktionen
-- **Testbarkeit**: Einfache Struktur für bessere Testbarkeit
-- **Erweiterbarkeit**: Grundlagen für spätere Erweiterungen legen
+1. Singleton service instance
+2. Cache-Aside strategy with TTL
+3. Worker pool for I/O operations
 
-### Tech Debt Items (2025-03-30)
+**Benefits**:
 
-- **react-native-fs**: Replace with expo-file-system in future update
-- **redux-persist**: Migrate to modern async storage solution
-- **Metro version conflict**: Monitor and resolve during next major Expo update
+- Single source of truth for file content
+- Reduced I/O overhead
+- Thread-safe operations
 
-### Künftige Erweiterungen (Post-MVP)
+### Design Token System
 
-Die folgenden fortgeschrittenen Muster können nach erfolgreicher MVP-Implementierung eingeführt werden:
+#### Token Categories
 
-- Redux Toolkit mit Entity Adapter
-- Komplexere Animations-Patterns
-- Erweiterte Validierungsmechanismen mit Zod
-- Performance-Optimierungen
+| Category   | Examples                       |
+| ---------- | ------------------------------ |
+| Colors     | Primary, Secondary, Background |
+| Typography | Font families, Sizes, Weights  |
+| Spacing    | 8px grid system                |
+
+### Gesture Handling Architecture
+
+**Component Structure**:
+
+1. `SwipeHandler` (Gesture logic)
+2. `Card` (Presentation)
+3. `ErrorBoundary` (Fault tolerance)
+
+**Data Flow**:
+
+```mermaid
+flowchart LR
+    Gesture --> Animation --> StateUpdate --> Redux
+```
+
+### State Management
+
+**Redux Implementation**:
+
+```typescript
+// Example slice configuration
+const cardsSlice = createSlice({
+  name: "cards",
+  initialState,
+  reducers: {
+    addCard: (state, action) => {
+      state.items.push(action.payload);
+    },
+  },
+});
+```
+
+## Naming Conventions
+
+| Type        | Convention | Example                |
+| ----------- | ---------- | ---------------------- |
+| Components  | PascalCase | `ConversationCard.tsx` |
+| Functions   | camelCase  | `handleSwipe()`        |
+| Directories | kebab-case | `conversation-cards/`  |
+
+## Project Structure
+
+```mermaid
+flowchart TD
+    src/ --> features/
+    features/ --> conversation-cards/
+    conversation-cards/ --> components/
+    conversation-cards/ --> services/
+```
+
+## Technical Debt
+
+| Item            | Priority | Solution                        |
+| --------------- | -------- | ------------------------------- |
+| react-native-fs | Medium   | Replace with expo-file-system   |
+| redux-persist   | High     | Migrate to modern async storage |
+| Metro version   | Low      | Resolve in next update          |
+
+## Future Enhancements
+
+1. **Advanced animation patterns**
+
+   - Spring physics
+   - Gesture-based transitions
+
+2. **Zod validation integration**
+
+   - Type-safe schemas
+   - Runtime validation
+
+3. **Performance optimizations**
+   - Memoization
+   - Selective re-rendering

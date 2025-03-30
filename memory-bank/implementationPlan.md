@@ -1,94 +1,69 @@
-# Import Refactoring Plan
+# Component Refactoring Plan
 
-## Phase 1: Theme & Store (Hohe Priorität)
+## Version Information
 
-### Theme-System
+- **Current Version**: 1.0.0
+- **Last Updated**: 2025-03-30 19:18:30
+- **Status**: Draft 🟡
 
-- [ ] Ersetze "../../../theme" mit "@theme"
-- [ ] Ersetze "../../../theme/types" mit "@theme/types"
-- Dateien:
-  - src/features/conversation-cards/components/PerformanceOverlay.tsx
-  - src/features/conversation-cards/components/CardSetUploader.tsx
-  - src/features/conversation-cards/components/CardSetManager.tsx
+## Refactoring Goals
 
-### Store
+1. Implement centralized file access pattern
+2. Eliminate redundant file operations
+3. Improve thread safety
+4. Maintain backward compatibility
 
-- [ ] Ersetze "../../../store" mit "@store"
-- [ ] Aktualisiere Slice-Imports auf "@store/slices/\*"
-- Dateien:
-  - src/features/conversation-cards/hooks/useCardSetUpload.ts
-  - src/features/conversation-cards/hooks/useCards.ts
-  - src/features/conversation-cards/hooks/useCardFilters.ts
-  - src/features/conversation-cards/hooks/useCardSets.ts
+## Phase 1: Core Service Implementation
 
-## Phase 2: Feature-spezifische Imports (Medium Priorität)
+### Components:
 
-### Komponenten
+1. `FileService.ts` (Interface)
+2. `CachedFileService.ts` (Implementation)
+3. `FileWorkerPool.ts` (Concurrency)
 
-- [ ] Ersetze relative Pfade mit "@cards/components"
-- Dateien:
-  - src/features/conversation-cards/components/Card.tsx
-  - src/features/conversation-cards/screens/CardScreen.tsx
+### Timeline:
 
-### Types
+| Task                 | Owner     | Estimate | Status |
+| -------------------- | --------- | -------- | ------ |
+| Interface definition | Architect | 2h       | ✅     |
+| Cache implementation | Code      | 4h       | ⏳     |
+| Worker pool          | Code      | 6h       | ⏳     |
 
-- [ ] Ersetze "../types" mit "@cards/types"
-- Dateien:
-  - src/features/conversation-cards/components/Card.tsx
-  - src/features/conversation-cards/components/CategoryBadge.tsx
-  - src/features/conversation-cards/hooks/useCards.ts
+## Phase 2: Integration
 
-### Hooks
+### Affected Components:
 
-- [ ] Ersetze "../hooks" mit "@cards/hooks"
-- Dateien:
-  - src/features/conversation-cards/components/SwipeHandler.tsx
-  - src/features/conversation-cards/screens/CardScreen.tsx
+1. `memory-bank/*.md` handlers
+2. `useStorageState` hook
+3. `CardSetService`
 
-## Phase 3: Services & Utils (Niedrige Priorität)
+### Migration Path:
 
-### Services
+```mermaid
+flowchart TD
+    A[Legacy Readers] --> B[FileService Adapter]
+    B --> C[CachedFileService]
+    C --> D[Worker Pool]
+```
 
-- [ ] Ersetze relative Pfade mit "@cards/services"
-- Dateien:
-  - src/features/conversation-cards/services/cardsets/\*.ts
-  - src/features/conversation-cards/services/CardSetService.ts
+## Phase 3: Validation
 
-### Utils
+### Test Cases:
 
-- [ ] Ersetze relative Pfade mit "@cards/utils"
-- Dateien:
-  - src/features/conversation-cards/utils/cardSetTransform.ts
-  - src/features/conversation-cards/utils/styleConverter.ts
+1. Concurrent read/write operations
+2. Cache invalidation scenarios
+3. Error recovery
 
-## Validierung
+## Risk Analysis
 
-1. Build-Tests
+| Risk              | Mitigation                |
+| ----------------- | ------------------------- |
+| Cache consistency | TTL + manual invalidation |
+| Worker starvation | Pool size monitoring      |
+| Thread safety     | Immutable data patterns   |
 
-   - [ ] TypeScript-Kompilierung
-   - [ ] Babel-Transpilierung
-   - [ ] ESLint-Prüfung
+## Dependencies
 
-2. Runtime-Tests
-   - [ ] Unit-Tests ausführen
-   - [ ] E2E-Tests ausführen
-   - [ ] Manuelle Funktionsprüfung
-
-## Rollout-Strategie
-
-1. Schrittweise Implementierung
-
-   - Änderungen pro Komponente
-   - Sofortige Tests nach jeder Änderung
-   - Git-Commit pro abgeschlossener Phase
-
-2. Fehlerbehandlung
-
-   - Backup der Original-Imports
-   - Rollback-Plan bei Problemen
-   - Dokumentation aller Änderungen
-
-3. Performance-Monitoring
-   - Build-Zeiten vor/nach
-   - Bundle-Größe vor/nach
-   - Import-Auflösungszeiten
+1. Update react-native-fs to latest
+2. Add jest-mock-worker
+3. Upgrade TypeScript to 5.3+

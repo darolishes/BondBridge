@@ -14,9 +14,6 @@ export interface CardStyle {
   backgroundError: string;
   borderActive: string;
   borderError: string;
-  borderWidth: number;
-  borderColor: string;
-  borderStyle?: string;
 }
 
 export interface Card {

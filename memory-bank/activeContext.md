@@ -1,149 +1,103 @@
-## Debugging Status [2025-03-30 17:24]
+[2025-03-30 19:30:28] - Updated decisionLog.md with improvements for code readability, maintainability, performance optimization, best practices, and error handling.
 
-- Debug-Komponenten entfernt
-- Swipe-Funktionalität optimiert
-- Code-Basis bereinigt
-- Hauptfokus auf Produktionscode
+# Active Context
 
-## Aktuelle Änderungen
+## Version Information
 
-- `CardDebug.tsx`, `DebugOverlay.tsx`, `SwipeHandlerWeb.tsx` und `PlatformSwipeHandler.tsx` entfernt
-- Debug-Logs aus `CardScreen.tsx` und `App.tsx` entfernt
-- `SwipeHandler`-Integration in `Card.tsx` wiederhergestellt
-- `GestureHandlerRootView` korrekt eingebunden
+- **Current Version**: 2.0.0
+- **Last Updated**: 2025-03-30 19:14:46
+- **Status**: Active 🟢
 
-## Offene Punkte
+## Current Focus
 
-- Performance-Optimierung der Swipe-Gesten
-- UI/UX-Verbesserungen für Web-Version
+### Core Development Priorities
 
-# Aktiver Kontext
+1. **Centralized File Access Service**
 
-Version: 2.0.0
-Letzte Aktualisierung: 2025-03-30 10:00:00
-Status: 🟢 Aktiv
+   - Worker pool implementation
+   - Performance benchmarking
+   - Cache invalidation strategy
 
-## Aktueller Fokus 🎯
+2. **Conversation Cards MVP**
+   - Swipe gesture implementation
+   - Card set integration
+   - Basic filtering functionality
 
-Implementierung des MVP für Conversation Cards mit folgenden Kernfunktionen:
+## Recent Changes
 
-- Einfache Kartenansicht mit Swipe-Funktion
-- Grundlegende Kategoriefilterung
-- Automatische Integration externer Kartensets
-- Einheitliches, modulares Theme-System ✅
+### Technical Improvements
 
-## User Story Tracking 📋
+- Implemented file access refactoring plan
+- Removed debug components from production code
+- Optimized swipe gesture performance
 
-Detaillierte User Stories sind im `.ai/stories/` Verzeichnis verfügbar:
+### Documentation Updates
 
-| Feature                  | Status            | Epic/Story Referenz                                |
-| ------------------------ | ----------------- | -------------------------------------------------- |
-| Kartenansicht            | 🟡 In Entwicklung | [Epic-2 Story-1](../.ai/stories/epic-2/story-1.md) |
-| Karten-Navigation        | 🟡 In Entwicklung | [Epic-2 Story-2](../.ai/stories/epic-2/story-2.md) |
-| Kategoriefilter          | 🟡 In Entwicklung | [Epic-2 Story-3](../.ai/stories/epic-2/story-3.md) |
-| Kartenset-Integration    | 📋 Geplant        | [Epic-4 Story-1](../.ai/stories/epic-4/story-1.md) |
-| Onboarding-Erfahrung     | 📋 Geplant        | [Epic-1 Story-1](../.ai/stories/epic-1/story-1.md) |
-| Favoriten-Funktionalität | 📋 Geplant        | [Epic-3 Story-2](../.ai/stories/epic-3/story-2.md) |
+- Updated architectural patterns in systemPatterns.md
+- Reformatted decision log in decisionLog.md
 
-## Offene Fragen ❓
+## Progress Tracking
 
-1. **State Management**
+### Completed Features ✅
 
-   - ✅ Effiziente Struktur für Kartenverwaltung
-   - ✅ Grundlegende Filter-Operationen
+| Feature              | Completion Date | Details                       |
+| -------------------- | --------------- | ----------------------------- |
+| Theme System         | 2025-03-27      | Modular structure implemented |
+| Basic Card Component | 2025-03-28      | Includes all subcomponents    |
+| State Management     | 2025-03-29      | Redux slices for core data    |
 
-2. **Kartenansicht**
+[2025-03-30 19:22:55] - Refactored memory-bank to avoid double scanning of files. Updated .clinerules-code to read all memory bank files in a single operation.
+[2025-03-30 19:22:55] - Refactored memory-bank to avoid double scanning of files. Updated .clinerules-code to read all memory bank files in a single operation.
 
-   - Einfache, funktionale Swipe-Mechanik
-   - Balance zwischen Funktionalität und UI-Komplexität
+### In Progress Features 🔄
 
-3. **Externes Kartenset-Management**
-   - Benutzerfreundliche Integration von JSON-Dateien
-   - Optimaler Speicherort für Kartensets
+| Feature             | Progress | Next Steps                          |
+| ------------------- | -------- | ----------------------------------- |
+| Swipe Functionality | 15%      | Implement basic gesture recognition |
+| Card Navigation     | 80%      | Finalize transition animations      |
 
-## Implementierungsstatus 📊
+## Open Questions
 
-### Abgeschlossen ✅
+### Technical Decisions
 
-- Projekt-Infrastruktur
-- Grundlegende Ordnerstruktur
-- Basis-Navigation
-- Refaktoriertes Theme-System
-  - Modulare Organisation in logische Unterverzeichnisse
-  - Verbesserte Typendefinitionen
-  - Zentralisierte Theme-Hooks
-  - Vereinfachter ThemeProvider
-- Einfache Card-Komponente
-  - Modulare Unterteilung in CategoryBadge, QuestionText, DifficultyIndicator und FollowUpQuestions
-  - Accessibility-Unterstützung
-  - Performance-Optimierung mit React.memo
-- State Management
-  - Redux Store mit Slices (Cards, Filters, Settings)
-  - Persistenz mit AsyncStorage
-  - Typed Custom Hooks für Komponenten
-  - Filter-Funktionalität
+1. Optimal cache TTL duration for file service
+2. Worker pool sizing strategy
+3. Fallback mechanism for service failures
 
-### In Bearbeitung 🔄
+### Product Questions
 
-#### MVP-Komponenten
+1. Feature prioritization for MVP
+2. User onboarding experience design
 
-- Grundlegende Swipe-Funktion (15%)
-- Kartennavigation (80%)
+## Risk Assessment
 
-### Nächste Schritte 📋
+| Risk                         | Likelihood | Impact | Mitigation Strategy |
+| ---------------------------- | ---------- | ------ | ------------------- |
+| Over-engineering features    | Medium     | High   | Strict MVP focus    |
+| Performance bottlenecks      | High       | Medium | Early benchmarking  |
+| Cross-platform compatibility | Medium     | High   | Continuous testing  |
 
-1. Einfache Swipe-Funktionalität implementieren
-2. Integration externer Kartensets (Basisfunktion)
-3. Unit-Tests für Card-Komponenten erstellen
+## System Overview
 
-## Risiken ⚠️
+### Current Architecture
 
-- Überkomplexität durch zu viele Features in der ersten Version
-- Verzögerungen durch Fokus auf nicht-essenzielle Funktionen
+```mermaid
+graph TD
+    A[File Service] --> B[Worker Pool]
+    A --> C[Cache Layer]
+    B --> D[I/O Operations]
+    C --> E[Memory Cache]
+```
 
-## Aktuelle Architektur & Systeme 📐
+### Key Components
 
-### Theme-System
+1. **Theme System**
 
-- **Struktur**: Modular organisiert in Unterverzeichnisse:
+   - Modular structure
+   - Type-safe implementation
+   - Single source of truth
 
-  - `constants/`: Farben, Typografie, Spacing, Borders
-  - `hooks.ts`: Theme-bezogene Hooks (useTheme, createThemedStyles, useNavigationTheme)
-  - `types.ts`: Zentrale Typendefinitionen
-  - `themes.ts`: Theme-Definitionen (Standard, Dunkel)
-  - `ThemeProvider.tsx`: Context-Provider für Theme-Verwaltung
-  - `index.ts`: Klare Export-Schnittstelle
-
-- **Imports**: Alle Komponenten importieren Theme-Hooks aus "@theme/hooks"
-
-- **Vorteile**: Klare Verantwortlichkeiten, Single Source of Truth, Typensicherheit, einfache Erweiterbarkeit
-
-### Card-Komponenten-System
-
-- **Struktur**: Modular aufgeteilt in Unterkomponenten:
-
-  - `Card.tsx`: Hauptkomponente, die alle Unterkomponenten integriert
-  - `CategoryBadge.tsx`: Anzeige der Kartenkategorie mit passender Farbkodierung
-  - `QuestionText.tsx`: Hauptfrage mit richtiger Typografie
-  - `DifficultyIndicator.tsx`: Anzeige des Schwierigkeitsgrades (1-5 Sterne)
-  - `FollowUpQuestions.tsx`: Optionale Folgefragen mit Aufzählungszeichen
-
-- **Integration**: CardScreen demonstriert die Verwendung des Card-Systems
-
-### State Management System
-
-- **Struktur**: Redux Toolkit mit modularen Slices:
-
-  - `store/`: Zentrales Store-Verzeichnis
-  - `slices/`: Redux Slices (Cards, Filters, Settings)
-  - `hooks.ts`: Typed Custom Hooks für Redux
-  - `providers/`: Redux Provider-Komponenten
-
-- **Persistenz**: Redux Persist mit AsyncStorage
-
-- **Features**:
-  - Effiziente Verwaltung von Karten und Kartensets
-  - Typsicherheit durch TypeScript
-  - Optimierte Selektoren für Performance
-  - Custom Hooks für einfache Komponenten-Integration
-  - Filter-Funktionalität für Kategorien und Suchbegriffe
+2. **State Management**
+   - Redux Toolkit
+   - Persistence layer
+   - Optimized selectors
