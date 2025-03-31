@@ -1,61 +1,60 @@
-# BondBridge Technical Specification - 2025-03-31
+# React Native Style Centralization - Technical Specification
 
-## Data Validation
+## Current Best Practices (2025)
 
-### JSON Schema
+### 1. Core Approaches
 
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "cards": {
-      "type": "array",
-      "items": {
-        "required": ["id", "question", "difficulty", "category"],
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "question": { "type": "string", "minLength": 10 },
-          "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
-          "category": {
-            "enum": [
-              "icebreakers",
-              "confessions",
-              "personality",
-              "deep-thoughts",
-              "intimacy",
-              "growth"
-            ]
-          }
-        }
-      }
-    }
-  }
+- **CSS Variables**: Limited native support, requires workarounds
+- **StyleSheet API**: Official React Native solution, good performance
+- **CSS-in-JS Libraries**: Popular but adds bundle size
+- **Utility-First**: Growing adoption (NativeWind, Tamagui)
+
+### 2. Performance Considerations
+
+| Method        | Performance Impact           |
+| ------------- | ---------------------------- |
+| StyleSheet    | Best (pre-compiled)          |
+| Inline Styles | Medium (runtime computation) |
+| CSS-in-JS     | Worst (runtime parsing)      |
+
+### 3. Recommended Libraries
+
+1. **NativeWind** (Tailwind for RN)
+2. **Restyle** (TypeScript first)
+3. **Styled Components** (Familiar syntax)
+4. **Tamagui** (Optimized compiler)
+
+### 4. Implementation Strategy
+
+```typescript
+// Recommended theme structure
+interface Theme {
+  colors: {
+    primary: string;
+    secondary: string;
+    // ...
+  };
+  spacing: {
+    s: number;
+    m: number;
+    l: number;
+  };
+  // ...
 }
+
+// Usage example
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.m,
+  },
+});
 ```
 
-### Performance Architecture
+### 5. Migration Steps
 
-```mermaid
-flowchart LR
-    A[User Action] --> B{Network?}
-    B -->|Online| C[API Cache]
-    B -->|Offline| D[Local Storage]
-    C & D --> E[Render Optimized]
-```
-
-## Error Handling Matrix
-
-| Error Type          | Recovery Method | User Message             | Log Level |
-| ------------------- | --------------- | ------------------------ | --------- |
-| Invalid Card Format | Skip card       | "1 card skipped"         | Warning   |
-| Missing Field       | Use default     | "Using default values"   | Info      |
-| Corrupt File        | Full rejection  | "File could not be read" | Error     |
-
-## Accessibility Requirements
-
-1. WCAG AA compliance
-2. Screen reader support
-3. Dynamic font scaling
-4. Color contrast verification
-5. Keyboard navigation support
+1. Audit existing styles
+2. Define design tokens
+3. Create theme provider
+4. Refactor components incrementally
+5. Add TypeScript types

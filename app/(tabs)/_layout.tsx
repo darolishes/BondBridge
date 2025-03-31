@@ -13,7 +13,8 @@ export default function TabLayout() {
           bottom: Platform.OS === 'web' ? 0 : 20,
           left: Platform.OS === 'web' ? 0 : 20,
           right: Platform.OS === 'web' ? 0 : 20,
-          backgroundColor: Platform.OS === 'web' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.8)',
+          backgroundColor:
+            Platform.OS === 'web' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.8)',
           borderTopColor: 'transparent',
           height: 65,
           borderRadius: Platform.OS === 'web' ? 0 : 20,
@@ -47,7 +48,8 @@ export default function TabLayout() {
               }}
             />
           ) : null,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -59,14 +61,18 @@ export default function TabLayout() {
         name="progress"
         options={{
           title: 'Progress',
-          tabBarIcon: ({ color, size }) => <BarChart size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <BarChart size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Settings size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
