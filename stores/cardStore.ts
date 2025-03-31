@@ -11,22 +11,32 @@ const CardSchema = z.object({
 
 type Card = z.infer<typeof CardSchema>;
 
+interface CardHistory {
+  card: Card;
+  direction: 'left' | 'right';
+  timestamp: number;
+}
+
 interface CardStore {
   cards: Card[];
   currentCardIndex: number;
   currentCard: Card | null;
   totalCards: number;
+  cardHistory: CardHistory[];
+  canUndo: boolean;
   loadCards: () => Promise<void>;
-  nextCard: () => void;
+  nextCard: (direction: 'left' | 'right') => void;
+  undoLastCard: () => void;
   resetProgress: () => void;
 }
 
 const STORAGE_KEY = 'bondbridge_progress';
+const HISTORY_KEY = 'bondbridge_history';
 
 const mockCards: Card[] = [
   {
     id: '1',
-    question: 'What\'s your favorite memory of us together?',
+    question: "What's your favorite memory of us together?",
     category: 'memories',
   },
   {
@@ -37,7 +47,7 @@ const mockCards: Card[] = [
   },
   {
     id: '3',
-    question: 'What\'s one dream you\'d like to achieve together?',
+    question: "What's one dream you'd like to achieve together?",
     category: 'dreams',
   },
   {
@@ -47,17 +57,17 @@ const mockCards: Card[] = [
   },
   {
     id: '5',
-    question: 'What\'s been the biggest challenge we\'ve overcome together?',
+    question: "What's been the biggest challenge we've overcome together?",
     category: 'challenges',
   },
   {
     id: '6',
-    question: 'How have you grown since we\'ve been together?',
+    question: "How have you grown since we've been together?",
     category: 'growth',
   },
   {
     id: '7',
-    question: 'What's a new tradition you'd like to start together?',
+    question: "What's a new tradition you'd like to start together?",
     category: 'dreams',
   },
   {
@@ -73,40 +83,92 @@ export const useCardStore = create<CardStore>((set, get) => ({
   currentCardIndex: 0,
   currentCard: null,
   totalCards: 0,
+  cardHistory: [],
+  canUndo: false,
 
   loadCards: async () => {
     try {
-      const savedProgress = await AsyncStorage.getItem(STORAGE_KEY);
+      const [savedProgress, savedHistory] = await Promise.all([
+        AsyncStorage.getItem(STORAGE_KEY),
+        AsyncStorage.getItem(HISTORY_KEY),
+      ]);
+
       const startIndex = savedProgress ? parseInt(savedProgress, 10) : 0;
+      const history = savedHistory
+        ? (JSON.parse(savedHistory) as CardHistory[])
+        : [];
 
       set({
         cards: mockCards,
         currentCardIndex: startIndex,
         currentCard: mockCards[startIndex] || null,
         totalCards: mockCards.length,
+        cardHistory: history,
+        canUndo: history.length > 0,
       });
     } catch (error) {
       console.error('Error loading cards:', error);
     }
   },
 
-  nextCard: () => {
-    const { currentCardIndex, cards } = get();
+  nextCard: (direction: 'left' | 'right') => {
+    const { currentCardIndex, cards, currentCard, cardHistory } = get();
+    if (!currentCard) return;
+
     const nextIndex = currentCardIndex + 1;
-    
-    AsyncStorage.setItem(STORAGE_KEY, nextIndex.toString());
+    const newHistory = [
+      ...cardHistory,
+      {
+        card: currentCard,
+        direction,
+        timestamp: Date.now(),
+      },
+    ];
+
+    Promise.all([
+      AsyncStorage.setItem(STORAGE_KEY, nextIndex.toString()),
+      AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory)),
+    ]);
 
     set({
       currentCardIndex: nextIndex,
       currentCard: cards[nextIndex] || null,
+      cardHistory: newHistory,
+      canUndo: true,
+    });
+  },
+
+  undoLastCard: () => {
+    const { cardHistory, currentCardIndex, cards } = get();
+    if (cardHistory.length === 0 || currentCardIndex === 0) return;
+
+    const newHistory = cardHistory.slice(0, -1);
+    const prevIndex = currentCardIndex - 1;
+
+    Promise.all([
+      AsyncStorage.setItem(STORAGE_KEY, prevIndex.toString()),
+      AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory)),
+    ]);
+
+    set({
+      currentCardIndex: prevIndex,
+      currentCard: cards[prevIndex],
+      cardHistory: newHistory,
+      canUndo: newHistory.length > 0,
     });
   },
 
   resetProgress: () => {
-    AsyncStorage.setItem(STORAGE_KEY, '0');
+    Promise.all([
+      AsyncStorage.setItem(STORAGE_KEY, '0'),
+      AsyncStorage.setItem(HISTORY_KEY, '[]'),
+    ]);
+
     set({
       currentCardIndex: 0,
       currentCard: get().cards[0] || null,
+      cardHistory: [],
+      canUndo: false,
     });
   },
 }));

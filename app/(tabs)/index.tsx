@@ -1,4 +1,11 @@
-import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import { useCallback, useEffect, useState } from 'react';
 import Animated, {
   useAnimatedStyle,
@@ -11,13 +18,17 @@ import Animated, {
   withDelay,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { Platform } from 'react-native';
 import { useCardStore } from '@/stores/cardStore';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import { LoadingScreen } from '@/components/LoadingScreen';
+import { SwipeIndicator } from '@/components/SwipeIndicator';
+import { RotateCcw } from 'lucide-react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_MARGIN = Math.min(SCREEN_WIDTH * 0.1, 40);
+const SWIPE_THRESHOLD = 100;
 
 const CARD_COLORS = {
   memories: ['#FF9A9E', '#FAD0C4'],
@@ -29,8 +40,20 @@ const CARD_COLORS = {
 };
 
 export default function CardsScreen() {
-  const { currentCard, loadCards, nextCard, totalCards, currentCardIndex } = useCardStore();
+  const {
+    currentCard,
+    loadCards,
+    nextCard,
+    totalCards,
+    currentCardIndex,
+    canUndo,
+    undoLastCard,
+  } = useCardStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(
+    null
+  );
 
   const rotation = useSharedValue(0);
   const offsetX = useSharedValue(0);
@@ -38,15 +61,43 @@ export default function CardsScreen() {
 
   useEffect(() => {
     const initialize = async () => {
-      await loadCards();
-      setIsLoading(false);
-      scale.value = withSequence(
-        withTiming(1.1, { duration: 200 }),
-        withDelay(100, withTiming(1, { duration: 200 }))
-      );
+      try {
+        await loadCards();
+        setIsLoading(false);
+        scale.value = withSequence(
+          withTiming(1.1, { duration: 200 }),
+          withDelay(100, withTiming(1, { duration: 200 }))
+        );
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load cards');
+        setIsLoading(false);
+      }
     };
     initialize();
   }, [loadCards]);
+
+  const handleSwipeComplete = useCallback(
+    (direction: 'left' | 'right') => {
+      offsetX.value = withTiming(direction === 'right' ? 500 : -500, {
+        duration: 300,
+      });
+      rotation.value = withTiming((direction === 'right' ? 1 : -1) * 30, {
+        duration: 300,
+      });
+
+      setTimeout(() => {
+        nextCard(direction);
+        offsetX.value = withSpring(0);
+        rotation.value = withSpring(0);
+        scale.value = withSequence(
+          withTiming(1.1, { duration: 200 }),
+          withDelay(100, withTiming(1, { duration: 200 }))
+        );
+        setSwipeDirection(null);
+      }, 300);
+    },
+    [nextCard]
+  );
 
   const pan = Gesture.Pan()
     .onChange((event) => {
@@ -58,44 +109,16 @@ export default function CardsScreen() {
         [1, 0.95],
         Extrapolate.CLAMP
       );
+      setSwipeDirection(event.translationX > 0 ? 'right' : 'left');
     })
     .onEnd((event) => {
-      if (Math.abs(event.translationX) > 100) {
-        offsetX.value = withTiming(event.translationX > 0 ? 500 : -500, {
-          duration: 300,
-        });
-        rotation.value = withTiming((event.translationX > 0 ? 1 : -1) * 30, {
-          duration: 300,
-        });
-        if (Platform.OS !== 'web') {
-          // Add visual feedback for web
-          const element = document.createElement('div');
-          element.style.position = 'fixed';
-          element.style.top = '20px';
-          element.style.left = '50%';
-          element.style.transform = 'translateX(-50%)';
-          element.style.padding = '10px 20px';
-          element.style.backgroundColor = '#4A90E2';
-          element.style.color = 'white';
-          element.style.borderRadius = '8px';
-          element.style.zIndex = '1000';
-          element.textContent = 'Card swiped!';
-          document.body.appendChild(element);
-          setTimeout(() => element.remove(), 1000);
-        }
-        setTimeout(() => {
-          nextCard();
-          offsetX.value = withSpring(0);
-          rotation.value = withSpring(0);
-          scale.value = withSequence(
-            withTiming(1.1, { duration: 200 }),
-            withDelay(100, withTiming(1, { duration: 200 }))
-          );
-        }, 300);
+      if (Math.abs(event.translationX) > SWIPE_THRESHOLD) {
+        handleSwipeComplete(event.translationX > 0 ? 'right' : 'left');
       } else {
         offsetX.value = withSpring(0);
         rotation.value = withSpring(0);
         scale.value = withSpring(1);
+        setSwipeDirection(null);
       }
     });
 
@@ -110,14 +133,21 @@ export default function CardsScreen() {
   });
 
   if (isLoading) {
+    return <LoadingScreen message="Loading your journey..." />;
+  }
+
+  if (error) {
     return (
       <View style={styles.container}>
         <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1516205651411-aef33a44f7c2?w=800' }}
+          source={{
+            uri: 'https://images.unsplash.com/photo-1516205651411-aef33a44f7c2?w=800',
+          }}
           style={styles.backgroundImage}
         />
-        <BlurView intensity={80} tint="light" style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Loading your journey...</Text>
+        <BlurView intensity={80} tint="light" style={styles.errorContainer}>
+          <Text style={styles.errorTitle}>Oops!</Text>
+          <Text style={styles.errorText}>{error}</Text>
         </BlurView>
       </View>
     );
@@ -127,14 +157,16 @@ export default function CardsScreen() {
     return (
       <View style={styles.container}>
         <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=800' }}
+          source={{
+            uri: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=800',
+          }}
           style={styles.backgroundImage}
         />
         <BlurView intensity={80} tint="light" style={styles.emptyContainer}>
           <Text style={styles.emptyTitle}>Journey Complete! 🎉</Text>
           <Text style={styles.emptyText}>
-            You've explored all the cards in this set. Would you like to start over or try a different
-            category?
+            You've explored all the cards in this set. Would you like to start
+            over or try a different category?
           </Text>
         </BlurView>
       </View>
@@ -142,12 +174,15 @@ export default function CardsScreen() {
   }
 
   const gradientColors =
-    CARD_COLORS[currentCard.category as keyof typeof CARD_COLORS] || ['#FFFFFF', '#F8F8F8'];
+    CARD_COLORS[currentCard.category as keyof typeof CARD_COLORS] ||
+    (['#FFFFFF', '#F8F8F8'] as [string, string, ...string[]]);
 
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: 'https://images.unsplash.com/photo-1515266591878-f93e32bc5937?w=800' }}
+        source={{
+          uri: 'https://images.unsplash.com/photo-1515266591878-f93e32bc5937?w=800',
+        }}
         style={styles.backgroundImage}
       />
       <View style={styles.header}>
@@ -159,25 +194,44 @@ export default function CardsScreen() {
             colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.categoryGradient}>
+            style={styles.categoryGradient}
+          >
             <Text style={styles.categoryText}>{currentCard.category}</Text>
           </LinearGradient>
         </View>
       </View>
+
+      {canUndo && (
+        <TouchableOpacity style={styles.undoButton} onPress={undoLastCard}>
+          <RotateCcw size={20} color="#666666" />
+          <Text style={styles.undoText}>Undo</Text>
+        </TouchableOpacity>
+      )}
+
       <GestureDetector gesture={pan}>
         <Animated.View style={[styles.cardContainer, animatedStyle]}>
+          {swipeDirection === 'left' && (
+            <SwipeIndicator direction="left" progress={offsetX} />
+          )}
+          {swipeDirection === 'right' && (
+            <SwipeIndicator direction="right" progress={offsetX} />
+          )}
           <LinearGradient
             colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.card}>
+            style={styles.card}
+          >
             <Text style={styles.questionText}>{currentCard.question}</Text>
             {currentCard.subQuestion && (
-              <Text style={styles.subQuestionText}>{currentCard.subQuestion}</Text>
+              <Text style={styles.subQuestionText}>
+                {currentCard.subQuestion}
+              </Text>
             )}
           </LinearGradient>
         </Animated.View>
       </GestureDetector>
+
       <BlurView intensity={80} tint="light" style={styles.hintContainer}>
         <Text style={styles.hint}>Swipe left or right to continue</Text>
       </BlurView>
@@ -228,6 +282,29 @@ const styles = StyleSheet.create({
     color: '#333333',
     textTransform: 'capitalize',
   },
+  undoButton: {
+    position: 'absolute',
+    top: Platform.OS === 'web' ? 40 : 60,
+    left: '50%',
+    transform: [{ translateX: -50 }],
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  undoText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    color: '#666666',
+    marginLeft: 8,
+  },
   cardContainer: {
     width: '100%',
     maxWidth: 400,
@@ -257,15 +334,23 @@ const styles = StyleSheet.create({
     color: '#666666',
     lineHeight: 24,
   },
-  loadingContainer: {
+  errorContainer: {
     padding: 32,
     borderRadius: 16,
     overflow: 'hidden',
+    alignItems: 'center',
   },
-  loadingText: {
+  errorTitle: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 24,
+    color: '#FF4A4A',
+    marginBottom: 8,
+  },
+  errorText: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 18,
+    fontSize: 16,
     color: '#666666',
+    textAlign: 'center',
   },
   emptyContainer: {
     padding: 32,
