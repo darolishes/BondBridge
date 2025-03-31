@@ -1,0 +1,34 @@
+[
+    {
+        "id": "conf-1",
+        "question": "When do you feel most connected to me?",
+        "subQuestion": "Consider both big moments and small daily interactions.",
+        "category": "confessions",
+        "difficulty": 4
+    },
+    {
+        "id": "conf-2",
+        "question": "What's one thing you wish you could change about our relationship?",
+        "category": "confessions",
+        "difficulty": 4
+    },
+    {
+        "id": "conf-3",
+        "question": "What's something you've been afraid to tell me?",
+        "category": "confessions",
+        "difficulty": 5
+    },
+    {
+        "id": "conf-4",
+        "question": "What's a meaningful moment between us that I might not know was important to you?",
+        "category": "confessions",
+        "difficulty": 3
+    },
+    {
+        "id": "conf-5",
+        "question": "What makes you feel most vulnerable in our relationship?",
+        "subQuestion": "How can I better support you in those moments?",
+        "category": "confessions",
+        "difficulty": 5
+    }
+]

@@ -1,0 +1,39 @@
+# Handoff System Rules
+
+Create handoffs when context becomes stale and milestones when features complete. For implementation details, refer to handoffs/0-instructions/.
+
+## When to Create Documents
+
+1. **Suggest handoffs when:**
+   - Context becomes ~30% irrelevant to current task
+   - After completing significant project segments
+   - After 10+ conversation exchanges
+   - During debugging sessions exceeding 5 exchanges without resolution
+
+2. **Suggest milestones when:**
+   - Completing major features or components
+   - After 3-5 handoffs accumulate
+   - A significant project phase concludes
+
+A fresh LLM session with focused context often solves problems that an overloaded session cannot.
+
+## Path & Code Conventions
+
+1. **@ Paths:** Use @/ for project root, @components, @services, etc. Configure in tsconfig.json.
+
+2. **File Structure:**
+   - Components: PascalCase.tsx with matching styles.ts
+   - Hooks: camelCase.ts prefixed with "use"
+   - Services: camelCase.ts with service suffix
+   - Tests: *.test.ts alongside implementation
+
+3. **Code Style:**
+   - Use TypeScript for all new code
+   - Prefer functional components with hooks
+   - Use named exports over default exports
+   - Follow ESLint & Prettier configurations
+
+4. **State Management:**
+   - Use Zustand for global state
+   - React Context for component trees
+   - Local state for component-specific data
