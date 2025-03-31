@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, ScrollView, Dimensions } from 'react-native';
 import { useCardStore } from '@/stores/cardStore';
-import { ChartBar as BarChart } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const CATEGORY_COLORS = {
   memories: '#FFE0E0',
@@ -36,7 +36,7 @@ export default function ProgressScreen() {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Your Progress</Text>
-        <BarChart size={24} color="#4A90E2" />
+        <Ionicons name="bar-chart-outline" size={24} color="#4A90E2" />
       </View>
 
       <View style={styles.overallProgress}>

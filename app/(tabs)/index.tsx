@@ -23,7 +23,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { SwipeIndicator } from '@/components/SwipeIndicator';
-import { RotateCcw } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -31,12 +31,12 @@ const CARD_MARGIN = Math.min(SCREEN_WIDTH * 0.1, 40);
 const SWIPE_THRESHOLD = 100;
 
 const CARD_COLORS = {
-  memories: ['#FF9A9E', '#FAD0C4'],
-  emotions: ['#A1C4FD', '#C2E9FB'],
-  dreams: ['#D4BFFF', '#E2D1FF'],
-  values: ['#88D3BD', '#B8E5D3'],
-  challenges: ['#FFB88C', '#FFE2D1'],
-  growth: ['#FF9A9E', '#FECFEF'],
+  memories: ['#FF9A9E', '#FAD0C4'] as readonly [string, string],
+  emotions: ['#A1C4FD', '#C2E9FB'] as readonly [string, string],
+  dreams: ['#D4BFFF', '#E2D1FF'] as readonly [string, string],
+  values: ['#88D3BD', '#B8E5D3'] as readonly [string, string],
+  challenges: ['#FFB88C', '#FFE2D1'] as readonly [string, string],
+  growth: ['#FF9A9E', '#FECFEF'] as readonly [string, string],
 };
 
 export default function CardsScreen() {
@@ -175,7 +175,7 @@ export default function CardsScreen() {
 
   const gradientColors =
     CARD_COLORS[currentCard.category as keyof typeof CARD_COLORS] ||
-    (['#FFFFFF', '#F8F8F8'] as [string, string, ...string[]]);
+    (['#FFFFFF', '#F8F8F8'] as readonly [string, string]);
 
   return (
     <View style={styles.container}>
@@ -202,8 +202,9 @@ export default function CardsScreen() {
       </View>
 
       {canUndo && (
+        // In the render method, replace:
         <TouchableOpacity style={styles.undoButton} onPress={undoLastCard}>
-          <RotateCcw size={20} color="#666666" />
+          <Ionicons name="arrow-undo-outline" size={20} color="#666666" />
           <Text style={styles.undoText}>Undo</Text>
         </TouchableOpacity>
       )}
