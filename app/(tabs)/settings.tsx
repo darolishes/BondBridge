@@ -1,7 +1,14 @@
-import { View, StyleSheet, Text, TouchableOpacity, Switch, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Switch,
+  ScrollView,
+} from 'react-native';
 import { useState } from 'react';
 import { useCardStore } from '@/stores/cardStore';
-import { Settings, Bell, Moon, Trash2, RefreshCw } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SettingsScreen() {
   const { resetProgress } = useCardStore();
@@ -12,15 +19,15 @@ export default function SettingsScreen() {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Settings</Text>
-        <Settings size={24} color="#4A90E2" />
+        <Ionicons name="settings-outline" size={24} color="#4A90E2" />
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Preferences</Text>
-        
+
         <View style={styles.settingItem}>
           <View style={styles.settingInfo}>
-            <Bell size={20} color="#666666" />
+            <Ionicons name="notifications-outline" size={20} color="#666666" />
             <Text style={styles.settingText}>Daily Reminders</Text>
           </View>
           <Switch
@@ -33,7 +40,7 @@ export default function SettingsScreen() {
 
         <View style={styles.settingItem}>
           <View style={styles.settingInfo}>
-            <Moon size={20} color="#666666" />
+            <Ionicons name="moon-outline" size={20} color="#666666" />
             <Text style={styles.settingText}>Dark Mode</Text>
           </View>
           <Switch
@@ -47,14 +54,14 @@ export default function SettingsScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Data Management</Text>
-        
+
         <TouchableOpacity style={styles.button} onPress={resetProgress}>
-          <RefreshCw size={20} color="white" />
+          <Ionicons name="refresh-outline" size={20} color="white" />
           <Text style={styles.buttonText}>Reset Progress</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.button, styles.dangerButton]}>
-          <Trash2 size={20} color="white" />
+          <Ionicons name="trash-outline" size={20} color="white" />
           <Text style={styles.buttonText}>Clear All Data</Text>
         </TouchableOpacity>
       </View>
@@ -63,8 +70,9 @@ export default function SettingsScreen() {
         <Text style={styles.sectionTitle}>About</Text>
         <Text style={styles.version}>Version 1.0.0</Text>
         <Text style={styles.description}>
-          BondBridge helps couples deepen their connection through meaningful conversations.
-          Share your thoughts, dreams, and memories with your partner.
+          BondBridge helps couples deepen their connection through meaningful
+          conversations. Share your thoughts, dreams, and memories with your
+          partner.
         </Text>
       </View>
     </ScrollView>
