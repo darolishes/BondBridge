@@ -12,7 +12,7 @@ export function CardControls({ onAction }: CardControlsProps) {
       <motion.button 
         className={cn(
           "relative p-5 rounded-full transition-all bg-white",
-          "shadow-sm text-gray-500",
+          "text-gray-500",
           "hover:bg-gray-50 hover:text-gray-700"
         )}
         onClick={() => onAction("reject")}
@@ -27,8 +27,8 @@ export function CardControls({ onAction }: CardControlsProps) {
       <motion.button 
         className={cn(
           "relative p-6 rounded-full transition-all z-10 bg-accent",
-          "shadow-sm text-gray-700",
-          "hover:shadow-md hover:bg-[#e9d1f0]"
+          "text-gray-700",
+          "hover:bg-[#e9d1f0]"
         )}
         onClick={() => onAction("favorite")}
         aria-label="Save card"
@@ -42,7 +42,7 @@ export function CardControls({ onAction }: CardControlsProps) {
       <motion.button 
         className={cn(
           "relative p-5 rounded-full transition-all bg-primary",
-          "shadow-sm text-gray-700",
+          "text-gray-700",
           "hover:bg-[#c2f0df]"
         )}
         onClick={() => onAction("accept")}
