@@ -263,7 +263,9 @@ export class MemStorage implements IStorage {
     
     // Sort by created date, newest first
     prompts.sort((a, b) => {
-      return b.createdAt.getTime() - a.createdAt.getTime();
+      const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+      const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+      return bTime - aTime;
     });
     
     return prompts.slice(0, limit);
@@ -277,11 +279,16 @@ export class MemStorage implements IStorage {
     const id = this.currentAiPromptId++;
     const now = new Date();
     const aiPrompt: AiPrompt = { 
-      ...insertAiPrompt, 
       id, 
+      content: insertAiPrompt.content,
+      category: insertAiPrompt.category,
+      tag: insertAiPrompt.tag !== undefined ? insertAiPrompt.tag : null,
+      difficulty: insertAiPrompt.difficulty !== undefined ? insertAiPrompt.difficulty : null,
+      userId: insertAiPrompt.userId,
+      provider: insertAiPrompt.provider,
       createdAt: now,
-      used: false,
-      rating: null 
+      used: insertAiPrompt.used !== undefined ? insertAiPrompt.used : false,
+      feedbackRating: insertAiPrompt.feedbackRating !== undefined ? insertAiPrompt.feedbackRating : null
     };
     this.aiPrompts.set(id, aiPrompt);
     return aiPrompt;
@@ -291,7 +298,7 @@ export class MemStorage implements IStorage {
     const aiPrompt = await this.getAiPrompt(id);
     if (!aiPrompt) return undefined;
     
-    const updatedPrompt = { ...aiPrompt, rating };
+    const updatedPrompt = { ...aiPrompt, feedbackRating: rating };
     this.aiPrompts.set(id, updatedPrompt);
     return updatedPrompt;
   }
