@@ -4,9 +4,16 @@
 
 @layer base {
   :root {
-    --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    --card-highlight: rgba(255, 255, 255, 0.15);
-    --card-gradient: linear-gradient(135deg, var(--card-highlight), transparent 60%);
+    --mint: hsl(160, 60%, 85%);
+    --mint-dark: hsl(160, 60%, 75%);
+    --mint-light: hsl(160, 60%, 95%);
+    --lavender: hsl(290, 60%, 85%);
+    --lavender-dark: hsl(290, 60%, 75%);
+    --lavender-light: hsl(290, 60%, 95%);
+    --bg-light: hsl(100, 20%, 95%);
+    --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --card-highlight: rgba(255, 255, 255, 0.6);
+    --card-gradient: linear-gradient(135deg, var(--card-highlight), transparent 80%);
   }
 
   * {
@@ -15,20 +22,35 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground min-h-screen;
-    background-image: radial-gradient(circle at top right, hsl(210, 50%, 25%), hsl(213, 40%, 15%));
+    background-color: var(--bg-light);
+    background-image: 
+      radial-gradient(circle at 20% 20%, hsl(290, 60%, 95%, 0.5), transparent 30%),
+      radial-gradient(circle at 80% 80%, hsl(160, 60%, 95%, 0.5), transparent 30%);
     background-attachment: fixed;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium text-black;
+  }
+
+  p {
+    @apply text-gray-800;
+  }
+
   .btn-primary {
-    @apply bg-accent hover:brightness-110 text-background rounded-full px-6 py-2.5 transition-all font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
+    @apply bg-primary hover:brightness-95 text-gray-800 rounded-full px-6 py-2.5 transition-all font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5;
   }
 
   .btn-accent {
-    @apply bg-white/10 hover:bg-white/20 text-foreground rounded-full px-6 py-2.5 transition-all backdrop-blur-sm border border-white/10 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
+    @apply bg-accent hover:brightness-95 text-gray-800 rounded-full px-6 py-2.5 transition-all border border-gray-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5;
+  }
+
+  .btn-default {
+    @apply bg-white hover:bg-gray-50 text-gray-800 rounded-full px-6 py-2.5 transition-all border border-gray-200 font-medium shadow-sm hover:shadow-md;
   }
 
   .card {
-    @apply bg-white/10 rounded-3xl backdrop-blur-md shadow-xl border border-white/10 p-6 relative overflow-hidden;
+    @apply bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden;
     box-shadow: var(--card-shadow);
   }
   
@@ -50,11 +72,27 @@
   }
 
   .input-field {
-    @apply bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder:text-white/40 focus:ring-accent focus:border-accent/50;
+    @apply bg-white border border-gray-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400 focus:ring-primary focus:border-primary/50;
   }
 
   .nav-item {
-    @apply text-white/80 hover:text-white px-4 py-2 rounded-full hover:bg-white/10 transition-all;
+    @apply text-gray-600 hover:text-gray-900 px-4 py-2 rounded-full hover:bg-gray-100 transition-all;
+  }
+  
+  .mint-tag {
+    @apply bg-primary text-gray-700 rounded-full px-3 py-1 text-sm font-medium;
+  }
+  
+  .lavender-tag {
+    @apply bg-accent text-gray-700 rounded-full px-3 py-1 text-sm font-medium;
+  }
+  
+  .mint-btn {
+    @apply bg-primary hover:bg-[#c2f0df] text-gray-800 rounded-full border border-[#a5e5d0];
+  }
+  
+  .lavender-btn {
+    @apply bg-accent hover:bg-[#e9d1f0] text-gray-800 rounded-full border border-[#ddbcea];
   }
   
   /* Animation classes */
@@ -62,7 +100,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.8) 50%,
       transparent 100%
     );
     background-size: 200% 100%;
@@ -80,16 +118,16 @@
   }
   
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 10px;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.15);
   }
 }

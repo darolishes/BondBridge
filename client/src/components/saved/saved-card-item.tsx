@@ -5,6 +5,7 @@ import { Bookmark, ExternalLink, MessageCircle } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface SavedCardItemProps {
   card: CardType;
@@ -38,21 +39,32 @@ export function SavedCardItem({ card }: SavedCardItemProps) {
     removeSavedCardMutation.mutate(card.id);
   };
   
-  // Map difficulty to appropriate gradient
-  const difficultyGradient = {
-    "Deep": "from-indigo-500 to-purple-600",
-    "Connecting": "from-amber-400 to-orange-500",
-    "Fun": "from-rose-400 to-pink-600"
-  }[card.difficulty as string] || "from-emerald-500 to-teal-600";
+  // Map difficulty to appropriate pastel colors
+  const difficultyStyles = {
+    "Deep": {
+      bgColor: "bg-accent",
+      borderColor: "border-[#ddbcea]",
+    },
+    "Connecting": {
+      bgColor: "bg-[#FFEEB3]",
+      borderColor: "border-[#FFD166]",
+    },
+    "Fun": {
+      bgColor: "bg-primary",
+      borderColor: "border-[#a5e5d0]",
+    }
+  };
+  
+  const difficultyStyle = difficultyStyles[card.difficulty as keyof typeof difficultyStyles] || difficultyStyles.Deep;
 
-  // Map category to appropriate icon color
+  // Map category to new pastel icon colors
   const categoryColor = {
-    "personal": "text-purple-400",
-    "relationship": "text-rose-400",
-    "family": "text-amber-400",
-    "work": "text-emerald-400",
-    "fun": "text-blue-400",
-  }[card.category.toLowerCase()] || "text-purple-400";
+    "personal": "text-purple-500",
+    "relationship": "text-pink-500",
+    "family": "text-amber-500",
+    "work": "text-emerald-500",
+    "fun": "text-blue-500",
+  }[card.category.toLowerCase()] || "text-purple-500";
 
   return (
     <motion.div 
@@ -62,27 +74,34 @@ export function SavedCardItem({ card }: SavedCardItemProps) {
       transition={{ duration: 0.3 }}
       className="mb-4"
     >
-      <Card className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl shadow-md overflow-hidden">
+      <Card className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <CardContent className="p-5">
           <div className="mb-3 flex justify-between items-start">
-            <span className={`px-3 py-1 bg-gradient-to-r ${difficultyGradient} text-white text-xs font-medium rounded-full shadow-sm`}>
+            <span className={cn(
+              "px-3 py-1 text-xs font-medium rounded-full flex items-center gap-1.5 border",
+              difficultyStyle.bgColor,
+              difficultyStyle.borderColor,
+              "text-gray-800"
+            )}>
               {card.difficulty}
             </span>
             <button 
-              className="text-white/70 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-pink-500 transition-colors p-1 rounded-full hover:bg-gray-50"
               onClick={handleRemove}
               disabled={removeSavedCardMutation.isPending}
             >
               <Bookmark className="h-5 w-5" fill="currentColor" />
             </button>
           </div>
-          <p className="text-lg font-medium mb-3 text-white leading-relaxed">{card.content}</p>
+          
+          <p className="text-lg font-medium mb-4 text-gray-800 leading-relaxed">{card.content}</p>
+          
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <MessageCircle className={`h-3 w-3 mr-1 ${categoryColor}`} />
-              <span className="text-xs text-white/60">#{card.tag}</span>
+              <MessageCircle className={`h-3 w-3 mr-1.5 ${categoryColor}`} />
+              <span className="text-xs text-gray-500">#{card.tag}</span>
             </div>
-            <button className="flex items-center gap-1 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-xs font-medium">
+            <button className="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 text-xs font-medium border border-gray-100">
               <span>Use Now</span>
               <ExternalLink className="h-3 w-3" />
             </button>

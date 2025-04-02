@@ -20,27 +20,30 @@ export function NavBar({ activeTab }: NavBarProps) {
     setLocation(routes[tab]);
   };
 
-  // Define icons with their active and inactive states
+  // Define icons with their active and inactive states with updated pastel colors
   const tabIcons = {
     cards: {
       icon: MessageSquareHeart,
-      activeColor: "bg-gradient-to-r from-blue-500 to-indigo-600",
+      activeColor: "bg-primary",
+      borderColor: "border-[#a5e5d0]",
       label: "Cards"
     },
     saved: {
       icon: Bookmark,
-      activeColor: "bg-gradient-to-r from-pink-500 to-rose-500",
+      activeColor: "bg-accent",
+      borderColor: "border-[#ddbcea]",
       label: "Saved"
     },
     profile: {
       icon: User,
-      activeColor: "bg-gradient-to-r from-emerald-400 to-teal-500",
+      activeColor: "bg-[#D1F2E5]",
+      borderColor: "border-[#a5e5d0]",
       label: "Profile"
     }
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black/20 backdrop-blur-lg px-4 py-4 flex justify-around items-center border-t border-white/10 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 flex justify-around items-center border-t border-gray-200 z-50 shadow-sm">
       {(Object.keys(tabIcons) as Array<keyof typeof tabIcons>).map(tab => {
         const isActive = activeTab === tab;
         const TabIcon = tabIcons[tab].icon;
@@ -49,22 +52,26 @@ export function NavBar({ activeTab }: NavBarProps) {
           <motion.button 
             key={tab}
             className={cn(
-              "relative flex flex-col items-center py-1 px-5 rounded-2xl transition-all",
-              isActive ? "text-white" : "text-white/50 hover:text-white/80"
+              "relative flex flex-col items-center py-1.5 px-5 rounded-xl transition-all",
+              isActive ? "text-gray-800" : "text-gray-400 hover:text-gray-600"
             )}
             onClick={() => handleTabChange(tab)}
-            whileTap={{ scale: 0.9 }}
+            whileTap={{ scale: 0.95 }}
           >
             {isActive && (
               <motion.span 
-                className={`absolute inset-0 ${tabIcons[tab].activeColor} rounded-2xl -z-10 opacity-80`}
+                className={cn(
+                  "absolute inset-0 rounded-xl -z-10 border", 
+                  tabIcons[tab].activeColor,
+                  tabIcons[tab].borderColor
+                )}
                 layoutId="activeTab"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.8 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.2 }}
               />
             )}
-            <TabIcon className={cn("h-5 w-5", isActive ? "stroke-[2.5px]" : "stroke-[1.5px]")} />
+            <TabIcon className={cn("h-5 w-5", isActive ? "stroke-[2px]" : "stroke-[1.5px]")} />
             <span className={cn(
               "text-xs mt-1 font-medium",
               isActive ? "opacity-100" : "opacity-80"
