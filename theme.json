@@ -1,6 +1,6 @@
 {
   "variant": "tint",
-  "primary": "oklch(70% 0.1 230)",
+  "primary": "#a8e6cf",
   "appearance": "light",
   "radius": 1.5
 }

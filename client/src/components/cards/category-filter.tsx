@@ -39,19 +39,19 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
     ? [...primaryCategories, ...extendedCategories]
     : primaryCategories;
   
-  // Map categories to pastel colors
+  // Map categories to pastel colors - mint green (primary) and lavender (accent)
   const categoryStyles: Record<string, { bg: string, border: string }> = {
     "All": { 
       bg: "bg-white", 
-      border: "border-gray-200" 
+      border: "border-gray-300" 
     },
     "Relationships": { 
-      bg: "bg-accent", 
-      border: "border-[#ddbcea]" 
+      bg: "bg-accent/30", 
+      border: "border-accent/50" 
     },
     "Self-reflection": { 
-      bg: "bg-[#D1E7FF]", 
-      border: "border-[#B8D3F2]" 
+      bg: "bg-primary/30", 
+      border: "border-primary/50" 
     },
     "Fun": { 
       bg: "bg-[#FFEEB3]", 
@@ -62,44 +62,44 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
       border: "border-[#a5e5d0]" 
     },
     "Family": { 
-      bg: "bg-[#FFCDD2]", 
-      border: "border-[#EF9A9A]" 
+      bg: "bg-accent/20", 
+      border: "border-accent/40" 
     },
     "Work": { 
-      bg: "bg-[#BBDEFB]", 
-      border: "border-[#90CAF9]" 
+      bg: "bg-primary/20", 
+      border: "border-primary/40" 
     },
     "Intimacy": { 
-      bg: "bg-[#F8BBD0]", 
-      border: "border-[#F48FB1]" 
+      bg: "bg-accent/40", 
+      border: "border-accent/60" 
     },
     "Childhood": { 
-      bg: "bg-[#DCEDC8]", 
-      border: "border-[#C5E1A5]" 
+      bg: "bg-primary/40", 
+      border: "border-primary/60" 
     },
     "Future": { 
-      bg: "bg-[#B3E5FC]", 
-      border: "border-[#81D4FA]" 
+      bg: "bg-accent/50", 
+      border: "border-accent/70" 
     },
     "Desires": { 
-      bg: "bg-[#E1BEE7]", 
-      border: "border-[#CE93D8]" 
+      bg: "bg-primary/50", 
+      border: "border-primary/70" 
     },
     "Values": { 
-      bg: "bg-[#C8E6C9]", 
-      border: "border-[#A5D6A7]" 
+      bg: "bg-accent/60", 
+      border: "border-accent/80" 
     },
     "Travel": { 
-      bg: "bg-[#FFF9C4]", 
-      border: "border-[#FFF59D]" 
+      bg: "bg-primary/60", 
+      border: "border-primary/80" 
     },
     "Spirituality": { 
-      bg: "bg-[#D1C4E9]", 
-      border: "border-[#B39DDB]" 
+      bg: "bg-accent/70", 
+      border: "border-accent/90" 
     },
     "Fears": { 
-      bg: "bg-[#FFCCBC]", 
-      border: "border-[#FFAB91]" 
+      bg: "bg-primary/70", 
+      border: "border-primary/90" 
     }
   };
 
@@ -140,7 +140,7 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
       
       <div className="flex justify-center">
         <motion.button
-          className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 py-1 px-3 rounded-full"
+          className="flex items-center gap-1 text-xs text-gray-600 hover:text-gray-800 py-1.5 px-4 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50"
           onClick={() => setShowAllCategories(!showAllCategories)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
