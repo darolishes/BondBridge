@@ -77,7 +77,7 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
 
   return (
     <Card className={cn(
-      "bg-white rounded-3xl shadow-sm overflow-hidden h-full relative border border-gray-100",
+      "bg-white rounded-3xl shadow-md overflow-hidden h-full relative border border-gray-200",
       "after:absolute after:inset-0 after:rounded-3xl after:blur-sm after:opacity-5 after:-z-10",
       isExpanded && "pb-6"
     )}>
@@ -99,8 +99,8 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
             className={cn(
               "transition-all p-2 rounded-full border",
               isSaved 
-                ? "text-pink-500 bg-pink-50 border-pink-200" 
-                : "text-gray-400 hover:text-gray-600 hover:bg-gray-50 border-gray-100"
+                ? "text-accent bg-accent/10 border-accent/20" 
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-50 border-gray-200"
             )}
             onClick={handleSave}
             whileTap={{ scale: 0.95 }}
@@ -124,7 +124,7 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
         {/* Follow-up questions would be shown here if card has any */}
         {card.followUpQuestions && card.followUpQuestions.length > 0 && isExpanded && (
           <motion.div 
-            className="mt-6 space-y-3 px-4 py-3 bg-gray-50 rounded-xl border border-gray-100"
+            className="mt-6 space-y-3 px-4 py-3 bg-primary/5 rounded-xl border border-primary/10"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
@@ -140,14 +140,14 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
           </motion.div>
         )}
         
-        <div className="mt-6 flex justify-between items-center pt-4 border-t border-gray-100">
+        <div className="mt-6 flex justify-between items-center pt-4 border-t border-gray-200">
           <div className="flex items-center">
             <Tag className={`h-3.5 w-3.5 mr-1.5 ${categoryColor}`} />
             <span className="text-sm text-gray-500 font-medium">#{card.tag}</span>
           </div>
           <motion.button 
             className="text-sm font-medium flex items-center gap-1 px-3 py-1 rounded-full 
-              bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 border border-gray-100"
+              bg-accent/5 hover:bg-accent/10 transition-colors text-gray-700 border border-accent/20"
             whileHover={{ x: 3 }}
             onClick={() => setIsExpanded(!isExpanded)}
           >
@@ -189,12 +189,13 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
                     key={relatedCard.id}
                     variant="outline"
                     size="sm"
-                    className="text-left justify-start h-auto py-3 border-gray-100 hover:border-primary/50 hover:bg-primary/5"
+                    className="text-left justify-start h-auto py-3 border-accent/20 bg-accent/5 hover:border-accent/40 hover:bg-accent/10"
+                    onClick={() => onViewRelated?.(relatedCard)}
                   >
                     <div>
                       <p className="text-gray-800 font-medium">{relatedCard.content}</p>
                       <div className="flex items-center mt-1">
-                        <Tag className="h-3 w-3 mr-1.5 text-gray-400" />
+                        <Tag className="h-3 w-3 mr-1.5 text-accent" />
                         <span className="text-xs text-gray-500">#{relatedCard.tag}</span>
                       </div>
                     </div>
@@ -202,7 +203,7 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-500 italic py-2">No related cards found.</p>
+              <p className="text-sm text-gray-500 italic py-2 px-3 bg-gray-50 rounded-lg border border-gray-200">No related cards found for this topic.</p>
             )}
           </motion.div>
         )}

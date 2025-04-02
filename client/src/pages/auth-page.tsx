@@ -82,10 +82,10 @@ export default function AuthPage() {
   const isRegisterPending = registerMutation.isPending;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col md:flex-row">
+    <div className="min-h-screen bg-white flex flex-col md:flex-row items-center">
       {/* Left side - Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-6">
-        <Card className="w-full max-w-md shadow-sm border-gray-100">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 my-auto">
+        <Card className="w-full max-w-md shadow-sm border-gray-100 border-gray-400">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <div className="bg-primary rounded-full p-3 inline-flex shadow-sm border border-[#a5e5d0]">
@@ -213,7 +213,7 @@ export default function AuthPage() {
       </div>
 
       {/* Right side - Hero */}
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-primary/80 to-accent/80 p-8 text-gray-800 items-center justify-center">
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-primary/80 to-accent/80 p-8 text-gray-800 items-center justify-center my-auto">
         <div className="max-w-md bg-white/90 p-10 rounded-3xl shadow-sm border border-white/50">
           <h1 className="text-4xl font-bold mb-6">Build Deeper Connections</h1>
           <p className="text-xl mb-8 text-gray-700">
