@@ -24,12 +24,26 @@ export const insertUserSchema = createInsertSchema(users).pick({
   displayName: true,
 });
 
+export const cardThemes = pgTable("card_themes", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  color: text("color"),
+});
+
 export const cards = pgTable("cards", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(),
   category: text("category").notNull(),
   tag: text("tag"),
   difficulty: text("difficulty"),
+  themeId: integer("theme_id"),
+});
+
+export const insertCardThemeSchema = createInsertSchema(cardThemes).pick({
+  name: true,
+  description: true,
+  color: true,
 });
 
 export const insertCardSchema = createInsertSchema(cards).pick({
@@ -37,6 +51,7 @@ export const insertCardSchema = createInsertSchema(cards).pick({
   category: true,
   tag: true,
   difficulty: true,
+  themeId: true,
 });
 
 export const savedCards = pgTable("saved_cards", {
@@ -54,6 +69,9 @@ export const insertSavedCardSchema = createInsertSchema(savedCards).pick({
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export type InsertCardTheme = z.infer<typeof insertCardThemeSchema>;
+export type CardTheme = typeof cardThemes.$inferSelect;
 
 export type InsertCard = z.infer<typeof insertCardSchema>;
 export type Card = typeof cards.$inferSelect;
