@@ -1,4 +1,11 @@
-import { users, cards, savedCards, cardThemes, type User, type InsertUser, type Card, type InsertCard, type SavedCard, type InsertSavedCard, type CardTheme, type InsertCardTheme } from "@shared/schema";
+import { 
+  users, cards, savedCards, cardThemes, aiPrompts,
+  type User, type InsertUser, 
+  type Card, type InsertCard, 
+  type SavedCard, type InsertSavedCard, 
+  type CardTheme, type InsertCardTheme,
+  type AiPrompt, type InsertAiPrompt 
+} from "@shared/schema";
 import createMemoryStore from "memorystore";
 import session from "express-session";
 
@@ -9,7 +16,7 @@ const MemoryStore = createMemoryStore(session);
 export interface IStorage {
   // User methods
   getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUserPreferences(id: number, preferences: any): Promise<User | undefined>;
   
@@ -29,8 +36,15 @@ export interface IStorage {
   saveCard(savedCard: InsertSavedCard): Promise<SavedCard>;
   removeSavedCard(userId: number, cardId: number): Promise<boolean>;
   
+  // AI Prompt methods
+  getAiPrompts(userId: number, used?: boolean, limit?: number): Promise<AiPrompt[]>;
+  getAiPrompt(id: number): Promise<AiPrompt | undefined>;
+  createAiPrompt(aiPrompt: InsertAiPrompt): Promise<AiPrompt>;
+  updateAiPromptFeedback(id: number, rating: number): Promise<AiPrompt | undefined>;
+  markAiPromptAsUsed(id: number): Promise<AiPrompt | undefined>;
+  
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: session.Store;
 }
 
 export class MemStorage implements IStorage {
@@ -38,21 +52,25 @@ export class MemStorage implements IStorage {
   private cards: Map<number, Card>;
   private savedCards: Map<number, SavedCard>;
   private cardThemes: Map<number, CardTheme>;
-  sessionStore: session.SessionStore;
+  private aiPrompts: Map<number, AiPrompt>;
+  sessionStore: session.Store;
   currentUserId: number;
   currentCardId: number;
   currentSavedCardId: number;
   currentCardThemeId: number;
+  currentAiPromptId: number;
 
   constructor() {
     this.users = new Map();
     this.cards = new Map();
     this.savedCards = new Map();
     this.cardThemes = new Map();
+    this.aiPrompts = new Map();
     this.currentUserId = 1;
     this.currentCardId = 1;
     this.currentSavedCardId = 1;
     this.currentCardThemeId = 1;
+    this.currentAiPromptId = 1;
     
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000, // prune expired entries every 24h
@@ -68,15 +86,35 @@ export class MemStorage implements IStorage {
     return this.users.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
     return Array.from(this.users.values()).find(
-      (user) => user.username === username,
+      (user) => user.email === email,
     );
+  }
+  
+  // For backward compatibility
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return this.getUserByEmail(username);
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.currentUserId++;
-    const user: User = { ...insertUser, id, preferences: { darkMode: false, notifications: true, offlineMode: false } };
+    const user: User = { 
+      ...insertUser, 
+      id, 
+      displayName: insertUser.displayName || null,
+      preferences: { 
+        darkMode: false, 
+        notifications: true, 
+        offlineMode: false,
+        aiProvider: 'openai',
+        aiPersonalization: {
+          interests: [],
+          tone: 'casual',
+          topicPreferences: {}
+        }
+      } 
+    };
     this.users.set(id, user);
     return user;
   }
@@ -108,7 +146,15 @@ export class MemStorage implements IStorage {
 
   async createCardTheme(insertTheme: InsertCardTheme): Promise<CardTheme> {
     const id = this.currentCardThemeId++;
-    const theme: CardTheme = { ...insertTheme, id };
+    const theme: CardTheme = { 
+      ...insertTheme, 
+      id,
+      description: insertTheme.description || null,
+      color: insertTheme.color || null,
+      icon: insertTheme.icon || null,
+      backgroundImage: insertTheme.backgroundImage || null,
+      order: insertTheme.order || null
+    };
     this.cardThemes.set(id, theme);
     return theme;
   }
@@ -161,7 +207,18 @@ export class MemStorage implements IStorage {
 
   async createCard(insertCard: InsertCard): Promise<Card> {
     const id = this.currentCardId++;
-    const card = { ...insertCard, id };
+    const now = new Date();
+    const card: Card = { 
+      ...insertCard, 
+      id,
+      tag: insertCard.tag || null,
+      difficulty: insertCard.difficulty || null,
+      themeId: insertCard.themeId || null,
+      imageUrl: insertCard.imageUrl || null,
+      followUpQuestions: insertCard.followUpQuestions || null,
+      popularity: insertCard.popularity || 0,
+      createdAt: now
+    };
     this.cards.set(id, card);
     return card;
   }
@@ -193,6 +250,59 @@ export class MemStorage implements IStorage {
     
     this.savedCards.delete(savedCardEntry.id);
     return true;
+  }
+  
+  // AI Prompt methods
+  async getAiPrompts(userId: number, used?: boolean, limit = 10): Promise<AiPrompt[]> {
+    let prompts = Array.from(this.aiPrompts.values())
+      .filter(prompt => prompt.userId === userId);
+    
+    if (used !== undefined) {
+      prompts = prompts.filter(prompt => prompt.used === used);
+    }
+    
+    // Sort by created date, newest first
+    prompts.sort((a, b) => {
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+    
+    return prompts.slice(0, limit);
+  }
+  
+  async getAiPrompt(id: number): Promise<AiPrompt | undefined> {
+    return this.aiPrompts.get(id);
+  }
+  
+  async createAiPrompt(insertAiPrompt: InsertAiPrompt): Promise<AiPrompt> {
+    const id = this.currentAiPromptId++;
+    const now = new Date();
+    const aiPrompt: AiPrompt = { 
+      ...insertAiPrompt, 
+      id, 
+      createdAt: now,
+      used: false,
+      rating: null 
+    };
+    this.aiPrompts.set(id, aiPrompt);
+    return aiPrompt;
+  }
+  
+  async updateAiPromptFeedback(id: number, rating: number): Promise<AiPrompt | undefined> {
+    const aiPrompt = await this.getAiPrompt(id);
+    if (!aiPrompt) return undefined;
+    
+    const updatedPrompt = { ...aiPrompt, rating };
+    this.aiPrompts.set(id, updatedPrompt);
+    return updatedPrompt;
+  }
+  
+  async markAiPromptAsUsed(id: number): Promise<AiPrompt | undefined> {
+    const aiPrompt = await this.getAiPrompt(id);
+    if (!aiPrompt) return undefined;
+    
+    const updatedPrompt = { ...aiPrompt, used: true };
+    this.aiPrompts.set(id, updatedPrompt);
+    return updatedPrompt;
   }
 
   // Seed methods for development

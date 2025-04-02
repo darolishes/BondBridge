@@ -14,6 +14,12 @@ export type UserPreferences = {
   darkMode: boolean;
   notifications: boolean;
   offlineMode: boolean;
+  aiProvider?: 'openai' | 'gemini';
+  aiPersonalization?: {
+    interests?: string[];
+    tone?: 'casual' | 'deep' | 'philosophical' | 'humorous' | 'challenging';
+    topicPreferences?: Record<string, number>; // Category => preference score
+  };
 };
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -77,6 +83,30 @@ export const insertSavedCardSchema = createInsertSchema(savedCards).pick({
   cardId: true,
 });
 
+export const aiPrompts = pgTable("ai_prompts", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull(),
+  category: text("category").notNull(),
+  tag: text("tag"),
+  difficulty: text("difficulty"),
+  userId: integer("user_id").notNull(),
+  provider: text("provider").notNull(), // 'openai' or 'gemini'
+  used: boolean("used").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  feedbackRating: integer("feedback_rating"), // 1-5 rating
+});
+
+export const insertAiPromptSchema = createInsertSchema(aiPrompts).pick({
+  content: true,
+  category: true,
+  tag: true,
+  difficulty: true,
+  userId: true,
+  provider: true,
+  used: true,
+  feedbackRating: true,
+});
+
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -89,3 +119,6 @@ export type Card = typeof cards.$inferSelect;
 
 export type InsertSavedCard = z.infer<typeof insertSavedCardSchema>;
 export type SavedCard = typeof savedCards.$inferSelect;
+
+export type InsertAiPrompt = z.infer<typeof insertAiPromptSchema>;
+export type AiPrompt = typeof aiPrompts.$inferSelect;
