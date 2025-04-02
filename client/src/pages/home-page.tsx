@@ -3,18 +3,36 @@ import { useQuery } from "@tanstack/react-query";
 import { NavBar } from "@/components/layout/nav-bar";
 import { CardStack } from "@/components/cards/card-stack";
 import { CategoryFilter } from "@/components/cards/category-filter";
+import { ThemeSelector } from "@/components/cards/theme-selector";
 import { Card } from "@shared/schema";
 import { motion } from "framer-motion";
-import { Loader2, Sparkles, Search } from "lucide-react";
+import { Loader2, Sparkles, Search, Filter } from "lucide-react";
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedThemeId, setSelectedThemeId] = useState<number | null>(null);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
   
   const { data: cards, isLoading, isError } = useQuery<Card[]>({
-    queryKey: ["/api/cards", selectedCategory],
+    queryKey: ["/api/cards", selectedCategory, selectedThemeId],
     queryFn: async ({ queryKey }) => {
-      const [_, category] = queryKey;
-      const url = `/api/cards${category !== "All" ? `?category=${category}` : ""}`;
+      const [_, category, themeId] = queryKey;
+      
+      let url = "/api/cards";
+      const params = new URLSearchParams();
+      
+      if (category !== "All") {
+        params.append("category", category as string);
+      }
+      
+      if (themeId) {
+        params.append("themeId", themeId.toString());
+      }
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch cards");
       return res.json();
@@ -23,6 +41,10 @@ export default function HomePage() {
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+  };
+  
+  const handleThemeChange = (themeId: number | null) => {
+    setSelectedThemeId(themeId);
   };
 
   return (
@@ -63,14 +85,33 @@ export default function HomePage() {
         >
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-semibold text-xl text-gray-800">Conversation Cards</h2>
-            <button className="text-gray-500 hover:text-gray-800 transition-colors text-sm font-medium">
-              My Topics
+            <button 
+              className="flex items-center gap-1 text-gray-500 hover:text-gray-800 transition-colors text-sm font-medium"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <Filter className="h-4 w-4" />
+              <span>Filters</span>
             </button>
           </div>
           <CategoryFilter 
             selectedCategory={selectedCategory} 
             onCategoryChange={handleCategoryChange}
           />
+          
+          {showFilters && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-2 bg-white rounded-lg border border-gray-100 shadow-sm p-4"
+            >
+              <ThemeSelector
+                selectedThemeId={selectedThemeId}
+                onThemeChange={handleThemeChange}
+              />
+            </motion.div>
+          )}
         </motion.div>
 
         {isLoading ? (

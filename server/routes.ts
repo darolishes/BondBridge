@@ -8,13 +8,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication routes
   setupAuth(app);
 
+  // Card themes routes
+  app.get("/api/card-themes", async (req, res) => {
+    try {
+      const themes = await storage.getCardThemes();
+      res.json(themes);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch card themes" });
+    }
+  });
+
+  app.get("/api/card-themes/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const theme = await storage.getCardTheme(id);
+      
+      if (!theme) {
+        return res.status(404).json({ error: "Theme not found" });
+      }
+      
+      res.json(theme);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch theme" });
+    }
+  });
+
   // Cards routes
   app.get("/api/cards", async (req, res) => {
     try {
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
       const category = req.query.category as string | undefined;
+      const themeId = req.query.themeId ? parseInt(req.query.themeId as string) : undefined;
       
-      const cards = await storage.getCards(limit, category);
+      const cards = await storage.getCards(limit, category, themeId);
       res.json(cards);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch cards" });
