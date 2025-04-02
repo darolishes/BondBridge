@@ -4,7 +4,7 @@
   "primary": "hsl(208, 100%, 97%)",
   "accent": "hsl(208, 100%, 90%)",
   "background": "hsl(208, 100%, 95%)",
-  "foreground": "hsl(208, 30%, 10%)",
+  "foreground": "hsl(208, 50%, 15%)",
   "appearance": "light",
   "radius": 2.5
 }
