@@ -62,14 +62,14 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
 
   return (
     <div className={cn(
-      "bg-white rounded-3xl shadow-md overflow-hidden h-full relative",
+      "bg-white rounded-3xl shadow overflow-hidden h-full relative",
       isExpanded && "pb-6"
     )}>
-      <div className="p-6 flex flex-col h-full relative z-10">
+      <div className="p-6 flex flex-col h-full relative">
         <div className="mb-6 flex justify-between items-start">
           <div className="flex items-center gap-2">
             <span className={cn(
-              "px-4 py-1.5 text-xs font-medium rounded-full flex items-center gap-1.5 shadow-sm",
+              "px-4 py-1.5 text-xs font-medium rounded-full flex items-center gap-1.5",
               difficultyStyle.bgColor,
               difficultyStyle.tagColor
             )}>
