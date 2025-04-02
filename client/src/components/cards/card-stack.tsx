@@ -114,7 +114,11 @@ export function CardStack({ cards }: CardStackProps) {
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={handleDragEnd}
-        animate={direction ? { x: direction === "left" ? -500 : 500, rotate: direction === "left" ? -30 : 30 } : {}}
+        animate={direction ? { 
+      x: direction === "left" ? -500 : 500, 
+      y: Math.random() > 0.5 ? -100 : 100,
+      rotate: direction === "left" ? -30 : 30 
+    } : {}}
       >
         <ConversationCard 
           card={currentCard} 
