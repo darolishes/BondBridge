@@ -24,10 +24,12 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  displayName: z.string().min(2, "Display name must be at least 2 characters"),
+  confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -139,20 +141,7 @@ export default function AuthPage() {
 
               <TabsContent value="register">
                 <Form {...registerForm}>
-                  <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-4">
-                    <FormField
-                      control={registerForm.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Choose a username" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                  <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-4 max-w-sm mx-auto">
                     <FormField
                       control={registerForm.control}
                       name="email"
@@ -168,12 +157,12 @@ export default function AuthPage() {
                     />
                     <FormField
                       control={registerForm.control}
-                      name="displayName"
+                      name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Display Name</FormLabel>
+                          <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <Input placeholder="How should we call you?" {...field} />
+                            <Input type="password" placeholder="Create a password" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -181,12 +170,12 @@ export default function AuthPage() {
                     />
                     <FormField
                       control={registerForm.control}
-                      name="password"
+                      name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Confirm Password</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="Create a password" {...field} />
+                            <Input type="password" placeholder="Confirm your password" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
