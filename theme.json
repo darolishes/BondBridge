@@ -1,10 +1,6 @@
-
 {
   "variant": "tint",
-  "primary": "hsl(160, 60%, 85%)",
-  "accent": "hsl(290, 60%, 85%)",
-  "background": "hsl(100, 20%, 95%)",
-  "foreground": "hsl(0, 0%, 20%)",
+  "primary": "oklch(85% 0.1 160)",
   "appearance": "light",
-  "radius": 6.0
+  "radius": 1.5
 }

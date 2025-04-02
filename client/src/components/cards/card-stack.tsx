@@ -85,7 +85,7 @@ export function CardStack({ cards }: CardStackProps) {
   if (!cards.length) {
     return (
       <div className="card-stack relative flex items-center justify-center h-[calc(100vh-220px)]">
-        <p className="text-white text-center">No cards available.</p>
+        <p className="text-gray-600 text-center">No cards available.</p>
       </div>
     );
   }
@@ -98,18 +98,18 @@ export function CardStack({ cards }: CardStackProps) {
   return (
     <div className="card-stack relative flex items-center justify-center h-[calc(100vh-220px)]">
       {/* Third card (bottom of stack) */}
-      <div className="card absolute w-[85%] max-w-sm -mt-2 -ml-2 opacity-90 scale-[0.96]">
+      <div className="card absolute w-[85%] max-w-sm -mt-2 -ml-2 opacity-90 scale-[0.96] shadow-sm">
         <ConversationCard card={thirdCard} />
       </div>
       
       {/* Second card (middle of stack) */}
-      <div className="card absolute w-[85%] max-w-sm -mt-1 -ml-1 opacity-95 scale-[0.98]">
+      <div className="card absolute w-[85%] max-w-sm -mt-1 -ml-1 opacity-95 scale-[0.98] shadow-sm">
         <ConversationCard card={nextCard} />
       </div>
       
       {/* Current card (top of stack) - swipeable */}
       <motion.div
-        className="card absolute w-[85%] max-w-sm z-10"
+        className="card absolute w-[85%] max-w-sm z-10 shadow-md"
         style={{ x: cardX, rotate: cardRotation }}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}

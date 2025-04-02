@@ -55,7 +55,7 @@ export function ConversationCard({ card, onSave }: ConversationCardProps) {
 
   return (
     <Card className={cn(
-      "bg-white rounded-3xl shadow-sm overflow-hidden h-full relative border-gray-100",
+      "bg-white rounded-3xl shadow-sm overflow-hidden h-full relative border border-gray-100",
       "after:absolute after:inset-0 after:rounded-3xl after:blur-sm after:opacity-5 after:-z-10"
     )}>
       {/* Card content */}
@@ -63,7 +63,7 @@ export function ConversationCard({ card, onSave }: ConversationCardProps) {
         <div className="mb-6 flex justify-between items-start">
           <div className="flex items-center gap-2">
             <span className={cn(
-              "px-4 py-1.5 text-xs font-medium rounded-full flex items-center gap-1.5 shadow-sm",
+              "px-4 py-1.5 text-xs font-medium rounded-full flex items-center gap-1.5 shadow-sm border",
               difficultyStyle.bgColor,
               difficultyStyle.borderColor,
               difficultyStyle.tagColor
@@ -74,8 +74,10 @@ export function ConversationCard({ card, onSave }: ConversationCardProps) {
           </div>
           <motion.button 
             className={cn(
-              "transition-all p-2 rounded-full",
-              isSaved ? "text-pink-500 bg-pink-50" : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+              "transition-all p-2 rounded-full border",
+              isSaved 
+                ? "text-pink-500 bg-pink-50 border-pink-200" 
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-50 border-gray-100"
             )}
             onClick={handleSave}
             whileTap={{ scale: 0.95 }}
