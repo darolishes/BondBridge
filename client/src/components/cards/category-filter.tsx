@@ -15,34 +15,54 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
     "Growth"
   ];
   
-  // Map categories to gradient colors
-  const categoryGradients: Record<string, string> = {
-    "All": "from-blue-500 to-purple-600",
-    "Relationships": "from-pink-500 to-rose-500",
-    "Self-reflection": "from-indigo-500 to-blue-600",
-    "Fun": "from-amber-400 to-orange-500",
-    "Growth": "from-emerald-400 to-teal-600"
+  // Map categories to pastel colors
+  const categoryStyles: Record<string, { bg: string, border: string }> = {
+    "All": { 
+      bg: "bg-white", 
+      border: "border-gray-200" 
+    },
+    "Relationships": { 
+      bg: "bg-accent", 
+      border: "border-[#ddbcea]" 
+    },
+    "Self-reflection": { 
+      bg: "bg-[#D1E7FF]", 
+      border: "border-[#B8D3F2]" 
+    },
+    "Fun": { 
+      bg: "bg-[#FFEEB3]", 
+      border: "border-[#FFD166]" 
+    },
+    "Growth": { 
+      bg: "bg-primary", 
+      border: "border-[#a5e5d0]" 
+    }
   };
 
   return (
     <div className="flex gap-3 overflow-x-auto py-3 no-scrollbar">
-      {categories.map((category) => (
-        <motion.button 
-          key={category}
-          className={cn(
-            "whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium shadow-md transition-all",
-            selectedCategory === category 
-              ? `bg-gradient-to-r ${categoryGradients[category]} text-white` 
-              : "bg-white/10 backdrop-blur-sm text-white/80 border border-white/10 hover:bg-white/20"
-          )}
-          onClick={() => onCategoryChange(category)}
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          layout
-        >
-          {category}
-        </motion.button>
-      ))}
+      {categories.map((category) => {
+        const isSelected = selectedCategory === category;
+        const style = categoryStyles[category];
+        
+        return (
+          <motion.button 
+            key={category}
+            className={cn(
+              "whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium shadow-sm transition-all border",
+              isSelected 
+                ? `${style.bg} text-gray-800 ${style.border}` 
+                : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+            )}
+            onClick={() => onCategoryChange(category)}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            layout
+          >
+            {category}
+          </motion.button>
+        );
+      })}
     </div>
   );
 }
