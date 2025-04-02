@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { NavBar } from "@/components/layout/nav-bar";
 import { CardStack } from "@/components/cards/card-stack";
 import { CategoryFilter } from "@/components/cards/category-filter";
 import { ThemeSelector } from "@/components/cards/theme-selector";
 import { Card } from "@shared/schema";
-import { motion } from "framer-motion";
-import { Loader2, Sparkles, Search, Filter } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, Sparkles, Search, Filter, Menu, X, User, BookmarkIcon } from "lucide-react";
+import { Link } from "wouter";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedThemeId, setSelectedThemeId] = useState<number | null>(null);
   const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { user, logoutMutation } = useAuth();
   
   const { data: cards, isLoading, isError } = useQuery<Card[]>({
     queryKey: ["/api/cards", selectedCategory, selectedThemeId],
@@ -47,8 +50,13 @@ export default function HomePage() {
     setSelectedThemeId(themeId);
   };
 
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    setMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden pb-20">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
       {/* Subtle background gradient */}
       <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-primary/30 to-transparent -z-10"></div>
 
@@ -68,13 +76,62 @@ export default function HomePage() {
           </div>
         </motion.div>
         
-        <motion.button 
-          className="p-2 rounded-full bg-white border border-gray-200 text-gray-500 shadow-sm hover:bg-gray-50"
-          whileTap={{ scale: 0.95 }}
-        >
-          <Search className="h-5 w-5" />
-        </motion.button>
+        <div className="flex items-center gap-2">
+          <motion.button 
+            className="p-2 rounded-full bg-white border border-gray-200 text-gray-500 shadow-sm hover:bg-gray-50"
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </motion.button>
+        </div>
       </header>
+
+      {/* Slide-in menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div 
+            className="absolute top-[72px] right-5 w-64 bg-white rounded-2xl shadow-lg border border-gray-200 z-50"
+            initial={{ opacity: 0, y: -20, x: 20 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: -20, x: 20 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-primary/20 p-2 rounded-full">
+                  <User className="h-5 w-5 text-gray-700" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-800">{user?.email}</p>
+                  <p className="text-xs text-gray-500">Account</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-2">
+              <Link href="/profile">
+                <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <User className="h-4 w-4" />
+                  <span className="text-sm">Profile</span>
+                </a>
+              </Link>
+              <Link href="/saved">
+                <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <BookmarkIcon className="h-4 w-4" />
+                  <span className="text-sm">Saved Cards</span>
+                </a>
+              </Link>
+              <button 
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-gray-700"
+                onClick={handleLogout}
+              >
+                <X className="h-4 w-4" />
+                <span className="text-sm">Logout</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="flex-grow overflow-hidden relative">
         <motion.div 
@@ -85,13 +142,21 @@ export default function HomePage() {
         >
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-semibold text-xl text-gray-800">Conversation Cards</h2>
-            <button 
-              className="flex items-center gap-1 text-gray-500 hover:text-gray-800 transition-colors text-sm font-medium"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <Filter className="h-4 w-4" />
-              <span>Filters</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <motion.button 
+                className="p-2 rounded-full bg-white border border-gray-200 text-gray-500 shadow-sm hover:bg-gray-50"
+                whileTap={{ scale: 0.95 }}
+              >
+                <Search className="h-4 w-4" />
+              </motion.button>
+              <motion.button 
+                className="flex items-center gap-1 p-2 rounded-full bg-white border border-gray-200 text-gray-500 shadow-sm hover:bg-gray-50"
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <Filter className="h-4 w-4" />
+              </motion.button>
+            </div>
           </div>
           <CategoryFilter 
             selectedCategory={selectedCategory} 
@@ -143,8 +208,6 @@ export default function HomePage() {
           </div>
         )}
       </main>
-
-      <NavBar activeTab="cards" />
     </div>
   );
 }
