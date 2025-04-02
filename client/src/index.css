@@ -12,15 +12,15 @@
   }
 
   .btn-primary {
-    @apply bg-primary/20 hover:bg-primary/30 text-foreground rounded-full px-6 py-2 transition-colors;
+    @apply bg-black hover:bg-gray-800 text-white rounded-full px-6 py-2 transition-colors font-medium;
   }
 
   .btn-accent {
-    @apply bg-[#D5F379] hover:bg-[#c7e566] text-foreground rounded-full px-6 py-2 transition-colors;
+    @apply bg-white hover:bg-gray-50 text-black rounded-full px-6 py-2 transition-colors border border-gray-200 font-medium;
   }
 
   .card {
-    @apply bg-white rounded-3xl shadow-sm border-0 p-6;
+    @apply bg-white rounded-3xl shadow-md border-0 p-6;
   }
 
   .input-field {
