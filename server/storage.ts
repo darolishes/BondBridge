@@ -21,6 +21,7 @@ export interface IStorage {
   // Card methods
   getCard(id: number): Promise<Card | undefined>;
   getCards(limit?: number, category?: string, themeId?: number): Promise<Card[]>;
+  getRelatedCards(cardId: number, limit?: number): Promise<Card[]>;
   createCard(card: InsertCard): Promise<Card>;
 
   // Saved card methods
@@ -129,6 +130,33 @@ export class MemStorage implements IStorage {
     }
     
     return cards.slice(0, limit);
+  }
+  
+  async getRelatedCards(cardId: number, limit = 5): Promise<Card[]> {
+    const sourceCard = await this.getCard(cardId);
+    if (!sourceCard) return [];
+    
+    // Get cards with similar themes or categories
+    let relatedCards = Array.from(this.cards.values()).filter(card => {
+      // Don't include the source card
+      if (card.id === cardId) return false;
+      
+      // Get cards with the same theme
+      if (card.themeId === sourceCard.themeId) return true;
+      
+      // Get cards with the same category
+      if (card.category === sourceCard.category) return true;
+      
+      // Get cards with the same tag
+      if (card.tag === sourceCard.tag) return true;
+      
+      return false;
+    });
+    
+    // Randomize the order a bit
+    relatedCards.sort(() => Math.random() - 0.5);
+    
+    return relatedCards.slice(0, limit);
   }
 
   async createCard(insertCard: InsertCard): Promise<Card> {

@@ -134,13 +134,15 @@ export default function ProfilePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={`w-28 h-28 bg-gradient-to-br ${getGradient(user?.username)} rounded-2xl flex items-center justify-center text-white text-4xl font-bold mb-4 shadow-lg`}>
-            {user?.displayName ? user.displayName.substring(0, 2).toUpperCase() : user?.username.substring(0, 2).toUpperCase()}
+          <div className={`w-28 h-28 bg-gradient-to-br ${getGradient(user?.username || '')} rounded-2xl flex items-center justify-center text-white text-4xl font-bold mb-4 shadow-lg`}>
+            {user?.displayName 
+              ? (user.displayName?.substring(0, 2) || '').toUpperCase() 
+              : (user?.username?.substring(0, 2) || '').toUpperCase() || 'BB'}
           </div>
           <h3 className="text-xl font-heading font-semibold mb-1 text-white">
-            {user?.displayName || user?.username}
+            {user?.displayName || user?.username || 'User'}
           </h3>
-          <p className="text-white/60 mb-5">{user?.email || user?.username}</p>
+          <p className="text-white/60 mb-5">{user?.email || user?.username || ''}</p>
           <Button variant="outline" className="bg-white/10 text-white border-white/10 hover:bg-white/20">
             <Settings className="mr-2 h-4 w-4" /> Edit Profile
           </Button>

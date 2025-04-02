@@ -24,6 +24,7 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
@@ -63,7 +64,7 @@ export default function AuthPage() {
       username: "",
       email: "",
       password: "",
-      displayName: "",
+      confirmPassword: "",
     },
   });
 
@@ -72,7 +73,9 @@ export default function AuthPage() {
   };
 
   const onRegisterSubmit = (data: RegisterFormData) => {
-    registerMutation.mutate(data);
+    // Create a valid user object from form data, removing confirmPassword
+    const { confirmPassword, ...userInfo } = data;
+    registerMutation.mutate(userInfo);
   };
 
   const isLoginPending = loginMutation.isPending;
@@ -142,6 +145,19 @@ export default function AuthPage() {
               <TabsContent value="register">
                 <Form {...registerForm}>
                   <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-6 max-w-sm mx-auto mt-8">
+                    <FormField
+                      control={registerForm.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Username</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Choose a username" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={registerForm.control}
                       name="email"
