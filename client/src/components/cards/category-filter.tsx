@@ -15,9 +15,7 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
   const primaryCategories = [
     "All", 
     "Relationships", 
-    "Self-reflection", 
-    "Fun", 
-    "Growth"
+    "Self-reflection"
   ];
   
   // Extended categories (shown when expanded)
@@ -40,95 +38,101 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
     : primaryCategories;
   
   // Map categories to pastel colors - mint green (primary) and lavender (accent)
-  const categoryStyles: Record<string, { bg: string, border: string }> = {
+  const categoryStyles: Record<string, { bg: string, border: string, textColor: string }> = {
     "All": { 
       bg: "bg-white", 
-      border: "border-gray-300" 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Relationships": { 
-      bg: "bg-accent/30", 
-      border: "border-accent/50" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Self-reflection": { 
-      bg: "bg-primary/30", 
-      border: "border-primary/50" 
-    },
-    "Fun": { 
-      bg: "bg-[#FFEEB3]", 
-      border: "border-[#FFD166]" 
-    },
-    "Growth": { 
-      bg: "bg-primary", 
-      border: "border-[#a5e5d0]" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Family": { 
-      bg: "bg-accent/20", 
-      border: "border-accent/40" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Work": { 
-      bg: "bg-primary/20", 
-      border: "border-primary/40" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Intimacy": { 
-      bg: "bg-accent/40", 
-      border: "border-accent/60" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Childhood": { 
-      bg: "bg-primary/40", 
-      border: "border-primary/60" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Future": { 
-      bg: "bg-accent/50", 
-      border: "border-accent/70" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Desires": { 
-      bg: "bg-primary/50", 
-      border: "border-primary/70" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Values": { 
-      bg: "bg-accent/60", 
-      border: "border-accent/80" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Travel": { 
-      bg: "bg-primary/60", 
-      border: "border-primary/80" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Spirituality": { 
-      bg: "bg-accent/70", 
-      border: "border-accent/90" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     },
     "Fears": { 
-      bg: "bg-primary/70", 
-      border: "border-primary/90" 
+      bg: "bg-white", 
+      border: "border-gray-200",
+      textColor: "text-gray-800"
     }
   };
 
-  // Ensure all categories have a style, fallback to primary color if not defined
-  const getStyleForCategory = (category: string) => {
-    return categoryStyles[category] || { 
-      bg: "bg-primary", 
-      border: "border-[#a5e5d0]" 
-    };
+  // Progress bar style based on selectedCategory
+  const getProgressWidth = (category: string) => {
+    switch(category) {
+      case "All": return "w-full";
+      case "Relationships": return "w-2/3";
+      case "Self-reflection": return "w-1/3";
+      default: return "w-0";
+    }
   };
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-3 overflow-x-auto py-3 no-scrollbar">
+      <div className="flex gap-2 overflow-x-auto py-1 no-scrollbar">
         {categoriesToDisplay.map((category) => {
           const isSelected = selectedCategory === category;
-          const style = getStyleForCategory(category);
+          const style = categoryStyles[category] || categoryStyles["All"];
           
           return (
             <motion.button 
               key={category}
               className={cn(
-                "whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium shadow-sm transition-all border",
+                "whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-medium transition-all border shadow-sm",
                 isSelected 
-                  ? `${style.bg} text-gray-800 ${style.border}` 
-                  : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+                  ? `${style.bg} ${style.textColor} border-primary/50` 
+                  : `${style.bg} text-gray-500 ${style.border} hover:bg-gray-50`
               )}
               onClick={() => onCategoryChange(category)}
-              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
               layout
             >
@@ -136,6 +140,11 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
             </motion.button>
           );
         })}
+      </div>
+      
+      {/* Progress bar */}
+      <div className="h-1.5 bg-gray-200/60 rounded-full overflow-hidden mt-1 mb-4">
+        <div className={`h-full bg-gradient-to-r from-primary/60 to-primary ${getProgressWidth(selectedCategory)}`}></div>
       </div>
       
       <div className="flex justify-center">

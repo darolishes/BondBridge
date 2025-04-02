@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card as CardType } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bookmark, MessageCircleHeart, Tag, ArrowRight, ChevronDown } from "lucide-react";
+import { Bookmark, MessageCircle, Heart, Tag, ArrowRight, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -64,25 +64,30 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
     }
   };
   
-  const difficultyStyle = difficultyStyles[card.difficulty as keyof typeof difficultyStyles] || difficultyStyles.Deep;
+  const difficultyStyle = difficultyStyles[card.difficulty as keyof typeof difficultyStyles] || {
+    bgColor: "bg-[#FFEEB3]",
+    borderColor: "border-[#FFD166]", 
+    tagColor: "text-gray-800",
+    icon: "text-gray-700"
+  };
   
   // Map category to icon color for the new pastel palette
   const categoryColor = {
-    "personal": "text-purple-500",
-    "relationship": "text-pink-500",
-    "family": "text-amber-500",
-    "work": "text-emerald-500",
-    "fun": "text-blue-500",
-  }[card.category.toLowerCase()] || "text-purple-500";
+    "Relationships": "text-pink-500",
+    "Self-reflection": "text-purple-500",
+    "Family": "text-amber-500",
+    "Work": "text-emerald-500",
+    "Fun": "text-blue-500",
+  }[card.category] || "text-purple-500";
 
   return (
     <Card className={cn(
-      "bg-white rounded-3xl shadow-md overflow-hidden h-full relative border border-gray-200",
+      "bg-white rounded-3xl shadow-md overflow-hidden h-full relative border border-gray-100",
       "after:absolute after:inset-0 after:rounded-3xl after:blur-sm after:opacity-5 after:-z-10",
       isExpanded && "pb-6"
     )}>
       {/* Card content */}
-      <CardContent className="p-7 flex flex-col h-full relative z-10">
+      <CardContent className="p-6 flex flex-col h-full relative z-10">
         <div className="mb-6 flex justify-between items-start">
           <div className="flex items-center gap-2">
             <span className={cn(
@@ -91,8 +96,8 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
               difficultyStyle.borderColor,
               difficultyStyle.tagColor
             )}>
-              <MessageCircleHeart className={`h-3.5 w-3.5 ${difficultyStyle.icon}`} />
-              <span>{card.difficulty}</span>
+              <MessageCircle className={`h-3.5 w-3.5 ${difficultyStyle.icon}`} />
+              <span>{card.difficulty || "Connecting"}</span>
             </span>
           </div>
           <motion.button 
@@ -111,7 +116,7 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
         </div>
         
         <motion.div 
-          className="flex-grow flex items-center justify-center px-2 py-5"
+          className="flex-grow flex items-center justify-center px-3 py-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -140,14 +145,14 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
           </motion.div>
         )}
         
-        <div className="mt-6 flex justify-between items-center pt-4 border-t border-gray-200">
+        <div className="mt-6 flex justify-between items-center pt-4 border-t border-gray-100">
           <div className="flex items-center">
-            <Tag className={`h-3.5 w-3.5 mr-1.5 ${categoryColor}`} />
-            <span className="text-sm text-gray-500 font-medium">#{card.tag}</span>
+            <Heart className={`h-3.5 w-3.5 mr-1.5 text-pink-500`} />
+            <span className="text-sm text-gray-500 font-medium">#{card.tag || "Relationships"}</span>
           </div>
           <motion.button 
             className="text-sm font-medium flex items-center gap-1 px-3 py-1 rounded-full 
-              bg-accent/5 hover:bg-accent/10 transition-colors text-gray-700 border border-accent/20"
+              bg-gray-50 hover:bg-gray-100 transition-colors text-gray-700 border border-gray-200"
             whileHover={{ x: 3 }}
             onClick={() => setIsExpanded(!isExpanded)}
           >
@@ -189,14 +194,14 @@ export function ConversationCard({ card, onSave, onViewRelated, expanded = false
                     key={relatedCard.id}
                     variant="outline"
                     size="sm"
-                    className="text-left justify-start h-auto py-3 border-accent/20 bg-accent/5 hover:border-accent/40 hover:bg-accent/10"
+                    className="text-left justify-start h-auto py-3 border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100"
                     onClick={() => onViewRelated?.(relatedCard)}
                   >
                     <div>
                       <p className="text-gray-800 font-medium">{relatedCard.content}</p>
                       <div className="flex items-center mt-1">
-                        <Tag className="h-3 w-3 mr-1.5 text-accent" />
-                        <span className="text-xs text-gray-500">#{relatedCard.tag}</span>
+                        <Heart className="h-3 w-3 mr-1.5 text-pink-500" />
+                        <span className="text-xs text-gray-500">#{relatedCard.tag || "Relationships"}</span>
                       </div>
                     </div>
                   </Button>
