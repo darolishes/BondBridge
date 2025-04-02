@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Heart, Settings, ChartBar as BarChart, History } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { Platform, View } from 'react-native';
 
@@ -13,8 +13,7 @@ export default function TabLayout() {
           bottom: Platform.OS === 'web' ? 0 : 20,
           left: Platform.OS === 'web' ? 0 : 20,
           right: Platform.OS === 'web' ? 0 : 20,
-          backgroundColor:
-            Platform.OS === 'web' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: Platform.OS === 'web' ? '#FFFFFF' : 'rgba(255, 255, 255, 0.8)',
           borderTopColor: 'transparent',
           height: 65,
           borderRadius: Platform.OS === 'web' ? 0 : 20,
@@ -48,33 +47,33 @@ export default function TabLayout() {
               }}
             />
           ) : null,
-      }}
-    >
+      }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Cards',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart-outline" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Heart size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="progress"
         options={{
           title: 'Progress',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bar-chart-outline" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <BarChart size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color, size }) => <History size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
         }}
       />
     </Tabs>

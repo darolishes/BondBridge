@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
+import Animated, { 
+  useAnimatedStyle, 
   withSpring,
   interpolateColor,
 } from 'react-native-reanimated';
@@ -14,15 +14,12 @@ interface SwipeIndicatorProps {
 export function SwipeIndicator({ direction, progress }: SwipeIndicatorProps) {
   const animatedStyle = useAnimatedStyle(() => {
     const opacity = withSpring(Math.min(Math.abs(progress.value) / 100, 1));
-    const scale = withSpring(1 + Math.abs(progress.value) / 500);
-
+    const scale = withSpring(1 + (Math.abs(progress.value) / 500));
+    
     const color = interpolateColor(
       Math.abs(progress.value),
       [0, 100],
-      [
-        'rgba(255, 255, 255, 0.5)',
-        direction === 'right' ? '#4CAF50' : '#FF4A4A',
-      ]
+      ['rgba(255, 255, 255, 0.5)', direction === 'right' ? '#4CAF50' : '#FF4A4A']
     );
 
     return {

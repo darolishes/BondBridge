@@ -1,17 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { Ionicons } from '@expo/vector-icons';
-import Animated, {
-  withRepeat,
-  withTiming,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import { Loader as Loader2 } from 'lucide-react-native';
+import Animated, { withRepeat, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
 interface LoadingScreenProps {
   message?: string;
 }
 
-const AnimatedIonicons = Animated.createAnimatedComponent(Ionicons);
+const AnimatedLoader = Animated.createAnimatedComponent(Loader2);
 
 export function LoadingScreen({ message = 'Loading...' }: LoadingScreenProps) {
   const spinStyle = useAnimatedStyle(() => {
@@ -30,12 +26,7 @@ export function LoadingScreen({ message = 'Loading...' }: LoadingScreenProps) {
 
   return (
     <BlurView intensity={80} tint="light" style={styles.container}>
-      <AnimatedIonicons 
-        name="reload-outline" 
-        size={48} 
-        color="#4A90E2" 
-        style={spinStyle} 
-      />
+      <AnimatedLoader size={48} color="#4A90E2" style={spinStyle} />
       <Text style={styles.message}>{message}</Text>
     </BlurView>
   );
