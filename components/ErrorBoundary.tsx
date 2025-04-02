@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { OctagonAlert as AlertOctagon } from 'lucide-react-native';
 
 interface Props {
   children: React.ReactNode;
@@ -29,15 +29,14 @@ export class ErrorBoundary extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <View style={styles.container}>
-          <Ionicons name="alert-circle-outline" size={48} color="#FF4A4A" />
+          <AlertOctagon color="#FF4A4A" size={48} />
           <Text style={styles.title}>Oops, something went wrong</Text>
           <Text style={styles.message}>
             {this.state.error?.message || 'An unexpected error occurred'}
           </Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.setState({ hasError: false, error: null })}
-          >
+            onPress={() => this.setState({ hasError: false, error: null })}>
             <Text style={styles.buttonText}>Try Again</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, ScrollView, Dimensions } from 'react-native';
 import { useCardStore } from '@/stores/cardStore';
-import { Ionicons } from '@expo/vector-icons';
+import { ChartBar as BarChart } from 'lucide-react-native';
 
 const CATEGORY_COLORS = {
   memories: '#FFE0E0',
@@ -19,24 +19,21 @@ export default function ProgressScreen() {
     return acc;
   }, {} as Record<string, number>);
 
-  const completedCategories = cards
-    .slice(0, currentCardIndex)
-    .reduce((acc, card) => {
-      acc[card.category] = (acc[card.category] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+  const completedCategories = cards.slice(0, currentCardIndex).reduce((acc, card) => {
+    acc[card.category] = (acc[card.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
   const categories = Object.keys(categoryCounts);
   const totalCards = cards.length;
   const completedCards = currentCardIndex;
-  const progressPercentage =
-    Math.round((completedCards / totalCards) * 100) || 0;
+  const progressPercentage = Math.round((completedCards / totalCards) * 100) || 0;
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Your Progress</Text>
-        <Ionicons name="bar-chart-outline" size={24} color="#4A90E2" />
+        <BarChart size={24} color="#4A90E2" />
       </View>
 
       <View style={styles.overallProgress}>
@@ -63,13 +60,8 @@ export default function ProgressScreen() {
               style={[
                 styles.progressFill,
                 {
-                  backgroundColor:
-                    CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS],
-                  width: `${
-                    ((completedCategories[category] || 0) /
-                      categoryCounts[category]) *
-                    100
-                  }%`,
+                  backgroundColor: CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS],
+                  width: `${((completedCategories[category] || 0) / categoryCounts[category]) * 100}%`,
                 },
               ]}
             />
