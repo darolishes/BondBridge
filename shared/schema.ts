@@ -29,6 +29,9 @@ export const cardThemes = pgTable("card_themes", {
   name: text("name").notNull(),
   description: text("description"),
   color: text("color"),
+  icon: text("icon"),
+  backgroundImage: text("background_image"),
+  order: integer("order"),
 });
 
 export const cards = pgTable("cards", {
@@ -38,12 +41,19 @@ export const cards = pgTable("cards", {
   tag: text("tag"),
   difficulty: text("difficulty"),
   themeId: integer("theme_id"),
+  imageUrl: text("image_url"),
+  followUpQuestions: text("follow_up_questions").array(),
+  popularity: integer("popularity").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const insertCardThemeSchema = createInsertSchema(cardThemes).pick({
   name: true,
   description: true,
   color: true,
+  icon: true,
+  backgroundImage: true,
+  order: true,
 });
 
 export const insertCardSchema = createInsertSchema(cards).pick({
@@ -52,6 +62,9 @@ export const insertCardSchema = createInsertSchema(cards).pick({
   tag: true,
   difficulty: true,
   themeId: true,
+  imageUrl: true,
+  followUpQuestions: true,
+  popularity: true,
 });
 
 export const savedCards = pgTable("saved_cards", {

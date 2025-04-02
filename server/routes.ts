@@ -47,6 +47,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Related cards endpoint - use a different URL pattern to avoid conflicts
+  app.get("/api/related-cards/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 5;
+      
+      const relatedCards = await storage.getRelatedCards(id, limit);
+      res.header("Content-Type", "application/json");
+      res.json(relatedCards);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch related cards" });
+    }
+  });
+  
+  // Single card by ID
   app.get("/api/cards/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
