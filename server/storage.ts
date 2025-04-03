@@ -8,6 +8,9 @@ import {
 } from "@shared/schema";
 import createMemoryStore from "memorystore";
 import session from "express-session";
+import { eq, and, or, ne, desc } from "drizzle-orm";
+import { db } from "./db";
+import { Pool } from '@neondatabase/serverless';
 
 const MemoryStore = createMemoryStore(session);
 
@@ -581,4 +584,199 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Create a PostgreSQL implementation of the storage interface
+export class PostgresStorage implements IStorage {
+  sessionStore: session.Store;
+
+  constructor() {
+    // Use memory store temporarily since we're having issues with PostgreSQL session store
+    this.sessionStore = new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    });
+  }
+
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return result[0];
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    return result[0];
+  }
+  
+  // For backward compatibility
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return this.getUserByEmail(username);
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await db.insert(users).values({
+      ...insertUser,
+      preferences: {
+        darkMode: false,
+        notifications: true,
+        offlineMode: false,
+        aiProvider: 'openai',
+        aiPersonalization: {
+          interests: [],
+          tone: 'casual',
+          topicPreferences: {}
+        }
+      }
+    }).returning();
+    return result[0];
+  }
+
+  async updateUserPreferences(id: number, preferences: any): Promise<User | undefined> {
+    const user = await this.getUser(id);
+    if (!user) return undefined;
+
+    const updatedPreferences = { ...user.preferences, ...preferences };
+    const result = await db.update(users)
+      .set({ preferences: updatedPreferences })
+      .where(eq(users.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  // Theme methods
+  async getCardTheme(id: number): Promise<CardTheme | undefined> {
+    const result = await db.select().from(cardThemes).where(eq(cardThemes.id, id)).limit(1);
+    return result[0];
+  }
+
+  async getCardThemes(): Promise<CardTheme[]> {
+    return await db.select().from(cardThemes).orderBy(cardThemes.order);
+  }
+
+  async createCardTheme(theme: InsertCardTheme): Promise<CardTheme> {
+    const result = await db.insert(cardThemes).values(theme).returning();
+    return result[0];
+  }
+
+  // Card methods
+  async getCard(id: number): Promise<Card | undefined> {
+    const result = await db.select().from(cards).where(eq(cards.id, id)).limit(1);
+    return result[0];
+  }
+
+  async getCards(limit = 10, category?: string, themeId?: number): Promise<Card[]> {
+    let query = db.select().from(cards);
+    
+    const conditions = [];
+    
+    if (category && category !== "All") {
+      conditions.push(eq(cards.category, category));
+    }
+    
+    if (themeId) {
+      conditions.push(eq(cards.themeId, themeId));
+    }
+    
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
+    }
+    
+    return await query.limit(limit);
+  }
+
+  async getRelatedCards(cardId: number, limit = 5): Promise<Card[]> {
+    const sourceCard = await this.getCard(cardId);
+    if (!sourceCard) return [];
+    
+    const relatedCards = await db.select().from(cards)
+      .where(
+        or(
+          and(eq(cards.themeId, sourceCard.themeId || 0), ne(cards.id, cardId)),
+          and(eq(cards.category, sourceCard.category), ne(cards.id, cardId)),
+          and(eq(cards.tag, sourceCard.tag || ''), ne(cards.id, cardId))
+        )
+      )
+      .limit(limit);
+    
+    return relatedCards;
+  }
+
+  async createCard(card: InsertCard): Promise<Card> {
+    const result = await db.insert(cards).values(card).returning();
+    return result[0];
+  }
+
+  // Saved card methods
+  async getSavedCards(userId: number): Promise<Card[]> {
+    // Join savedCards with cards to get the actual card data
+    const result = await db.select({
+      card: cards
+    })
+    .from(savedCards)
+    .innerJoin(cards, eq(savedCards.cardId, cards.id))
+    .where(eq(savedCards.userId, userId));
+    
+    return result.map(row => row.card);
+  }
+
+  async saveCard(savedCard: InsertSavedCard): Promise<SavedCard> {
+    const result = await db.insert(savedCards).values(savedCard).returning();
+    return result[0];
+  }
+
+  async removeSavedCard(userId: number, cardId: number): Promise<boolean> {
+    const result = await db.delete(savedCards)
+      .where(and(
+        eq(savedCards.userId, userId),
+        eq(savedCards.cardId, cardId)
+      ));
+    
+    // Handle rowCount being potentially null
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // AI Prompt methods
+  async getAiPrompts(userId: number, used?: boolean, limit = 10): Promise<AiPrompt[]> {
+    let query = db.select().from(aiPrompts).where(eq(aiPrompts.userId, userId));
+    
+    // Add used status filter if specified
+    if (used !== undefined) {
+      query = query.where(eq(aiPrompts.used, used));
+    }
+    
+    // Sort by created date, newest first
+    query = query.orderBy(desc(aiPrompts.createdAt)).limit(limit);
+    
+    return await query;
+  }
+
+  async getAiPrompt(id: number): Promise<AiPrompt | undefined> {
+    const result = await db.select().from(aiPrompts).where(eq(aiPrompts.id, id)).limit(1);
+    return result[0];
+  }
+
+  async createAiPrompt(aiPrompt: InsertAiPrompt): Promise<AiPrompt> {
+    const result = await db.insert(aiPrompts).values(aiPrompt).returning();
+    return result[0];
+  }
+
+  async updateAiPromptFeedback(id: number, rating: number): Promise<AiPrompt | undefined> {
+    const result = await db.update(aiPrompts)
+      .set({ feedbackRating: rating })
+      .where(eq(aiPrompts.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async markAiPromptAsUsed(id: number): Promise<AiPrompt | undefined> {
+    const result = await db.update(aiPrompts)
+      .set({ used: true })
+      .where(eq(aiPrompts.id, id))
+      .returning();
+    
+    return result[0];
+  }
+}
+
+// Switch to using PostgreSQL storage
+export const storage = new PostgresStorage();
