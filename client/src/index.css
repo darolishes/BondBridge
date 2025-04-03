@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --mint: hsl(160, 60%, 85%);
+    --mint-dark: hsl(160, 60%, 75%);
+    --mint-light: hsl(160, 60%, 95%);
+    --lavender: hsl(290, 60%, 85%);
+    --lavender-dark: hsl(290, 60%, 75%);
+    --lavender-light: hsl(290, 60%, 95%);
+    --bg-light: hsl(100, 20%, 95%);
+    --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --card-highlight: rgba(255, 255, 255, 0.6);
+    --card-gradient: linear-gradient(135deg, var(--card-highlight), transparent 80%);
+    --accent: hsl(290, 60%, 85%);
+    --accent-foreground: hsl(220, 60%, 20%);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground min-h-screen;
+    background-color: var(--bg-light);
+    background-image: 
+      radial-gradient(circle at 20% 20%, hsl(290, 60%, 95%, 0.5), transparent 30%),
+      radial-gradient(circle at 80% 80%, hsl(160, 60%, 95%, 0.5), transparent 30%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium text-black;
+  }
+
+  p {
+    @apply text-gray-800;
+  }
+
+  .btn-primary {
+    @apply bg-black hover:bg-gray-800 text-white rounded-full px-8 py-3.5 transition-all font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5 text-base;
+  }
+
+  .btn-accent {
+    @apply bg-black hover:bg-gray-800 text-white rounded-full px-8 py-3.5 transition-all border border-gray-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5 text-base;
+  }
+
+  .btn-default {
+    @apply bg-black hover:bg-gray-700 text-white rounded-full px-8 py-3.5 transition-all border border-gray-200 font-medium shadow-sm hover:shadow-md text-base;
+  }
+
+  .card {
+    @apply bg-white rounded-3xl shadow-sm border border-gray-100 p-6 relative overflow-hidden;
+    box-shadow: var(--card-shadow);
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--card-gradient);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .card > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .input-field {
+    @apply bg-white border-2 border-gray-600 rounded-2xl px-6 py-4 text-gray-900 placeholder:text-gray-500 focus:ring-primary focus:border-primary text-base;
+  }
+  
+  /* Überschreiben des Standardstils für alle Input-Felder */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"] {
+    @apply border-gray-600 px-6 py-4 text-base;
+  }
+
+  .nav-item {
+    @apply text-gray-600 hover:text-gray-900 px-4 py-2 rounded-full hover:bg-gray-100 transition-all;
+  }
+  
+  .mint-tag {
+    @apply bg-primary text-gray-700 rounded-full px-3 py-1 text-sm font-medium;
+  }
+  
+  .lavender-tag {
+    @apply bg-accent text-gray-700 rounded-full px-3 py-1 text-sm font-medium;
+  }
+  
+  .mint-btn {
+    @apply bg-black hover:bg-gray-800 text-white rounded-full px-8 py-3.5 border border-gray-600 shadow-sm;
+  }
+  
+  .lavender-btn {
+    @apply bg-black hover:bg-gray-800 text-white rounded-full px-8 py-3.5 border border-gray-600 shadow-sm;
+  }
+  
+  /* Animation classes */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.15);
+  }
+}
